@@ -229,8 +229,8 @@ class DemoEngine:
             return f"{name}，我在呢。你可以慢慢说，我会认真听，也会记住你喜欢的交流方式。"
 
         return (
-            f"收到，{name}。这是灵犀的软件闭环演示：我已经完成输入、记忆读取、"
-            f"流式回复和语音播报，真实模型接入后会在这里回答“{compact[:24]}”。"
+            f"收到，{name}。这是灵犀控制台的本地兜底回复：输入、记忆读取、"
+            f"流式输出和语音状态均正常，在线模型恢复后会继续回答“{compact[:24]}”。"
         )
 
     def build_stepfun_messages(
@@ -262,7 +262,10 @@ class DemoEngine:
                     "role": "user",
                     "content": [
                         {"type": "text", "text": text or "请分析这张图片，并用简短中文回答。"},
-                        {"type": "image_url", "image_url": {"url": image_data_url}},
+                        {
+                            "type": "image_url",
+                            "image_url": {"url": image_data_url, "detail": "high"},
+                        },
                     ],
                 }
             )

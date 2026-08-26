@@ -42,6 +42,7 @@ class StepFunClient:
         return cls(
             api_key=os.getenv("STEPFUN_API_KEY"),
             base_url=os.getenv("STEPFUN_BASE_URL", DEFAULT_BASE_URL),
+            timeout=float(os.getenv("STEPFUN_TIMEOUT", "90")),
         )
 
     @property
@@ -74,10 +75,13 @@ class StepFunClient:
             "model": self.vision_model if has_image else self.chat_model,
             "messages": messages,
             "stream": True,
-            "max_tokens": 180,
             "temperature": 0.45,
         }
         if not has_image:
+            # Step 3 reasoning models should be allowed to allocate their own
+            # reasoning/output budget; setting max_tokens can truncate the
+            # stream before the final answer is emitted.
+            payload["max_tokens"] = 180
             payload["modalities"] = ["text"]
         with self._open("/chat/completions", payload, accept="text/event-stream") as response:
             for event in self._iter_sse(response):

@@ -51,6 +51,19 @@ class DemoEngineTests(unittest.TestCase):
         original = "灵犀正在流式回复，你好！"
         self.assertEqual("".join(chunk_text(original, width=3)), original)
 
+    def test_vision_message_uses_high_detail_data_url(self) -> None:
+        profile = self.engine.get_profile(self.device_id)
+        messages = self.engine.build_stepfun_messages(
+            self.device_id,
+            "读取图片",
+            "assistant",
+            profile,
+            "data:image/png;base64,AA==",
+        )
+        image_part = messages[-1]["content"][1]["image_url"]
+        self.assertEqual(image_part["detail"], "high")
+        self.assertTrue(image_part["url"].startswith("data:image/png;base64,"))
+
 
 if __name__ == "__main__":
     unittest.main()

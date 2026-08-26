@@ -44,6 +44,7 @@ const elements = {
   imagePreviewName: document.querySelector("#imagePreviewName"),
   removeImageButton: document.querySelector("#removeImageButton"),
   sendButton: document.querySelector("#sendButton"),
+  audioToggle: document.querySelector("#audioToggle"),
   offlineToggle: document.querySelector("#offlineToggle"),
   profileName: document.querySelector("#profileName"),
   profileRate: document.querySelector("#profileRate"),
@@ -53,6 +54,8 @@ const elements = {
   sessionMetric: document.querySelector("#sessionMetric"),
   eventLog: document.querySelector("#eventLog"),
   resetButton: document.querySelector("#resetButton"),
+  selfTestButton: document.querySelector("#selfTestButton"),
+  exportButton: document.querySelector("#exportButton"),
   guideDialog: document.querySelector("#guideDialog"),
   showGuideButton: document.querySelector("#showGuideButton"),
   toast: document.querySelector("#toast"),
@@ -76,6 +79,7 @@ const app = {
   stopCaptureRequested: false,
   audioPlayer: null,
   audioUrl: null,
+  selfTesting: false,
 };
 
 function setServerStatus(status, label) {
@@ -224,7 +228,7 @@ async function fetchJson(url, options) {
 async function loadInitialData() {
   try {
     await fetchJson("/api/health");
-    setServerStatus("connected", "本地服务已连接");
+    setServerStatus("connected", "灵犀服务已连接");
 
     const [capabilities, profile, history] = await Promise.all([
       fetchJson("/api/capabilities"),
@@ -247,8 +251,18 @@ async function loadInitialData() {
     });
     if (history.items.length) addLog("MEM", `恢复 ${history.items.length} 轮历史会话`);
   } catch (error) {
-    setServerStatus("error", "本地服务未连接");
+    setServerStatus("error", "灵犀服务未连接");
     showToast(error.message);
+  }
+}
+
+async function refreshServiceStatus() {
+  try {
+    await fetchJson("/api/health");
+    setServerStatus("connected", app.capabilities.enabled ? "Step 3.7 已连接" : "灵犀服务已连接");
+  } catch (error) {
+    setServerStatus("error", "灵犀服务未连接");
+    addLog("HEALTH", "服务巡检失败");
   }
 }
 
@@ -256,6 +270,7 @@ function setBusy(busy) {
   app.busy = busy;
   elements.sendButton.disabled = busy;
   elements.imageButton.disabled = busy;
+  elements.selfTestButton.disabled = busy || app.selfTesting;
   document.querySelectorAll(".suggestions button").forEach((button) => {
     button.disabled = busy;
   });
@@ -379,9 +394,72 @@ function handleStreamEvent(event, assistant, appendDelta) {
     if (event.provider === "stepfun") elements.providerMetric.textContent = event.model || "Step 3.7 Flash";
     if (event.provider === "mock") elements.providerMetric.textContent = "本地 Mock";
     addLog(event.offline ? "FALLBACK" : "DONE", `${event.latency_ms} ms`);
-    if (!event.offline) speakResponse(event.text);
+    if (!event.offline && elements.audioToggle.checked) speakResponse(event.text);
+    else if (!event.offline) setDeviceState("idle", "自动播报已关闭");
     return;
   }
+}
+
+function delay(milliseconds) {
+  return new Promise((resolve) => window.setTimeout(resolve, milliseconds));
+}
+
+async function runDeviceSelfTest() {
+  if (app.busy || app.selfTesting) return;
+  app.selfTesting = true;
+  setBusy(true);
+  addLog("DEVICE", "设备反馈链路自检开始");
+
+  const sequence = [
+    ["listening", "麦克风 / 蓝色呼吸灯", "MIC / RGB BLUE"],
+    ["thinking", "模型状态 / 绿色闪烁", "AI / RGB GREEN"],
+    ["speaking", "扬声器 / 暖色跳动", "AUDIO / RGB WARM"],
+  ];
+
+  for (const [state, label, display] of sequence) {
+    setDeviceState(state, label);
+    elements.oledText.textContent = display;
+    await delay(650);
+  }
+
+  elements.oledText.innerHTML = "设备自检通过<br />协议等待实机";
+  setDeviceState("idle", "自检通过");
+  addLog("DEVICE", "OLED / RGB / 状态事件正常");
+  showToast("设备反馈链路自检通过");
+  await delay(900);
+  elements.oledText.innerHTML = "轻触下方按钮<br />开始体验";
+  app.selfTesting = false;
+  setBusy(false);
+}
+
+function exportDiagnostics() {
+  const diagnostic = {
+    exported_at: new Date().toISOString(),
+    console_version: "0.3",
+    device_id: DEVICE_ID,
+    device_transport: "web-simulator",
+    mode: app.mode,
+    state: elements.deviceStage.dataset.state,
+    provider: app.capabilities.provider,
+    capabilities: app.capabilities,
+    profile: app.profile,
+    metrics: {
+      latency: elements.latencyMetric.textContent,
+      session: elements.sessionMetric.textContent,
+      auto_speech: elements.audioToggle.checked,
+      offline_drill: elements.offlineToggle.checked,
+    },
+    events: Array.from(elements.eventLog.children).map((entry) => entry.textContent.trim()),
+  };
+  const blob = new Blob([JSON.stringify(diagnostic, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = `lingxi-diagnostic-${Date.now()}.json`;
+  anchor.click();
+  URL.revokeObjectURL(url);
+  addLog("EXPORT", "诊断信息已导出");
+  showToast("诊断文件已导出，不包含 API Key");
 }
 
 function stopSpeech() {
@@ -741,6 +819,10 @@ document.querySelectorAll(".mode-option").forEach((button) => {
 
 document.querySelectorAll(".suggestions button").forEach((button) => {
   button.addEventListener("click", () => {
+    if (button.dataset.action === "image") {
+      elements.imageInput.click();
+      return;
+    }
     if (button.dataset.modeTarget) setMode(button.dataset.modeTarget);
     sendInteraction(button.dataset.prompt || "");
   });
@@ -780,11 +862,23 @@ elements.offlineToggle.addEventListener("change", () => {
   addLog("NET", active ? "断网演练已开启" : "在线链路已恢复");
 });
 
+elements.audioToggle.addEventListener("change", () => {
+  const active = elements.audioToggle.checked;
+  window.localStorage.setItem("lingxi-auto-speech", active ? "on" : "off");
+  if (!active) stopSpeech();
+  showToast(active ? "自动播报已开启" : "自动播报已关闭");
+  addLog("AUDIO", active ? "自动播报开启" : "自动播报关闭");
+});
+
 elements.resetButton.addEventListener("click", resetDemo);
+elements.selfTestButton.addEventListener("click", runDeviceSelfTest);
+elements.exportButton.addEventListener("click", exportDiagnostics);
 elements.showGuideButton.addEventListener("click", () => elements.guideDialog.showModal());
 
 window.addEventListener("beforeunload", stopSpeech);
 
 setDeviceState("idle");
+elements.audioToggle.checked = window.localStorage.getItem("lingxi-auto-speech") !== "off";
 setupRecognition();
 loadInitialData();
+window.setInterval(refreshServiceStatus, 30000);

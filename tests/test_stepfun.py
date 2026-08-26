@@ -83,6 +83,8 @@ class StepFunClientTests(unittest.TestCase):
             )
         )
         self.assertEqual(captured["payload"]["model"], "step-3.7-flash")
+        self.assertNotIn("max_tokens", captured["payload"])
+        self.assertNotIn("modalities", captured["payload"])
 
     def test_capabilities_expose_step37_and_vision(self) -> None:
         client = StepFunClient(api_key="secret")

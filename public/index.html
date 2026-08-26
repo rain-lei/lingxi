@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="灵犀挂件软件闭环 Demo：设备状态、流式对话、语音播报与本地记忆。"
+      content="灵犀挂件系统控制台：多模态交互、语音链路、设备状态、用户记忆与硬件接入准备度。"
     />
-    <title>灵犀挂件 · 软件 Demo</title>
+    <title>灵犀挂件 · 系统控制台</title>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="/styles.css" />
   </head>
@@ -16,11 +16,11 @@
     <div class="ambient ambient-two" aria-hidden="true"></div>
 
     <header class="topbar">
-      <a class="brand" href="#demo" aria-label="灵犀挂件软件 Demo 首页">
+      <a class="brand" href="#demo" aria-label="灵犀挂件系统控制台首页">
         <span class="brand-mark" aria-hidden="true">灵</span>
         <span>
           <strong>灵犀挂件</strong>
-          <small>SOFTWARE PROTOTYPE / S2</small>
+          <small>HACKATHON BUILD / CONSOLE 0.3</small>
         </span>
       </a>
       <div class="topbar-actions">
@@ -35,27 +35,40 @@
     <main id="demo">
       <section class="hero-copy" aria-labelledby="pageTitle">
         <div>
-          <p class="kicker"><span>软件先行</span> · 无硬件也能跑完整闭环</p>
-          <h1 id="pageTitle">把 AI 从屏幕里<br /><em>解放出来</em></h1>
+          <p class="kicker"><span>LINGXI SYSTEM</span> · 挂件、智能与控制台协同演进</p>
+          <h1 id="pageTitle">让随身智能<br /><em>有感知，有回应</em></h1>
         </div>
         <p class="hero-description">
-          这不是一张静态效果图。按下挂件、选择场景，亲自体验
-          <strong>输入 → 思考 → 流式回复 → 播报 → 记忆</strong>。
+          网页端是灵犀挂件的系统控制台。当前用于验证
+          <strong>多模态输入 → 模型推理 → 语音输出 → 轻量记忆</strong>，
+          后续继续承担真实设备的配置、调试与状态管理。
         </p>
       </section>
+
+      <div class="build-strip" aria-label="当前系统能力">
+        <span><i></i> Step 3.7 多模态</span>
+        <span><i></i> StepAudio 语音链路</span>
+        <span><i></i> SQLite 显式记忆</span>
+        <span class="planned"><i></i> ESP32-S3 硬件桥接待联调</span>
+      </div>
 
       <section class="demo-grid" aria-label="灵犀挂件交互演示">
         <article class="device-card panel">
           <div class="panel-heading">
             <div>
-              <span class="section-index">01 / DEVICE</span>
-              <h2>挂件模拟器</h2>
+              <span class="section-index">01 / DEVICE TWIN</span>
+              <h2>挂件数字孪生</h2>
             </div>
             <div class="mode-select" role="group" aria-label="选择挂件模式">
               <button class="mode-option active" type="button" data-mode="assistant">问答</button>
               <button class="mode-option" type="button" data-mode="companion">陪伴</button>
               <button class="mode-option" type="button" data-mode="translate">翻译</button>
             </div>
+          </div>
+
+          <div class="device-meta" aria-label="当前设备信息">
+            <span><i></i> LX-P01 在线</span>
+            <span>WEB-SIM / PROTOCOL v0.3</span>
           </div>
 
           <div class="device-stage" data-state="idle" id="deviceStage">
@@ -111,19 +124,31 @@
               <span>04</span><strong>记忆</strong>
             </div>
           </div>
+
+          <div class="device-actions">
+            <p><strong>反馈链路预演</strong><span>OLED · RGB · 按键 · 音频状态</span></p>
+            <button class="self-test-button" id="selfTestButton" type="button">运行设备自检</button>
+          </div>
         </article>
 
         <article class="conversation-card panel">
           <div class="panel-heading conversation-heading">
             <div>
-              <span class="section-index">02 / CONVERSATION</span>
-              <h2>对话控制台</h2>
+              <span class="section-index">02 / AI CONSOLE</span>
+              <h2>AI 交互控制台</h2>
             </div>
-            <label class="offline-toggle" title="模拟现场断网与优雅降级">
-              <input id="offlineToggle" type="checkbox" />
-              <span aria-hidden="true"></span>
-              断网演练
-            </label>
+            <div class="console-toggles">
+              <label class="offline-toggle audio-toggle" title="控制是否自动播放语音回复">
+                <input id="audioToggle" type="checkbox" checked />
+                <span aria-hidden="true"></span>
+                自动播报
+              </label>
+              <label class="offline-toggle" title="模拟现场断网与优雅降级">
+                <input id="offlineToggle" type="checkbox" />
+                <span aria-hidden="true"></span>
+                断网演练
+              </label>
+            </div>
           </div>
 
           <div class="conversation" id="conversation" aria-live="polite">
@@ -132,7 +157,7 @@
               <div class="avatar">灵</div>
               <div>
                 <span class="message-role">灵犀</span>
-                <p>你好，我是灵犀。试着让我记住你的称呼，或者切换到陪伴、翻译模式。</p>
+                <p>控制台已就绪。你可以用文字、语音或图片测试灵犀，也可以运行设备自检查看反馈状态。</p>
               </div>
             </div>
           </div>
@@ -141,6 +166,7 @@
             <button type="button" data-prompt="记住我叫小林，语速慢一点">记住我的偏好</button>
             <button type="button" data-mode-target="companion" data-prompt="今天心情不好怎么办">陪伴场景</button>
             <button type="button" data-mode-target="translate" data-prompt="翻译：请问附近有不含花生的菜吗？">实时翻译</button>
+            <button type="button" data-action="image">视觉理解</button>
           </div>
 
           <form class="composer" id="composer">
@@ -151,7 +177,7 @@
               id="messageInput"
               rows="1"
               maxlength="500"
-              placeholder="输入文字，或按住左侧挂件说话…"
+              placeholder="输入指令，或按住左侧挂件说话…"
             ></textarea>
             <button class="send-button" id="sendButton" type="submit" aria-label="发送消息">
               <span>发送</span>
@@ -165,16 +191,16 @@
             <span id="imagePreviewName"></span>
             <button id="removeImageButton" type="button" aria-label="移除图片">×</button>
           </div>
-          <p class="composer-note">Enter 发送 · Shift + Enter 换行 · 图片问答由视觉模型处理</p>
+          <p class="composer-note">Enter 发送 · Shift + Enter 换行 · 支持 JPG / PNG / GIF / WebP，最大 8 MB</p>
         </article>
       </section>
 
-      <section class="insights-grid" aria-label="软件状态与记忆">
+      <section class="insights-grid" aria-label="控制台状态与记忆">
         <article class="memory-card panel">
           <div class="mini-heading">
             <div>
-              <span class="section-index">03 / MEMORY</span>
-              <h2>轻量记忆</h2>
+              <span class="section-index">03 / USER MEMORY</span>
+              <h2>用户记忆</h2>
             </div>
             <button class="text-button" id="resetButton" type="button">清空数据</button>
           </div>
@@ -201,9 +227,12 @@
           <div class="mini-heading">
             <div>
               <span class="section-index">04 / TELEMETRY</span>
-              <h2>链路指标</h2>
+              <h2>运行遥测</h2>
             </div>
-            <span class="live-label"><i></i> LIVE</span>
+            <div class="telemetry-actions">
+              <button class="text-button" id="exportButton" type="button">导出诊断</button>
+              <span class="live-label"><i></i> LIVE</span>
+            </div>
           </div>
           <div class="metric-row">
             <div><small>响应耗时</small><strong id="latencyMetric">—</strong></div>
@@ -215,11 +244,96 @@
           </div>
         </article>
       </section>
+
+      <section class="system-section" aria-labelledby="systemTitle">
+        <div class="section-heading-wide">
+          <div>
+            <span class="section-index">05 / SYSTEM ARCHITECTURE</span>
+            <h2 id="systemTitle">从软件闭环到真实挂件</h2>
+          </div>
+          <p>控制台、云端编排和设备协议保持解耦，接入硬件时复用同一套状态与能力接口。</p>
+        </div>
+
+        <div class="system-grid">
+          <article class="architecture-card panel">
+            <div class="flow-node input-node">
+              <span>INPUT</span>
+              <strong>语音 · 文字 · 图像</strong>
+              <small>浏览器验证 / 设备采集</small>
+            </div>
+            <i class="flow-arrow" aria-hidden="true">→</i>
+            <div class="flow-node core-node">
+              <span>ORCHESTRATOR</span>
+              <strong>状态编排与记忆</strong>
+              <small>流式事件 / 降级 / 会话</small>
+            </div>
+            <i class="flow-arrow" aria-hidden="true">→</i>
+            <div class="flow-node model-node">
+              <span>MODEL</span>
+              <strong>Step 3.7 + StepAudio</strong>
+              <small>理解 / ASR / TTS</small>
+            </div>
+            <i class="flow-arrow" aria-hidden="true">→</i>
+            <div class="flow-node output-node">
+              <span>OUTPUT</span>
+              <strong>OLED · RGB · 音频</strong>
+              <small>数字孪生 / 真实挂件</small>
+            </div>
+          </article>
+
+          <article class="readiness-card panel">
+            <div class="mini-heading">
+              <div>
+                <span class="section-index">HARDWARE BRIDGE</span>
+                <h2>硬件接入准备度</h2>
+              </div>
+              <span class="readiness-score">3 / 5</span>
+            </div>
+            <ul class="readiness-list">
+              <li class="ready"><i>✓</i><span><strong>状态机与事件协议</strong><small>已在网页端跑通</small></span></li>
+              <li class="ready"><i>✓</i><span><strong>16 kHz PCM 音频链路</strong><small>ASR 输入格式已验证</small></span></li>
+              <li class="ready"><i>✓</i><span><strong>OLED / RGB 状态映射</strong><small>数字孪生已可预演</small></span></li>
+              <li><i>4</i><span><strong>ESP32-S3 WebSocket 桥接</strong><small>等待实机联调</small></span></li>
+              <li><i>5</i><span><strong>I2S 播放与 OTA</strong><small>硬件阶段接入</small></span></li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="roadmap-card panel" aria-labelledby="roadmapTitle">
+        <div class="section-heading-wide roadmap-heading">
+          <div>
+            <span class="section-index">06 / CONTINUOUS UPGRADE</span>
+            <h2 id="roadmapTitle">持续升级路线</h2>
+          </div>
+          <p>每一阶段都有可演示成果、可量化指标和明确回退路径。</p>
+        </div>
+        <div class="roadmap-grid">
+          <article class="roadmap-item current">
+            <span>NOW · CONSOLE 0.3</span>
+            <h3>软件闭环完善</h3>
+            <p>多模态交互、语音、记忆、遥测、降级与诊断导出。</p>
+            <small>目标：现场演示稳定完成率 ≥ 95%</small>
+          </article>
+          <article class="roadmap-item">
+            <span>NEXT · DEVICE 0.4</span>
+            <h3>真实硬件桥接</h3>
+            <p>ESP32-S3、按键、麦克风、OLED、RGB 与扬声器联调。</p>
+            <small>目标：端到端首响应 ≤ 2.5 s</small>
+          </article>
+          <article class="roadmap-item">
+            <span>THEN · FIELD 0.5</span>
+            <h3>场景与可靠性</h3>
+            <p>校园服务、噪声环境、弱网重连、隐私控制与 OTA。</p>
+            <small>目标：连续运行 8 h，无阻断故障</small>
+          </article>
+        </div>
+      </section>
     </main>
 
     <footer>
-      <p>LINGXI PENDANT · SOFTWARE MVP</p>
-      <p>设备端接口可替换为 ESP32-S3 WebSocket 事件</p>
+      <p>LINGXI PENDANT · HACKATHON SYSTEM BUILD</p>
+      <p>CONSOLE 0.3 · DEVICE PROTOCOL READY</p>
     </footer>
 
     <dialog class="guide-dialog" id="guideDialog">
@@ -233,7 +347,9 @@
           <li><span>01</span><p><strong>记忆</strong>点击“记住我的偏好”，观察 SQLite 画像更新。</p></li>
           <li><span>02</span><p><strong>陪伴</strong>点击“陪伴场景”，看称呼被带入回复。</p></li>
           <li><span>03</span><p><strong>翻译</strong>演示流式文字与浏览器语音播报。</p></li>
-          <li><span>04</span><p><strong>容错</strong>打开“断网演练”，展示优雅降级。</p></li>
+          <li><span>04</span><p><strong>视觉</strong>添加图片，展示 Step 3.7 原生多模态理解。</p></li>
+          <li><span>05</span><p><strong>设备</strong>运行设备自检，展示 OLED / RGB 状态映射。</p></li>
+          <li><span>06</span><p><strong>容错</strong>打开“断网演练”，展示优雅降级。</p></li>
         </ol>
         <button class="primary-dialog-button" type="submit">开始体验</button>
       </form>
