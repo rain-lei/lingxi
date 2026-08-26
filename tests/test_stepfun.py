@@ -53,6 +53,7 @@ class StepFunClientTests(unittest.TestCase):
         def opener(request, timeout):
             captured["url"] = request.full_url
             captured["authorization"] = request.headers["Authorization"]
+            captured["payload"] = json.loads(request.data.decode("utf-8"))
             return FakeResponse(lines=events)
 
         client = StepFunClient(api_key="secret", opener=opener)
@@ -60,6 +61,7 @@ class StepFunClientTests(unittest.TestCase):
         self.assertEqual(parts, ["你好", "呀"])
         self.assertTrue(captured["url"].endswith("/chat/completions"))
         self.assertEqual(captured["authorization"], "Bearer secret")
+        self.assertNotIn("max_tokens", captured["payload"])
 
     def test_vision_message_selects_vision_model(self) -> None:
         captured = {}

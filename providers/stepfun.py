@@ -71,6 +71,9 @@ class StepFunClient:
             and any(item.get("type") == "image_url" for item in message["content"])
             for message in messages
         )
+        # Step 3 reasoning models allocate a shared reasoning/output budget.
+        # Setting max_tokens can consume the whole budget before final content
+        # is emitted, so the request intentionally leaves it unset.
         payload = {
             "model": self.vision_model if has_image else self.chat_model,
             "messages": messages,
@@ -78,10 +81,6 @@ class StepFunClient:
             "temperature": 0.45,
         }
         if not has_image:
-            # Step 3 reasoning models should be allowed to allocate their own
-            # reasoning/output budget; setting max_tokens can truncate the
-            # stream before the final answer is emitted.
-            payload["max_tokens"] = 180
             payload["modalities"] = ["text"]
         with self._open("/chat/completions", payload, accept="text/event-stream") as response:
             for event in self._iter_sse(response):
