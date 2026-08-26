@@ -70,12 +70,13 @@ class StepFunClient:
         )
         payload = {
             "model": self.vision_model if has_image else self.chat_model,
-            "modalities": ["text"],
             "messages": messages,
             "stream": True,
             "max_tokens": 180,
             "temperature": 0.45,
         }
+        if not has_image:
+            payload["modalities"] = ["text"]
         with self._open("/chat/completions", payload, accept="text/event-stream") as response:
             for event in self._iter_sse(response):
                 choices = event.get("choices") or []
