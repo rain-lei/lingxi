@@ -82,13 +82,13 @@ class StepFunClientTests(unittest.TestCase):
                 ]
             )
         )
-        self.assertEqual(captured["payload"]["model"], "step-1o-turbo-vision")
+        self.assertEqual(captured["payload"]["model"], "step-3.7-flash")
 
     def test_capabilities_expose_step37_and_vision(self) -> None:
         client = StepFunClient(api_key="secret")
         capabilities = client.capabilities()
         self.assertEqual(capabilities["models"]["chat"], "step-3.7-flash")
-        self.assertEqual(capabilities["models"]["vision"], "step-1o-turbo-vision")
+        self.assertEqual(capabilities["models"]["vision"], "step-3.7-flash")
         self.assertTrue(capabilities["vision"])
 
     def test_transcribe_pcm_uses_done_text(self) -> None:

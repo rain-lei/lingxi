@@ -6,7 +6,7 @@
 - 三种场景：知识问答、情感陪伴、多语言翻译
 - 流式文本：后端以 NDJSON 分块返回，OLED 与对话区同步更新
 - 语音能力：浏览器语音识别（可用时）与本地 TTS 播报
-- 阶跃模型：`step-3.7-flash` 对话 + `step-1o-turbo-vision` 图片理解 + `stepaudio-2.5-asr` 语音识别 + `stepaudio-2.5-tts` 语音合成
+- 阶跃模型：`step-3.7-flash` 对话与原生图片理解 + `stepaudio-2.5-asr` 语音识别 + `stepaudio-2.5-tts` 语音合成
 - 轻量记忆：SQLite 持久化用户称呼与语速偏好
 - 优雅降级：一键模拟现场断网，不死机、不无限等待
 - 零安装依赖：服务端仅使用 Python 标准库
@@ -55,7 +55,7 @@ python server.py
 $env:STEPFUN_TTS_VOICE="cixingnansheng"
 ```
 
-配置成功后，顶部会显示“Step 3.7 已连接”，按住挂件会采集单声道 PCM、下采样到 16 kHz 后交给阶跃 ASR；文字回复由 `step-3.7-flash` 流式生成。发送 JPG、PNG、GIF 或 WebP 图片时，会自动切换到 `step-1o-turbo-vision` 进行视觉理解；语音回复仍由 `stepaudio-2.5-tts` 合成为 MP3。任何上游失败都会自动切回 Mock/浏览器语音兜底。
+配置成功后，顶部会显示“Step 3.7 已连接”，按住挂件会采集单声道 PCM、下采样到 16 kHz 后交给阶跃 ASR；文字和图片回复都由具备原生多模态能力的 `step-3.7-flash` 流式生成。发送 JPG、PNG、GIF 或 WebP 图片时，界面会显示图片预览并自动走视觉输入；语音回复仍由 `stepaudio-2.5-tts` 合成为 MP3。任何上游失败都会自动切回 Mock/浏览器语音兜底。
 
 使用其他端口：
 

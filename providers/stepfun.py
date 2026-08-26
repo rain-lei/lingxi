@@ -30,7 +30,9 @@ class StepFunClient:
         self.timeout = timeout
         self._opener = opener
         self.chat_model = os.getenv("STEPFUN_CHAT_MODEL", "step-3.7-flash")
-        self.vision_model = os.getenv("STEPFUN_VISION_MODEL", "step-1o-turbo-vision")
+        # Step 3.7 Flash has native image understanding. A dedicated vision
+        # model can still be selected later with STEPFUN_VISION_MODEL.
+        self.vision_model = os.getenv("STEPFUN_VISION_MODEL", self.chat_model)
         self.tts_model = "stepaudio-2.5-tts"
         self.asr_model = "stepaudio-2.5-asr"
         self.voice = os.getenv("STEPFUN_TTS_VOICE", "cixingnansheng")
