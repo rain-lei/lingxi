@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="灵犀挂件软件闭环 Demo：设备状态、流式对话、语音播报与本地记忆。"
+    />
+    <title>灵犀挂件 · 软件 Demo</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="ambient ambient-one" aria-hidden="true"></div>
+    <div class="ambient ambient-two" aria-hidden="true"></div>
+
+    <header class="topbar">
+      <a class="brand" href="#demo" aria-label="灵犀挂件软件 Demo 首页">
+        <span class="brand-mark" aria-hidden="true">灵</span>
+        <span>
+          <strong>灵犀挂件</strong>
+          <small>SOFTWARE PROTOTYPE / S2</small>
+        </span>
+      </a>
+      <div class="topbar-actions">
+        <span class="server-badge" id="serverBadge">
+          <i aria-hidden="true"></i>
+          <span>连接中</span>
+        </span>
+        <button class="ghost-button" id="showGuideButton" type="button">演示指引</button>
+      </div>
+    </header>
+
+    <main id="demo">
+      <section class="hero-copy" aria-labelledby="pageTitle">
+        <div>
+          <p class="kicker"><span>软件先行</span> · 无硬件也能跑完整闭环</p>
+          <h1 id="pageTitle">把 AI 从屏幕里<br /><em>解放出来</em></h1>
+        </div>
+        <p class="hero-description">
+          这不是一张静态效果图。按下挂件、选择场景，亲自体验
+          <strong>输入 → 思考 → 流式回复 → 播报 → 记忆</strong>。
+        </p>
+      </section>
+
+      <section class="demo-grid" aria-label="灵犀挂件交互演示">
+        <article class="device-card panel">
+          <div class="panel-heading">
+            <div>
+              <span class="section-index">01 / DEVICE</span>
+              <h2>挂件模拟器</h2>
+            </div>
+            <div class="mode-select" role="group" aria-label="选择挂件模式">
+              <button class="mode-option active" type="button" data-mode="assistant">问答</button>
+              <button class="mode-option" type="button" data-mode="companion">陪伴</button>
+              <button class="mode-option" type="button" data-mode="translate">翻译</button>
+            </div>
+          </div>
+
+          <div class="device-stage" data-state="idle" id="deviceStage">
+            <div class="signal-waves" aria-hidden="true">
+              <span></span><span></span><span></span>
+            </div>
+            <div class="lanyard" aria-hidden="true"></div>
+            <div class="pendant-shadow" aria-hidden="true"></div>
+            <div class="pendant-shell">
+              <div class="rgb-ring" aria-hidden="true"></div>
+              <div class="pendant-face">
+                <div class="oled" aria-live="polite" aria-atomic="true">
+                  <div class="oled-topline">
+                    <span id="oledMode">LINGXI / 问答</span>
+                    <span class="battery">87%</span>
+                  </div>
+                  <div class="oled-glyph" id="oledGlyph" aria-hidden="true">
+                    <i></i><i></i><i></i><i></i><i></i>
+                  </div>
+                  <p id="oledText">轻触下方按钮<br />开始体验</p>
+                  <span class="oled-status" id="oledStatus">● 待机</span>
+                </div>
+                <button
+                  class="hardware-button"
+                  id="talkButton"
+                  type="button"
+                  aria-label="按住说话，松开发送"
+                >
+                  <span aria-hidden="true"></span>
+                </button>
+                <div class="speaker" aria-hidden="true">
+                  <i></i><i></i><i></i><i></i><i></i>
+                </div>
+              </div>
+            </div>
+            <p class="hold-tip" id="holdTip">按住说话 · 松开发送</p>
+          </div>
+
+          <div class="state-strip" aria-label="当前处理状态">
+            <div class="state-item active" data-pipeline="listening">
+              <span>01</span><strong>倾听</strong>
+            </div>
+            <i></i>
+            <div class="state-item" data-pipeline="thinking">
+              <span>02</span><strong>思考</strong>
+            </div>
+            <i></i>
+            <div class="state-item" data-pipeline="speaking">
+              <span>03</span><strong>回应</strong>
+            </div>
+            <i></i>
+            <div class="state-item" data-pipeline="memory">
+              <span>04</span><strong>记忆</strong>
+            </div>
+          </div>
+        </article>
+
+        <article class="conversation-card panel">
+          <div class="panel-heading conversation-heading">
+            <div>
+              <span class="section-index">02 / CONVERSATION</span>
+              <h2>对话控制台</h2>
+            </div>
+            <label class="offline-toggle" title="模拟现场断网与优雅降级">
+              <input id="offlineToggle" type="checkbox" />
+              <span aria-hidden="true"></span>
+              断网演练
+            </label>
+          </div>
+
+          <div class="conversation" id="conversation" aria-live="polite">
+            <div class="date-divider"><span>本地演示会话</span></div>
+            <div class="message assistant-message welcome-message">
+              <div class="avatar">灵</div>
+              <div>
+                <span class="message-role">灵犀</span>
+                <p>你好，我是灵犀。试着让我记住你的称呼，或者切换到陪伴、翻译模式。</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="suggestions" aria-label="推荐演示问题">
+            <button type="button" data-prompt="记住我叫小林，语速慢一点">记住我的偏好</button>
+            <button type="button" data-mode-target="companion" data-prompt="今天心情不好怎么办">陪伴场景</button>
+            <button type="button" data-mode-target="translate" data-prompt="翻译：请问附近有不含花生的菜吗？">实时翻译</button>
+          </div>
+
+          <form class="composer" id="composer">
+            <label class="sr-only" for="messageInput">输入想对灵犀说的话</label>
+            <button class="attach-button" id="imageButton" type="button" aria-label="添加图片" title="添加图片进行视觉问答">图片</button>
+            <input class="sr-only" id="imageInput" type="file" accept="image/jpeg,image/png,image/gif,image/webp" />
+            <textarea
+              id="messageInput"
+              rows="1"
+              maxlength="500"
+              placeholder="输入文字，或按住左侧挂件说话…"
+            ></textarea>
+            <button class="send-button" id="sendButton" type="submit" aria-label="发送消息">
+              <span>发送</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m5 12 13-7-4 14-2.4-5.1L5 12Z"></path>
+              </svg>
+            </button>
+          </form>
+          <div class="image-preview" id="imagePreview" hidden>
+            <img id="imagePreviewImage" alt="待发送的图片预览" />
+            <span id="imagePreviewName"></span>
+            <button id="removeImageButton" type="button" aria-label="移除图片">×</button>
+          </div>
+          <p class="composer-note">Enter 发送 · Shift + Enter 换行 · 图片问答由视觉模型处理</p>
+        </article>
+      </section>
+
+      <section class="insights-grid" aria-label="软件状态与记忆">
+        <article class="memory-card panel">
+          <div class="mini-heading">
+            <div>
+              <span class="section-index">03 / MEMORY</span>
+              <h2>轻量记忆</h2>
+            </div>
+            <button class="text-button" id="resetButton" type="button">清空数据</button>
+          </div>
+          <div class="profile-grid">
+            <div>
+              <small>用户称呼</small>
+              <strong id="profileName">朋友</strong>
+            </div>
+            <div>
+              <small>播报语速</small>
+              <strong id="profileRate">正常</strong>
+            </div>
+            <div>
+              <small>记忆位置</small>
+              <strong>SQLite</strong>
+            </div>
+          </div>
+          <p class="memory-note" id="memoryNote">
+            说“记住我叫小林，语速慢一点”，下一轮回复会自动带上偏好。
+          </p>
+        </article>
+
+        <article class="metrics-card panel">
+          <div class="mini-heading">
+            <div>
+              <span class="section-index">04 / TELEMETRY</span>
+              <h2>链路指标</h2>
+            </div>
+            <span class="live-label"><i></i> LIVE</span>
+          </div>
+          <div class="metric-row">
+            <div><small>响应耗时</small><strong id="latencyMetric">—</strong></div>
+            <div><small>AI / 音频</small><strong id="providerMetric">Mock + 浏览器</strong></div>
+            <div><small>会话状态</small><strong id="sessionMetric">待机</strong></div>
+          </div>
+          <div class="event-log" id="eventLog" aria-live="polite">
+            <span><time>READY</time> 设备模拟器已加载</span>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <footer>
+      <p>LINGXI PENDANT · SOFTWARE MVP</p>
+      <p>设备端接口可替换为 ESP32-S3 WebSocket 事件</p>
+    </footer>
+
+    <dialog class="guide-dialog" id="guideDialog">
+      <form method="dialog">
+        <div class="dialog-top">
+          <span class="section-index">5 MINUTE DEMO</span>
+          <button type="submit" aria-label="关闭演示指引">×</button>
+        </div>
+        <h2>建议演示顺序</h2>
+        <ol>
+          <li><span>01</span><p><strong>记忆</strong>点击“记住我的偏好”，观察 SQLite 画像更新。</p></li>
+          <li><span>02</span><p><strong>陪伴</strong>点击“陪伴场景”，看称呼被带入回复。</p></li>
+          <li><span>03</span><p><strong>翻译</strong>演示流式文字与浏览器语音播报。</p></li>
+          <li><span>04</span><p><strong>容错</strong>打开“断网演练”，展示优雅降级。</p></li>
+        </ol>
+        <button class="primary-dialog-button" type="submit">开始体验</button>
+      </form>
+    </dialog>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="/app.js" defer></script>
+  </body>
+</html>
