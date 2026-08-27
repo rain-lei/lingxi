@@ -208,7 +208,10 @@
               <span class="section-index">03 / USER MEMORY</span>
               <h2>用户记忆</h2>
             </div>
-            <button class="text-button" id="resetButton" type="button">清空数据</button>
+            <div class="memory-card-actions">
+              <button class="text-button" id="manageMemoryButton" type="button">管理记忆</button>
+              <button class="text-button danger-text-button" id="resetButton" type="button">清空数据</button>
+            </div>
           </div>
           <div class="profile-grid">
             <div>
@@ -375,6 +378,20 @@
         <div class="feedback-dialog-actions">
           <button id="skipFeedbackButton" type="button">仅记录不满意</button>
           <button class="primary-dialog-button" type="submit">保存为反馈记忆</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog class="guide-dialog memory-manager-dialog" id="memoryDialog">
+      <form>
+        <div class="dialog-top">
+          <span class="section-index">MEMORY CONTROL</span>
+          <button id="closeMemoryButton" type="button" aria-label="关闭记忆管理">×</button>
+        </div>
+        <h2>反馈记忆管理</h2>
+        <p>规则只属于当前匿名访客。删除后，它不会再进入后续任务提示。</p>
+        <div class="memory-list" id="memoryList" aria-live="polite">
+          <p class="memory-list-empty">正在读取…</p>
         </div>
       </form>
     </dialog>

@@ -32,6 +32,7 @@ from providers.stepfun import StepFunClient, StepFunError
 from device_protocol import (
     PROTOCOL_VERSION,
     DeviceProtocolError,
+    DeviceSessionRegistry,
     protocol_manifest,
     validate_device_event,
 )
@@ -454,6 +455,29 @@ class DemoEngine:
             "stored_characters": int(memory_row["stored_characters"]),
         }
 
+    def list_feedback_memories(self, device_id: str, limit: int = 50) -> list[dict[str, Any]]:
+        safe_limit = max(1, min(limit, 100))
+        with self._connection() as connection:
+            rows = connection.execute(
+                """
+                SELECT id, scope, context, rule, uses, created_at, updated_at
+                FROM feedback_memories
+                WHERE device_id = ?
+                ORDER BY updated_at DESC, id DESC
+                LIMIT ?
+                """,
+                (device_id, safe_limit),
+            ).fetchall()
+        return [dict(row) for row in rows]
+
+    def delete_feedback_memory(self, device_id: str, memory_id: int) -> bool:
+        with self._connection() as connection:
+            cursor = connection.execute(
+                "DELETE FROM feedback_memories WHERE id = ? AND device_id = ?",
+                (memory_id, device_id),
+            )
+        return cursor.rowcount == 1
+
     @staticmethod
     def _feedback_scope(rule: str) -> str:
         global_markers = ("以后", "每次", "总是", "回答", "语气", "格式", "简短", "详细", "称呼")
@@ -631,6 +655,10 @@ class LingXiHandler(BaseHTTPRequestHandler):
             device_id = self._device_id(parsed.query)
             self._send_json(self.engine.memory_metrics(device_id))
             return
+        if parsed.path == "/api/memory/items":
+            device_id = self._device_id(parsed.query)
+            self._send_json({"items": self.engine.list_feedback_memories(device_id)})
+            return
         self._serve_static(parsed.path)
 
     def do_POST(self) -> None:  # noqa: N802
@@ -640,6 +668,7 @@ class LingXiHandler(BaseHTTPRequestHandler):
             "/api/audio/transcribe": ("audio", 12),
             "/api/audio/speech": ("audio", 12),
             "/api/feedback": ("feedback", 40),
+            "/api/memory/delete": ("memory-delete", 30),
             "/api/device/events": ("device-events", 240),
             "/api/reset": ("reset", 8),
         }
@@ -671,6 +700,9 @@ class LingXiHandler(BaseHTTPRequestHandler):
             return
         if parsed.path == "/api/feedback":
             self._record_feedback(payload)
+            return
+        if parsed.path == "/api/memory/delete":
+            self._delete_memory(payload)
             return
         if parsed.path == "/api/device/events":
             self._handle_device_event(payload)
@@ -940,6 +972,23 @@ class LingXiHandler(BaseHTTPRequestHandler):
             return
         self._send_json({"ok": True, **result})
 
+    def _delete_memory(self, payload: dict[str, Any]) -> None:
+        device_id = self._clean_device_id(payload.get("device_id", ""))
+        memory_id = payload.get("memory_id")
+        if not isinstance(memory_id, int) or isinstance(memory_id, bool) or memory_id <= 0:
+            self._send_json({"error": "memory_id must be a positive integer"}, HTTPStatus.BAD_REQUEST)
+            return
+        if not self.engine.delete_feedback_memory(device_id, memory_id):
+            self._send_json({"error": "memory not found for this visitor"}, HTTPStatus.NOT_FOUND)
+            return
+        self._send_json(
+            {
+                "ok": True,
+                "memory_id": memory_id,
+                "metrics": self.engine.memory_metrics(device_id),
+            }
+        )
+
     def _handle_device_event(self, payload: dict[str, Any]) -> None:
         expected_token = os.getenv("LINGXI_DEVICE_TOKEN", "").strip()
         if not expected_token:
@@ -955,6 +1004,7 @@ class LingXiHandler(BaseHTTPRequestHandler):
             return
         try:
             event = validate_device_event(payload)
+            session = self.server.device_sessions.accept(event)  # type: ignore[attr-defined]
         except DeviceProtocolError as error:
             self._send_json({"error": str(error)}, HTTPStatus.BAD_REQUEST)
             return
@@ -964,6 +1014,7 @@ class LingXiHandler(BaseHTTPRequestHandler):
                 "type": "event.ack",
                 "device_id": event["device_id"],
                 "seq": event["seq"],
+                "session": session,
                 "accepted_at": utc_now(),
             },
             HTTPStatus.ACCEPTED,
@@ -1105,6 +1156,7 @@ class LingXiServer(ThreadingHTTPServer):
         super().__init__(server_address, LingXiHandler)
         self.engine = engine
         self.rate_limiter = SlidingWindowRateLimiter()
+        self.device_sessions = DeviceSessionRegistry()
 
 
 def parse_args() -> argparse.Namespace:

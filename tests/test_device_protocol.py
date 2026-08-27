@@ -4,6 +4,7 @@ import unittest
 from device_protocol import (
     PROTOCOL_VERSION,
     DeviceProtocolError,
+    DeviceSessionRegistry,
     protocol_manifest,
     validate_device_event,
 )
@@ -63,6 +64,52 @@ class DeviceProtocolTests(unittest.TestCase):
                     "payload": {},
                 }
             )
+
+    def test_session_requires_hello_and_monotonic_sequence(self) -> None:
+        registry = DeviceSessionRegistry()
+        hello = validate_device_event(
+            {
+                "version": PROTOCOL_VERSION,
+                "type": "device.hello",
+                "device_id": "lingxi-p01",
+                "seq": 1,
+                "timestamp_ms": 1_800_000_000_000,
+                "payload": {
+                    "firmware": "0.4.0",
+                    "capabilities": ["microphone", "oled"],
+                },
+            }
+        )
+        self.assertEqual(registry.accept(hello)["state"], "idle")
+
+        begin = validate_device_event(
+            {
+                "version": PROTOCOL_VERSION,
+                "type": "input.begin",
+                "device_id": "lingxi-p01",
+                "seq": 2,
+                "timestamp_ms": 1_800_000_000_040,
+                "payload": {"mode": "assistant"},
+            }
+        )
+        self.assertEqual(registry.accept(begin)["state"], "listening")
+        with self.assertRaises(DeviceProtocolError):
+            registry.accept(begin)
+
+    def test_session_rejects_event_before_hello(self) -> None:
+        registry = DeviceSessionRegistry()
+        heartbeat = validate_device_event(
+            {
+                "version": PROTOCOL_VERSION,
+                "type": "device.heartbeat",
+                "device_id": "lingxi-p02",
+                "seq": 1,
+                "timestamp_ms": 1_800_000_000_000,
+                "payload": {"battery_percent": 88, "rssi_dbm": -55},
+            }
+        )
+        with self.assertRaises(DeviceProtocolError):
+            registry.accept(heartbeat)
 
 
 if __name__ == "__main__":

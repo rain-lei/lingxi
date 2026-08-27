@@ -101,9 +101,28 @@ Invoke-RestMethod http://127.0.0.1:8787/api/health
 | GET | `/api/capabilities` | 模型、语音和设备桥接能力 |
 | GET | `/api/device/protocol` | 机器可读的设备协议清单 |
 | GET | `/api/memory/metrics` | 当前访客反馈记忆指标 |
+| GET | `/api/memory/items` | 查看当前访客已沉淀的反馈规则 |
 | POST | `/api/interactions` | 流式 Agent 任务 |
 | POST | `/api/feedback` | 评价结果并沉淀修改规则 |
+| POST | `/api/memory/delete` | 撤销一条属于当前访客的反馈规则 |
 | POST | `/api/device/events` | 令牌保护的设备事件校验入口 |
+
+### 设备协议契约检查
+
+不连接服务器即可验证一组完整设备上行事件：
+
+```powershell
+python tools/device_simulator.py
+```
+
+硬件配对后，可通过环境变量读取设备令牌并验证服务器鉴权、事件顺序和状态转换：
+
+```powershell
+$env:LINGXI_DEVICE_TOKEN="你的设备令牌"
+python tools/device_simulator.py --send --base-url http://127.0.0.1:8787
+```
+
+脚本不会从命令行参数读取或输出设备令牌。
 
 ## 目录
 
@@ -117,6 +136,7 @@ Invoke-RestMethod http://127.0.0.1:8787/api/health
 │   └── app.js              # 流式客户端、PCM 采集、语音、状态机与交互
 ├── providers/stepfun.py    # 阶跃 Step Plan Chat / ASR / TTS 客户端
 ├── tests/                  # 核心记忆与 Provider 协议测试
+├── tools/device_simulator.py # 设备事件契约模拟器，不含密钥
 ├── THIRD_PARTY.md          # 第三方资源与 AI 工具使用声明
 └── docs/
     ├── competition-alignment.md # 官方赛题与提交材料对齐审计

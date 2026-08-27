@@ -110,6 +110,30 @@ class DemoEngineTests(unittest.TestCase):
         self.assertTrue(self.engine.search_feedback_memories(self.device_id, "图书馆哪里安静"))
         self.assertEqual(self.engine.search_feedback_memories(self.device_id, "明天天气如何"), [])
 
+    def test_memory_can_be_listed_and_deleted_only_by_owner(self) -> None:
+        interaction_id = self.engine.record_interaction(
+            self.device_id,
+            "assistant",
+            "帮我制定复习计划",
+            "先列出科目。",
+        )
+        self.engine.record_feedback(
+            self.device_id,
+            interaction_id,
+            -1,
+            "以后先给结论，只列三步",
+        )
+        memories = self.engine.list_feedback_memories(self.device_id)
+        self.assertEqual(len(memories), 1)
+        self.assertFalse(
+            self.engine.delete_feedback_memory("another-device", int(memories[0]["id"]))
+        )
+        self.assertTrue(
+            self.engine.delete_feedback_memory(self.device_id, int(memories[0]["id"]))
+        )
+        self.assertEqual(self.engine.list_feedback_memories(self.device_id), [])
+        self.assertEqual(self.engine.memory_metrics(self.device_id)["memory_count"], 0)
+
     def test_conversation_history_is_bounded(self) -> None:
         for index in range(55):
             self.engine.record_interaction(

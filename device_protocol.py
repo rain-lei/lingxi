@@ -3,7 +3,10 @@
 from __future__ import annotations
 
 import base64
+import math
 import re
+import threading
+import time
 from typing import Any
 
 
@@ -35,6 +38,59 @@ class DeviceProtocolError(ValueError):
     """Raised when a device event cannot safely enter the orchestrator."""
 
 
+class DeviceSessionRegistry:
+    """Track authenticated device sessions and enforce monotonic event order."""
+
+    def __init__(self, max_sessions: int = 256) -> None:
+        self.max_sessions = max(1, max_sessions)
+        self._sessions: dict[str, dict[str, Any]] = {}
+        self._lock = threading.Lock()
+
+    def accept(self, event: dict[str, Any]) -> dict[str, Any]:
+        device_id = str(event["device_id"])
+        event_type = str(event["type"])
+        seq = int(event["seq"])
+        now_ms = int(time.time() * 1000)
+
+        with self._lock:
+            previous = self._sessions.get(device_id)
+            if event_type == "device.hello":
+                session = {
+                    "state": "idle",
+                    "last_seq": seq,
+                    "last_event": event_type,
+                    "connected_at_ms": now_ms,
+                    "last_seen_at_ms": now_ms,
+                    "firmware": event["payload"]["firmware"],
+                    "capabilities": list(event["payload"]["capabilities"]),
+                }
+            else:
+                if previous is None:
+                    raise DeviceProtocolError("device.hello is required before session events")
+                if seq <= int(previous["last_seq"]):
+                    raise DeviceProtocolError("seq must increase monotonically within the session")
+                session = dict(previous)
+                session["last_seq"] = seq
+                session["last_event"] = event_type
+                session["last_seen_at_ms"] = now_ms
+                if event_type in {"input.begin", "audio.chunk"}:
+                    session["state"] = "listening"
+                elif event_type == "input.end":
+                    session["state"] = "thinking"
+                elif event_type == "playback.done":
+                    session["state"] = "idle"
+
+            self._sessions[device_id] = session
+            if len(self._sessions) > self.max_sessions:
+                oldest_device = min(
+                    self._sessions,
+                    key=lambda key: int(self._sessions[key]["last_seen_at_ms"]),
+                )
+                if oldest_device != device_id:
+                    self._sessions.pop(oldest_device, None)
+            return dict(session)
+
+
 def protocol_manifest() -> dict[str, Any]:
     """Return a machine-readable manifest suitable for firmware generation."""
     return {
@@ -59,6 +115,30 @@ def protocol_manifest() -> dict[str, Any]:
             "required": ["version", "type", "device_id", "seq", "timestamp_ms", "payload"],
             "sequence": "monotonic per device connection",
             "timestamp": "Unix epoch milliseconds",
+        },
+        "payloads": {
+            "device.hello": {
+                "required": ["firmware", "capabilities"],
+                "capabilities_max_items": 16,
+            },
+            "device.heartbeat": {
+                "required": ["battery_percent", "rssi_dbm"],
+            },
+            "input.begin": {
+                "required": ["mode"],
+                "mode": ["assistant", "companion", "translate"],
+            },
+            "audio.chunk": {
+                "required": ["encoding", "sample_rate", "data"],
+                "max_decoded_bytes": 65_536,
+            },
+            "input.end": {
+                "required": ["reason"],
+                "reason": ["released", "cancelled", "timeout"],
+            },
+            "playback.done": {
+                "optional": ["duration_ms"],
+            },
         },
     }
 
@@ -113,19 +193,36 @@ def _validate_event_payload(event_type: str, payload: dict[str, Any]) -> None:
         capabilities = payload.get("capabilities")
         if not isinstance(firmware, str) or not 1 <= len(firmware) <= 64:
             raise DeviceProtocolError("device.hello requires firmware")
-        if not isinstance(capabilities, list) or not all(
+        if not isinstance(capabilities, list) or not 1 <= len(capabilities) <= 16 or not all(
             isinstance(item, str) and 1 <= len(item) <= 32 for item in capabilities
         ):
             raise DeviceProtocolError("device.hello requires string capabilities")
+        if len(set(capabilities)) != len(capabilities):
+            raise DeviceProtocolError("device.hello capabilities must be unique")
         return
 
     if event_type == "device.heartbeat":
         battery = payload.get("battery_percent")
         rssi = payload.get("rssi_dbm")
-        if not isinstance(battery, (int, float)) or isinstance(battery, bool) or not 0 <= battery <= 100:
+        if (
+            not isinstance(battery, (int, float))
+            or isinstance(battery, bool)
+            or not math.isfinite(battery)
+            or not 0 <= battery <= 100
+        ):
             raise DeviceProtocolError("heartbeat battery_percent must be between 0 and 100")
-        if not isinstance(rssi, (int, float)) or isinstance(rssi, bool) or not -140 <= rssi <= 0:
+        if (
+            not isinstance(rssi, (int, float))
+            or isinstance(rssi, bool)
+            or not math.isfinite(rssi)
+            or not -140 <= rssi <= 0
+        ):
             raise DeviceProtocolError("heartbeat rssi_dbm must be between -140 and 0")
+        return
+
+    if event_type == "input.begin":
+        if payload.get("mode") not in {"assistant", "companion", "translate"}:
+            raise DeviceProtocolError("input.begin mode is unsupported")
         return
 
     if event_type == "audio.chunk":
@@ -138,5 +235,20 @@ def _validate_event_payload(event_type: str, payload: dict[str, Any]) -> None:
             audio = base64.b64decode(encoded, validate=True)
         except (ValueError, UnicodeError) as error:
             raise DeviceProtocolError("audio.chunk data must be valid base64") from error
-        if not audio or len(audio) > 64 * 1024:
+        if not audio or len(audio) > 64 * 1024 or len(audio) % 2:
             raise DeviceProtocolError("audio.chunk decoded payload is too large")
+        return
+
+    if event_type == "input.end":
+        if payload.get("reason") not in {"released", "cancelled", "timeout"}:
+            raise DeviceProtocolError("input.end reason is unsupported")
+        return
+
+    if event_type == "playback.done":
+        duration_ms = payload.get("duration_ms")
+        if duration_ms is not None and (
+            not isinstance(duration_ms, int)
+            or isinstance(duration_ms, bool)
+            or not 0 <= duration_ms <= 600_000
+        ):
+            raise DeviceProtocolError("playback.done duration_ms is invalid")

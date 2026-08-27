@@ -83,6 +83,7 @@ const elements = {
   sessionMetric: document.querySelector("#sessionMetric"),
   eventLog: document.querySelector("#eventLog"),
   resetButton: document.querySelector("#resetButton"),
+  manageMemoryButton: document.querySelector("#manageMemoryButton"),
   selfTestButton: document.querySelector("#selfTestButton"),
   exportButton: document.querySelector("#exportButton"),
   feedbackDialog: document.querySelector("#feedbackDialog"),
@@ -90,6 +91,9 @@ const elements = {
   feedbackInput: document.querySelector("#feedbackInput"),
   cancelFeedbackButton: document.querySelector("#cancelFeedbackButton"),
   skipFeedbackButton: document.querySelector("#skipFeedbackButton"),
+  memoryDialog: document.querySelector("#memoryDialog"),
+  memoryList: document.querySelector("#memoryList"),
+  closeMemoryButton: document.querySelector("#closeMemoryButton"),
   guideDialog: document.querySelector("#guideDialog"),
   showGuideButton: document.querySelector("#showGuideButton"),
   toast: document.querySelector("#toast"),
@@ -261,6 +265,7 @@ async function submitFeedback(interactionId, rating, correction, bar) {
     if (result.memory) {
       elements.memoryNote.textContent = `已学习规则：${result.memory.rule}`;
       addLog("LEARN", "用户反馈已沉淀为可召回规则");
+      if (elements.memoryDialog.open) openMemoryDialog();
     } else {
       addLog("FEEDBACK", rating === 1 ? "结果标记为有帮助" : "结果标记为需改进");
     }
@@ -282,6 +287,76 @@ function updateMemoryMetrics(metrics) {
   elements.positiveRateMetric.textContent = Number.isFinite(metrics.positive_rate)
     ? `${Math.round(metrics.positive_rate * 100)}%`
     : "待验证";
+}
+
+function renderMemoryItems(items) {
+  elements.memoryList.replaceChildren();
+  if (!items.length) {
+    const empty = document.createElement("p");
+    empty.className = "memory-list-empty";
+    empty.textContent = "还没有反馈记忆。请先对一条结果选择“需要调整”。";
+    elements.memoryList.append(empty);
+    return;
+  }
+
+  items.forEach((item) => {
+    const card = document.createElement("article");
+    card.className = "memory-list-item";
+
+    const meta = document.createElement("div");
+    const scope = document.createElement("span");
+    scope.textContent = item.scope === "global" ? "全局偏好" : "相似任务";
+    const uses = document.createElement("small");
+    uses.textContent = `已召回 ${item.uses || 0} 次`;
+    meta.append(scope, uses);
+
+    const rule = document.createElement("p");
+    rule.textContent = item.rule;
+
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.dataset.memoryId = String(item.id);
+    remove.textContent = "撤销规则";
+    remove.setAttribute("aria-label", `撤销反馈记忆：${item.rule}`);
+
+    card.append(meta, rule, remove);
+    elements.memoryList.append(card);
+  });
+}
+
+async function openMemoryDialog() {
+  if (!elements.memoryDialog.open) elements.memoryDialog.showModal();
+  elements.memoryList.innerHTML = '<p class="memory-list-empty">正在读取…</p>';
+  try {
+    const result = await fetchJson(
+      `/api/memory/items?device_id=${encodeURIComponent(DEVICE_ID)}`,
+    );
+    renderMemoryItems(result.items || []);
+  } catch (error) {
+    elements.memoryDialog.close();
+    showToast(error.message);
+  }
+}
+
+async function deleteMemory(memoryId, button) {
+  if (!window.confirm("撤销这条反馈记忆？历史反馈统计会保留。")) return;
+  button.disabled = true;
+  try {
+    const result = await fetchJson("/api/memory/delete", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ device_id: DEVICE_ID, memory_id: memoryId }),
+    });
+    updateMemoryMetrics(result.metrics);
+    button.closest(".memory-list-item")?.remove();
+    if (!elements.memoryList.querySelector(".memory-list-item")) renderMemoryItems([]);
+    elements.memoryNote.textContent = "已撤销规则；历史反馈统计仍保留用于评测。";
+    addLog("FORGET", `反馈记忆 #${memoryId} 已撤销`);
+    showToast("反馈记忆已撤销");
+  } catch (error) {
+    button.disabled = false;
+    showToast(error.message);
+  }
 }
 
 function scrollConversation() {
@@ -994,6 +1069,7 @@ async function resetDemo() {
     updateProfile(payload.profile, "记忆已清空。再次对话时会重新建立用户画像。");
     updateMemoryMetrics({ memory_count: 0, feedback_count: 0, recall_uses: 0 });
     app.lastRunEvidence = null;
+    if (elements.memoryDialog.open) renderMemoryItems([]);
     elements.conversation.querySelectorAll(".message:not(.welcome-message)").forEach((message) => message.remove());
     elements.latencyMetric.textContent = "—";
     addLog("RESET", "本地记忆已清空");
@@ -1061,6 +1137,13 @@ elements.audioToggle.addEventListener("change", () => {
 });
 
 elements.resetButton.addEventListener("click", resetDemo);
+elements.manageMemoryButton.addEventListener("click", openMemoryDialog);
+elements.closeMemoryButton.addEventListener("click", () => elements.memoryDialog.close());
+elements.memoryList.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-memory-id]");
+  if (!button) return;
+  deleteMemory(Number(button.dataset.memoryId), button);
+});
 elements.selfTestButton.addEventListener("click", runDeviceSelfTest);
 elements.exportButton.addEventListener("click", exportDiagnostics);
 elements.showGuideButton.addEventListener("click", () => elements.guideDialog.showModal());
