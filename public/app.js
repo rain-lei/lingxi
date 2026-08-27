@@ -117,6 +117,7 @@ const app = {
   feedbackInteractionId: null,
   feedbackBar: null,
   memoryMetrics: { memory_count: 0, feedback_count: 0, recall_uses: 0 },
+  lastRunEvidence: null,
 };
 
 function setServerStatus(status, label) {
@@ -419,6 +420,12 @@ async function sendInteraction(text) {
   const image = app.pendingImage;
   if ((!cleanText && !image) || app.busy) return;
 
+  app.lastRunEvidence = {
+    started_at: new Date().toISOString(),
+    mode: app.mode,
+    input_type: image ? "image" : "text",
+    memory_recall: null,
+  };
   setBusy(true);
   stopSpeech();
   elements.messageInput.value = "";
@@ -519,6 +526,15 @@ function handleStreamEvent(event, assistant, appendDelta) {
   }
 
   if (event.type === "tool") {
+    app.lastRunEvidence = {
+      ...(app.lastRunEvidence || {}),
+      memory_recall: {
+        tool: event.name,
+        hits: event.hits,
+        estimated_tokens: event.estimated_tokens,
+        latency_ms: event.latency_ms,
+      },
+    };
     elements.agentTraceText.textContent = `${event.name} · ${event.hits} 条命中 · ${event.estimated_tokens} tokens · ${event.latency_ms} ms`;
     addLog("TOOL", `${event.name} / ${event.hits} hits`);
     return;
@@ -546,6 +562,15 @@ function handleStreamEvent(event, assistant, appendDelta) {
   }
 
   if (event.type === "complete") {
+    app.lastRunEvidence = {
+      ...(app.lastRunEvidence || {}),
+      interaction_id: event.interaction_id,
+      provider: event.provider,
+      model: event.model || null,
+      latency_ms: event.latency_ms,
+      offline: Boolean(event.offline),
+      completed_at: new Date().toISOString(),
+    };
     assistant.wrapper.classList.remove("streaming");
     attachFeedbackControls(assistant.wrapper, event.interaction_id);
     elements.latencyMetric.textContent = `${event.latency_ms} ms`;
@@ -605,6 +630,7 @@ function exportDiagnostics() {
     capabilities: app.capabilities,
     profile: app.profile,
     feedback_memory: app.memoryMetrics,
+    last_run: app.lastRunEvidence,
     metrics: {
       latency: elements.latencyMetric.textContent,
       session: elements.sessionMetric.textContent,
@@ -967,6 +993,7 @@ async function resetDemo() {
     });
     updateProfile(payload.profile, "记忆已清空。再次对话时会重新建立用户画像。");
     updateMemoryMetrics({ memory_count: 0, feedback_count: 0, recall_uses: 0 });
+    app.lastRunEvidence = null;
     elements.conversation.querySelectorAll(".message:not(.welcome-message)").forEach((message) => message.remove());
     elements.latencyMetric.textContent = "—";
     addLog("RESET", "本地记忆已清空");
