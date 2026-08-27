@@ -1290,6 +1290,35 @@ h2 {
   font-weight: 550;
 }
 
+.memory-evidence {
+  position: relative;
+  z-index: 5;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.memory-evidence > div {
+  padding: 10px 12px;
+  border: 1px solid rgba(216, 255, 99, 0.14);
+  border-radius: 10px;
+  background: rgba(216, 255, 99, 0.035);
+}
+
+.memory-evidence small {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--dim);
+  font-size: 8px;
+}
+
+.memory-evidence strong {
+  color: var(--acid);
+  font-size: 12px;
+  font-weight: 650;
+}
+
 .memory-note {
   position: relative;
   z-index: 5;
@@ -1791,6 +1820,9 @@ footer {
   .metric-row > div { padding-inline: 10px; }
   .profile-grid strong,
   .metric-row strong { font-size: 12px; }
+  .memory-evidence { gap: 6px; }
+  .memory-evidence > div { padding-inline: 9px; }
+  .memory-evidence strong { font-size: 11px; }
   .system-section { margin-top: 54px; }
   .section-heading-wide { align-items: flex-start; flex-direction: column; gap: 12px; }
   .section-heading-wide > p { text-align: left; }

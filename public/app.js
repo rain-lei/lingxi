@@ -74,6 +74,9 @@ const elements = {
   profileName: document.querySelector("#profileName"),
   profileRate: document.querySelector("#profileRate"),
   feedbackMemoryCount: document.querySelector("#feedbackMemoryCount"),
+  feedbackCountMetric: document.querySelector("#feedbackCountMetric"),
+  recallUsesMetric: document.querySelector("#recallUsesMetric"),
+  positiveRateMetric: document.querySelector("#positiveRateMetric"),
   memoryNote: document.querySelector("#memoryNote"),
   latencyMetric: document.querySelector("#latencyMetric"),
   providerMetric: document.querySelector("#providerMetric"),
@@ -273,6 +276,11 @@ function updateMemoryMetrics(metrics) {
   if (!metrics) return;
   app.memoryMetrics = metrics;
   elements.feedbackMemoryCount.textContent = `${metrics.memory_count || 0} 条`;
+  elements.feedbackCountMetric.textContent = `${metrics.feedback_count || 0} 次`;
+  elements.recallUsesMetric.textContent = `${metrics.recall_uses || 0} 次`;
+  elements.positiveRateMetric.textContent = Number.isFinite(metrics.positive_rate)
+    ? `${Math.round(metrics.positive_rate * 100)}%`
+    : "待验证";
 }
 
 function scrollConversation() {
