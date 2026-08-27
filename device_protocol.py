@@ -235,8 +235,10 @@ def _validate_event_payload(event_type: str, payload: dict[str, Any]) -> None:
             audio = base64.b64decode(encoded, validate=True)
         except (ValueError, UnicodeError) as error:
             raise DeviceProtocolError("audio.chunk data must be valid base64") from error
-        if not audio or len(audio) > 64 * 1024 or len(audio) % 2:
+        if not audio or len(audio) > 64 * 1024:
             raise DeviceProtocolError("audio.chunk decoded payload is too large")
+        if len(audio) % 2:
+            raise DeviceProtocolError("audio.chunk pcm_s16le data must contain complete samples")
         return
 
     if event_type == "input.end":

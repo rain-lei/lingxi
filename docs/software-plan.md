@@ -96,9 +96,11 @@ OFFLINE / ERROR
 | GET | `/api/profile?device_id=...` | 获取称呼、语速偏好 |
 | GET | `/api/history?device_id=...` | 恢复最近会话 |
 | GET | `/api/memory/metrics?device_id=...` | 获取反馈记忆数量、召回与正反馈指标 |
+| GET | `/api/memory/items?device_id=...` | 获取当前匿名访客的反馈规则 |
 | GET | `/api/device/protocol` | 获取 0.4-draft 设备协议清单 |
 | POST | `/api/interactions` | 发起交互并流式接收事件 |
 | POST | `/api/feedback` | 评价结果并把修改意见沉淀为规则 |
+| POST | `/api/memory/delete` | 单条撤销当前匿名访客的反馈规则 |
 | POST | `/api/device/events` | 校验令牌保护的设备上行事件 |
 | POST | `/api/audio/transcribe` | 接收 16 kHz PCM16 Base64，代理阶跃 SSE ASR |
 | POST | `/api/audio/speech` | 接收回复文本，代理阶跃 TTS 并返回 MP3 |

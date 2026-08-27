@@ -54,6 +54,13 @@ class HttpApiTests(unittest.TestCase):
         self.assertIn("default-src 'self'", headers["Content-Security-Policy"])
         self.assertEqual(headers["Referrer-Policy"], "no-referrer")
 
+    def test_head_static_console_returns_headers_without_body(self) -> None:
+        status, headers, body = self.request("HEAD", "/")
+        self.assertEqual(status, 200)
+        self.assertEqual(body, b"")
+        self.assertGreater(int(headers["Content-Length"]), 0)
+        self.assertEqual(headers["X-Frame-Options"], "DENY")
+
     def test_feedback_memory_http_lifecycle_is_visitor_scoped(self) -> None:
         device_id = "web-http-test-01"
         status, _, body = self.request(

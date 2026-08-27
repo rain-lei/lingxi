@@ -625,6 +625,19 @@ class LingXiHandler(BaseHTTPRequestHandler):
     def log_message(self, format: str, *args: Any) -> None:
         print(f"[{self.log_date_time_string()}] {format % args}")
 
+    def do_HEAD(self) -> None:  # noqa: N802
+        """Serve static resource headers for uptime checks and CDNs."""
+        parsed = urlparse(self.path)
+        if not self._enforce_rate_limit("read", 240):
+            return
+        if parsed.path.startswith("/api/"):
+            self.send_response(HTTPStatus.METHOD_NOT_ALLOWED)
+            self.send_header("Allow", "GET, POST")
+            self._send_security_headers()
+            self.end_headers()
+            return
+        self._serve_static(parsed.path, head_only=True)
+
     def do_GET(self) -> None:  # noqa: N802
         parsed = urlparse(self.path)
         if not self._enforce_rate_limit("read", 240):
@@ -1081,7 +1094,7 @@ class LingXiHandler(BaseHTTPRequestHandler):
             return False
         return decoded_length <= 8 * 1024 * 1024
 
-    def _serve_static(self, request_path: str) -> None:
+    def _serve_static(self, request_path: str, head_only: bool = False) -> None:
         relative = "index.html" if request_path in ("", "/") else request_path.lstrip("/")
         candidate = (PUBLIC_DIR / relative).resolve()
         try:
@@ -1103,7 +1116,8 @@ class LingXiHandler(BaseHTTPRequestHandler):
         self.send_header("Cache-Control", "no-store")
         self._send_security_headers(include_csp=True)
         self.end_headers()
-        self.wfile.write(body)
+        if not head_only:
+            self.wfile.write(body)
 
     def _send_json(
         self,
