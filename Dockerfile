@@ -11,6 +11,7 @@ RUN addgroup -S lingxi \
     && chown -R lingxi:lingxi /app
 
 COPY --chown=lingxi:lingxi server.py ./server.py
+COPY --chown=lingxi:lingxi device_protocol.py ./device_protocol.py
 COPY --chown=lingxi:lingxi providers ./providers
 COPY --chown=lingxi:lingxi public ./public
 
