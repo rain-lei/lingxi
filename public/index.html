@@ -20,7 +20,7 @@
         <span class="brand-mark" aria-hidden="true">灵</span>
         <span>
           <strong>灵犀挂件</strong>
-          <small>HACKATHON BUILD / CONSOLE 0.3</small>
+          <small>HACKATHON BUILD / CONSOLE 0.4</small>
         </span>
       </a>
       <div class="topbar-actions">
@@ -39,8 +39,9 @@
           <h1 id="pageTitle">让随身智能<br /><em>有感知，有回应</em></h1>
         </div>
         <p class="hero-description">
-          网页端是灵犀挂件的系统控制台。当前用于验证
-          <strong>多模态输入 → 模型推理 → 语音输出 → 轻量记忆</strong>，
+          面向走路、通勤、学习和双手忙碌时的校园短任务，灵犀用按住说话和简短反馈减少反复操作。
+          网页端是挂件的系统控制台，当前用于验证
+          <strong>多模态输入 → Agent 规划 → 反馈记忆 → 语音输出</strong>，
           后续继续承担真实设备的配置、调试与状态管理。
         </p>
       </section>
@@ -48,7 +49,7 @@
       <div class="build-strip" aria-label="当前系统能力">
         <span><i></i> Step 3.7 多模态</span>
         <span><i></i> StepAudio 语音链路</span>
-        <span><i></i> SQLite 显式记忆</span>
+        <span><i></i> 反馈记忆 Agent</span>
         <span class="planned"><i></i> ESP32-S3 硬件桥接待联调</span>
       </div>
 
@@ -60,15 +61,15 @@
               <h2>挂件数字孪生</h2>
             </div>
             <div class="mode-select" role="group" aria-label="选择挂件模式">
-              <button class="mode-option active" type="button" data-mode="assistant">问答</button>
+              <button class="mode-option active" type="button" data-mode="assistant">任务</button>
               <button class="mode-option" type="button" data-mode="companion">陪伴</button>
               <button class="mode-option" type="button" data-mode="translate">翻译</button>
             </div>
           </div>
 
           <div class="device-meta" aria-label="当前设备信息">
-            <span><i></i> LX-P01 在线</span>
-            <span>WEB-SIM / PROTOCOL v0.3</span>
+            <span id="deviceIdLabel"><i></i> WEB DEVICE 在线</span>
+            <span id="protocolLabel">WEB-SIM / PROTOCOL 0.4-DRAFT</span>
           </div>
 
           <div class="device-stage" data-state="idle" id="deviceStage">
@@ -82,7 +83,7 @@
               <div class="pendant-face">
                 <div class="oled" aria-live="polite" aria-atomic="true">
                   <div class="oled-topline">
-                    <span id="oledMode">LINGXI / 问答</span>
+                    <span id="oledMode">LINGXI / 任务</span>
                     <span class="battery">87%</span>
                   </div>
                   <div class="oled-glyph" id="oledGlyph" aria-hidden="true">
@@ -162,6 +163,11 @@
             </div>
           </div>
 
+          <div class="agent-trace" aria-live="polite">
+            <span>AGENT TRACE</span>
+            <p id="agentTraceText">等待任务 · 反馈记忆工具就绪</p>
+          </div>
+
           <div class="suggestions" aria-label="推荐演示问题">
             <button type="button" data-prompt="记住我叫小林，语速慢一点">记住我的偏好</button>
             <button type="button" data-mode-target="companion" data-prompt="今天心情不好怎么办">陪伴场景</button>
@@ -214,12 +220,12 @@
               <strong id="profileRate">正常</strong>
             </div>
             <div>
-              <small>记忆位置</small>
-              <strong>SQLite</strong>
+              <small>反馈记忆</small>
+              <strong id="feedbackMemoryCount">0 条</strong>
             </div>
           </div>
           <p class="memory-note" id="memoryNote">
-            说“记住我叫小林，语速慢一点”，下一轮回复会自动带上偏好。
+            对结果选择“需要调整”并给出规则，后续相似任务会自动召回。
           </p>
         </article>
 
@@ -310,13 +316,13 @@
         </div>
         <div class="roadmap-grid">
           <article class="roadmap-item current">
-            <span>NOW · CONSOLE 0.3</span>
+            <span>NOW · CONSOLE 0.4</span>
             <h3>控制台底座完善</h3>
             <p>多模态交互、语音、记忆、遥测、降级与诊断导出。</p>
             <small>目标：现场演示稳定完成率 ≥ 95%</small>
           </article>
           <article class="roadmap-item">
-            <span>NEXT · DEVICE 0.4</span>
+            <span>NEXT · DEVICE 0.5</span>
             <h3>真实硬件桥接</h3>
             <p>ESP32-S3、按键、麦克风、OLED、RGB 与扬声器联调。</p>
             <small>目标：端到端首响应 ≤ 2.5 s</small>
@@ -333,8 +339,31 @@
 
     <footer>
       <p>LINGXI PENDANT · HACKATHON SYSTEM BUILD</p>
-      <p>CONSOLE 0.3 · DEVICE PROTOCOL READY</p>
+      <p>CONSOLE 0.4 · FEEDBACK MEMORY AGENT</p>
     </footer>
+
+    <dialog class="guide-dialog feedback-dialog" id="feedbackDialog">
+      <form id="feedbackForm">
+        <div class="dialog-top">
+          <span class="section-index">FEEDBACK MEMORY</span>
+          <button id="cancelFeedbackButton" type="button" aria-label="关闭反馈">×</button>
+        </div>
+        <h2>告诉灵犀下次怎么做</h2>
+        <p>你的修改会被沉淀为一条规则，并在后续相似任务中自动检索。</p>
+        <label for="feedbackInput">改进建议</label>
+        <textarea
+          id="feedbackInput"
+          maxlength="240"
+          rows="4"
+          required
+          placeholder="例如：以后回答更简短，先给结论，再补充一个理由。"
+        ></textarea>
+        <div class="feedback-dialog-actions">
+          <button id="skipFeedbackButton" type="button">仅记录不满意</button>
+          <button class="primary-dialog-button" type="submit">保存为反馈记忆</button>
+        </div>
+      </form>
+    </dialog>
 
     <dialog class="guide-dialog" id="guideDialog">
       <form method="dialog">

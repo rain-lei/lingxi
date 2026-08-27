@@ -1,4 +1,4 @@
-"""LingXi Pendant software-first demo server.
+"""LingXi Pendant orchestration and system-console server.
 
 The server deliberately uses only Python's standard library so the hackathon
 demo can run without an install step. It serves the browser device simulator,
@@ -9,11 +9,16 @@ SQLite.
 from __future__ import annotations
 
 import argparse
+import hmac
 import json
+import math
 import mimetypes
+import os
 import re
 import sqlite3
+import threading
 import time
+from collections import defaultdict, deque
 from contextlib import contextmanager
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
@@ -24,12 +29,19 @@ from typing import Any, Iterable
 from urllib.parse import parse_qs, urlparse
 
 from providers.stepfun import StepFunClient, StepFunError
+from device_protocol import (
+    PROTOCOL_VERSION,
+    DeviceProtocolError,
+    protocol_manifest,
+    validate_device_event,
+)
 
 
 ROOT = Path(__file__).resolve().parent
 PUBLIC_DIR = ROOT / "public"
 DEFAULT_DB = ROOT / "data" / "lingxi_demo.db"
 ALLOWED_MODES = {"assistant", "companion", "translate"}
+MAX_CONVERSATIONS_PER_DEVICE = 50
 
 
 def utc_now() -> str:
@@ -42,6 +54,41 @@ class Profile:
     preferred_name: str = "朋友"
     speech_rate: str = "normal"
     updated_at: str = ""
+
+
+class SlidingWindowRateLimiter:
+    """Thread-safe in-process limiter for the public demo API."""
+
+    def __init__(self) -> None:
+        self._events: dict[tuple[str, str], deque[float]] = defaultdict(deque)
+        self._lock = threading.Lock()
+        self._checks = 0
+
+    def allow(
+        self,
+        subject: str,
+        bucket: str,
+        limit: int,
+        window_seconds: float = 60.0,
+    ) -> tuple[bool, int]:
+        now = time.monotonic()
+        cutoff = now - window_seconds
+        key = (subject, bucket)
+        with self._lock:
+            events = self._events[key]
+            while events and events[0] <= cutoff:
+                events.popleft()
+            if len(events) >= limit:
+                retry_after = max(1, math.ceil(window_seconds - (now - events[0])))
+                return False, retry_after
+            events.append(now)
+            self._checks += 1
+            if self._checks % 256 == 0:
+                self._events = defaultdict(
+                    deque,
+                    {event_key: values for event_key, values in self._events.items() if values},
+                )
+        return True, 0
 
 
 class DemoEngine:
@@ -60,6 +107,8 @@ class DemoEngine:
     def _connect(self) -> sqlite3.Connection:
         connection = sqlite3.connect(self.database_path, timeout=5)
         connection.row_factory = sqlite3.Row
+        connection.execute("PRAGMA busy_timeout = 5000")
+        connection.execute("PRAGMA foreign_keys = ON")
         return connection
 
     @contextmanager
@@ -74,6 +123,8 @@ class DemoEngine:
 
     def _initialize_database(self) -> None:
         with self._connection() as connection:
+            connection.execute("PRAGMA journal_mode = WAL")
+            connection.execute("PRAGMA synchronous = NORMAL")
             connection.executescript(
                 """
                 CREATE TABLE IF NOT EXISTS profiles (
@@ -92,6 +143,38 @@ class DemoEngine:
                     status TEXT NOT NULL DEFAULT 'complete',
                     created_at TEXT NOT NULL
                 );
+
+                CREATE INDEX IF NOT EXISTS conversations_device_id_idx
+                    ON conversations(device_id, id DESC);
+
+                CREATE TABLE IF NOT EXISTS feedback (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    device_id TEXT NOT NULL,
+                    conversation_id INTEGER NOT NULL,
+                    rating INTEGER NOT NULL CHECK(rating IN (-1, 1)),
+                    correction TEXT NOT NULL DEFAULT '',
+                    created_at TEXT NOT NULL,
+                    FOREIGN KEY(conversation_id) REFERENCES conversations(id) ON DELETE CASCADE,
+                    UNIQUE(device_id, conversation_id)
+                );
+
+                CREATE INDEX IF NOT EXISTS feedback_device_id_idx
+                    ON feedback(device_id, id DESC);
+
+                CREATE TABLE IF NOT EXISTS feedback_memories (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    device_id TEXT NOT NULL,
+                    scope TEXT NOT NULL CHECK(scope IN ('global', 'similar')),
+                    context TEXT NOT NULL,
+                    rule TEXT NOT NULL,
+                    uses INTEGER NOT NULL DEFAULT 0,
+                    created_at TEXT NOT NULL,
+                    updated_at TEXT NOT NULL,
+                    UNIQUE(device_id, rule)
+                );
+
+                CREATE INDEX IF NOT EXISTS feedback_memories_device_id_idx
+                    ON feedback_memories(device_id, updated_at DESC);
                 """
             )
 
@@ -158,6 +241,7 @@ class DemoEngine:
     def reset_device(self, device_id: str) -> Profile:
         with self._connection() as connection:
             connection.execute("DELETE FROM conversations WHERE device_id = ?", (device_id,))
+            connection.execute("DELETE FROM feedback_memories WHERE device_id = ?", (device_id,))
             connection.execute("DELETE FROM profiles WHERE device_id = ?", (device_id,))
         return self.get_profile(device_id)
 
@@ -166,10 +250,15 @@ class DemoEngine:
         with self._connection() as connection:
             rows = connection.execute(
                 """
-                SELECT mode, user_text, assistant_text, status, created_at
-                FROM conversations
-                WHERE device_id = ?
-                ORDER BY id DESC
+                SELECT c.id, c.mode, c.user_text, c.assistant_text, c.status, c.created_at,
+                       (
+                           SELECT f.rating FROM feedback AS f
+                           WHERE f.conversation_id = c.id AND f.device_id = c.device_id
+                           ORDER BY f.id DESC LIMIT 1
+                       ) AS feedback_rating
+                FROM conversations AS c
+                WHERE c.device_id = ?
+                ORDER BY c.id DESC
                 LIMIT ?
                 """,
                 (device_id, safe_limit),
@@ -183,9 +272,9 @@ class DemoEngine:
         user_text: str,
         assistant_text: str,
         status: str = "complete",
-    ) -> None:
+    ) -> int:
         with self._connection() as connection:
-            connection.execute(
+            cursor = connection.execute(
                 """
                 INSERT INTO conversations(
                     device_id, mode, user_text, assistant_text, status, created_at
@@ -193,6 +282,196 @@ class DemoEngine:
                 """,
                 (device_id, mode, user_text, assistant_text, status, utc_now()),
             )
+            interaction_id = int(cursor.lastrowid)
+            connection.execute(
+                """
+                DELETE FROM conversations
+                WHERE device_id = ? AND id NOT IN (
+                    SELECT id FROM conversations
+                    WHERE device_id = ?
+                    ORDER BY id DESC
+                    LIMIT ?
+                )
+                """,
+                (device_id, device_id, MAX_CONVERSATIONS_PER_DEVICE),
+            )
+        return interaction_id
+
+    def record_feedback(
+        self,
+        device_id: str,
+        conversation_id: int,
+        rating: int,
+        correction: str,
+    ) -> dict[str, Any]:
+        clean_correction = " ".join(correction.strip().split())[:240]
+        with self._connection() as connection:
+            conversation = connection.execute(
+                """
+                SELECT id, user_text FROM conversations
+                WHERE id = ? AND device_id = ?
+                """,
+                (conversation_id, device_id),
+            ).fetchone()
+            if conversation is None:
+                raise ValueError("interaction not found for this visitor")
+            connection.execute(
+                """
+                INSERT INTO feedback(device_id, conversation_id, rating, correction, created_at)
+                VALUES (?, ?, ?, ?, ?)
+                ON CONFLICT(device_id, conversation_id) DO UPDATE SET
+                    rating = excluded.rating,
+                    correction = excluded.correction,
+                    created_at = excluded.created_at
+                """,
+                (device_id, conversation_id, rating, clean_correction, utc_now()),
+            )
+            feedback_id = int(
+                connection.execute(
+                    "SELECT id FROM feedback WHERE device_id = ? AND conversation_id = ?",
+                    (device_id, conversation_id),
+                ).fetchone()["id"]
+            )
+
+            memory = None
+            if clean_correction:
+                scope = self._feedback_scope(clean_correction)
+                now = utc_now()
+                connection.execute(
+                    """
+                    INSERT INTO feedback_memories(
+                        device_id, scope, context, rule, uses, created_at, updated_at
+                    ) VALUES (?, ?, ?, ?, 0, ?, ?)
+                    ON CONFLICT(device_id, rule) DO UPDATE SET
+                        scope = excluded.scope,
+                        context = excluded.context,
+                        updated_at = excluded.updated_at
+                    """,
+                    (
+                        device_id,
+                        scope,
+                        str(conversation["user_text"])[:500],
+                        clean_correction,
+                        now,
+                        now,
+                    ),
+                )
+                memory_row = connection.execute(
+                    """
+                    SELECT id, scope, context, rule, uses, updated_at
+                    FROM feedback_memories WHERE device_id = ? AND rule = ?
+                    """,
+                    (device_id, clean_correction),
+                ).fetchone()
+                memory = dict(memory_row) if memory_row else None
+
+        return {
+            "feedback_id": feedback_id,
+            "memory": memory,
+            "metrics": self.memory_metrics(device_id),
+        }
+
+    def search_feedback_memories(
+        self,
+        device_id: str,
+        task_text: str,
+        limit: int = 3,
+    ) -> list[dict[str, Any]]:
+        safe_limit = max(1, min(limit, 5))
+        with self._connection() as connection:
+            rows = connection.execute(
+                """
+                SELECT id, scope, context, rule, uses, updated_at
+                FROM feedback_memories
+                WHERE device_id = ?
+                ORDER BY updated_at DESC
+                LIMIT 100
+                """,
+                (device_id,),
+            ).fetchall()
+
+            task_fingerprint = self._text_fingerprint(task_text)
+            ranked: list[tuple[float, sqlite3.Row]] = []
+            for row in rows:
+                if row["scope"] == "global":
+                    score = 1.0
+                else:
+                    memory_fingerprint = self._text_fingerprint(str(row["context"]))
+                    union = task_fingerprint | memory_fingerprint
+                    score = len(task_fingerprint & memory_fingerprint) / len(union) if union else 0.0
+                if score >= 0.08:
+                    ranked.append((score, row))
+
+            selected = sorted(
+                ranked,
+                key=lambda item: (item[0], item[1]["updated_at"]),
+                reverse=True,
+            )[:safe_limit]
+            selected_ids = [int(row["id"]) for _, row in selected]
+            if selected_ids:
+                placeholders = ",".join("?" for _ in selected_ids)
+                connection.execute(
+                    f"UPDATE feedback_memories SET uses = uses + 1 WHERE id IN ({placeholders})",
+                    selected_ids,
+                )
+
+        return [
+            {
+                "id": int(row["id"]),
+                "scope": row["scope"],
+                "rule": row["rule"],
+                "score": round(score, 3),
+                "estimated_tokens": self._estimate_tokens(str(row["rule"])),
+            }
+            for score, row in selected
+        ]
+
+    def memory_metrics(self, device_id: str) -> dict[str, Any]:
+        with self._connection() as connection:
+            memory_row = connection.execute(
+                """
+                SELECT COUNT(*) AS memory_count, COALESCE(SUM(uses), 0) AS recall_uses,
+                       COALESCE(SUM(LENGTH(rule)), 0) AS stored_characters
+                FROM feedback_memories WHERE device_id = ?
+                """,
+                (device_id,),
+            ).fetchone()
+            feedback_row = connection.execute(
+                """
+                SELECT COUNT(*) AS feedback_count,
+                       COALESCE(SUM(CASE WHEN rating = 1 THEN 1 ELSE 0 END), 0) AS positive_count
+                FROM feedback WHERE device_id = ?
+                """,
+                (device_id,),
+            ).fetchone()
+        feedback_count = int(feedback_row["feedback_count"])
+        positive_count = int(feedback_row["positive_count"])
+        return {
+            "memory_count": int(memory_row["memory_count"]),
+            "feedback_count": feedback_count,
+            "positive_rate": round(positive_count / feedback_count, 3) if feedback_count else None,
+            "recall_uses": int(memory_row["recall_uses"]),
+            "stored_characters": int(memory_row["stored_characters"]),
+        }
+
+    @staticmethod
+    def _feedback_scope(rule: str) -> str:
+        global_markers = ("以后", "每次", "总是", "回答", "语气", "格式", "简短", "详细", "称呼")
+        return "global" if any(marker in rule for marker in global_markers) else "similar"
+
+    @staticmethod
+    def _text_fingerprint(text: str) -> set[str]:
+        lowered = text.lower()
+        words = set(re.findall(r"[a-z0-9]{2,}", lowered))
+        chinese = "".join(re.findall(r"[\u4e00-\u9fff]", lowered))
+        words.update(chinese[index : index + 2] for index in range(max(0, len(chinese) - 1)))
+        return words
+
+    @staticmethod
+    def _estimate_tokens(text: str) -> int:
+        chinese_count = len(re.findall(r"[\u4e00-\u9fff]", text))
+        other_count = len(text) - chinese_count
+        return max(1, chinese_count + math.ceil(other_count / 4))
 
     def generate_reply(self, text: str, mode: str, profile: Profile) -> str:
         compact = " ".join(text.strip().split())
@@ -240,6 +519,7 @@ class DemoEngine:
         mode: str,
         profile: Profile,
         image_data_url: str | None = None,
+        feedback_memories: list[dict[str, Any]] | None = None,
     ) -> list[dict[str, Any]]:
         mode_instruction = {
             "assistant": "直接回答问题；未知或需要实时数据时明确说明，不要编造。",
@@ -252,6 +532,14 @@ class DemoEngine:
             f"当前用户称呼：{profile.preferred_name}；播报语速：{profile.speech_rate}。"
             f"当前模式要求：{mode_instruction}"
         )
+        if feedback_memories:
+            rules = "；".join(
+                f"{index}. {memory['rule']}" for index, memory in enumerate(feedback_memories, 1)
+            )
+            system_prompt += (
+                "以下规则来自用户对过往结果的主动反馈。只在与当前任务相关且不冲突时遵循，"
+                f"不要向用户复述规则本身：{rules}"
+            )
         messages: list[dict[str, Any]] = [{"role": "system", "content": system_prompt}]
         for item in self.recent_history(device_id, limit=4):
             messages.append({"role": "user", "content": item["user_text"]})
@@ -303,7 +591,8 @@ def chunk_text(text: str, width: int = 5) -> Iterable[str]:
 
 class LingXiHandler(BaseHTTPRequestHandler):
     protocol_version = "HTTP/1.1"
-    server_version = "LingXiDemo/0.2"
+    server_version = "LingXi/0.4"
+    sys_version = ""
 
     @property
     def engine(self) -> DemoEngine:
@@ -314,11 +603,21 @@ class LingXiHandler(BaseHTTPRequestHandler):
 
     def do_GET(self) -> None:  # noqa: N802
         parsed = urlparse(self.path)
+        if not self._enforce_rate_limit("read", 240):
+            return
         if parsed.path == "/api/health":
             self._send_json({"ok": True, "service": "lingxi-demo", "time": utc_now()})
             return
         if parsed.path == "/api/capabilities":
-            self._send_json(self.engine.stepfun.capabilities())
+            capabilities = self.engine.stepfun.capabilities()
+            capabilities["device_bridge"] = {
+                "protocol_version": PROTOCOL_VERSION,
+                "ingest_enabled": bool(os.getenv("LINGXI_DEVICE_TOKEN", "").strip()),
+            }
+            self._send_json(capabilities)
+            return
+        if parsed.path == "/api/device/protocol":
+            self._send_json(protocol_manifest())
             return
         if parsed.path == "/api/profile":
             device_id = self._device_id(parsed.query)
@@ -328,15 +627,32 @@ class LingXiHandler(BaseHTTPRequestHandler):
             device_id = self._device_id(parsed.query)
             self._send_json({"items": self.engine.recent_history(device_id)})
             return
+        if parsed.path == "/api/memory/metrics":
+            device_id = self._device_id(parsed.query)
+            self._send_json(self.engine.memory_metrics(device_id))
+            return
         self._serve_static(parsed.path)
 
     def do_POST(self) -> None:  # noqa: N802
         parsed = urlparse(self.path)
+        post_limits = {
+            "/api/interactions": ("interactions", 20),
+            "/api/audio/transcribe": ("audio", 12),
+            "/api/audio/speech": ("audio", 12),
+            "/api/feedback": ("feedback", 40),
+            "/api/device/events": ("device-events", 240),
+            "/api/reset": ("reset", 8),
+        }
+        bucket, limit = post_limits.get(parsed.path, ("write", 60))
+        if not self._enforce_rate_limit(bucket, limit):
+            return
         try:
             if parsed.path == "/api/audio/transcribe":
                 max_length = 4_000_000
             elif parsed.path == "/api/interactions":
                 max_length = 12_000_000
+            elif parsed.path == "/api/device/events":
+                max_length = 256_000
             else:
                 max_length = 64_000
             payload = self._read_json(max_length=max_length)
@@ -352,6 +668,12 @@ class LingXiHandler(BaseHTTPRequestHandler):
             return
         if parsed.path == "/api/audio/speech":
             self._synthesize_audio(payload)
+            return
+        if parsed.path == "/api/feedback":
+            self._record_feedback(payload)
+            return
+        if parsed.path == "/api/device/events":
+            self._handle_device_event(payload)
             return
         if parsed.path == "/api/reset":
             device_id = self._clean_device_id(payload.get("device_id", "demo-pendant-01"))
@@ -389,7 +711,7 @@ class LingXiHandler(BaseHTTPRequestHandler):
         self.send_header("Content-Type", "application/x-ndjson; charset=utf-8")
         self.send_header("Cache-Control", "no-cache, no-transform")
         self.send_header("Transfer-Encoding", "chunked")
-        self.send_header("X-Content-Type-Options", "nosniff")
+        self._send_security_headers()
         self.end_headers()
 
         started = time.perf_counter()
@@ -411,10 +733,13 @@ class LingXiHandler(BaseHTTPRequestHandler):
                 reply = "网络开小差了。我已经保存当前状态，请稍后再试。"
                 emit({"type": "state", "state": "offline", "label": "网络不可用"}, 0.16)
                 emit({"type": "delta", "text": reply})
-                self.engine.record_interaction(device_id, mode, text, reply, status="offline")
+                interaction_id = self.engine.record_interaction(
+                    device_id, mode, text, reply, status="offline"
+                )
                 emit(
                     {
                         "type": "complete",
+                        "interaction_id": interaction_id,
                         "text": reply,
                         "profile": asdict(self.engine.get_profile(device_id)),
                         "latency_ms": round((time.perf_counter() - started) * 1000),
@@ -426,6 +751,17 @@ class LingXiHandler(BaseHTTPRequestHandler):
                 return
 
             emit({"type": "state", "state": "thinking", "label": "读取记忆并生成回复"}, 0.18)
+            emit(
+                {
+                    "type": "plan",
+                    "steps": [
+                        "识别任务与当前模式",
+                        "调用 feedback_memory.search",
+                        "调用多模态模型生成结果",
+                        "输出到控制台与设备反馈层",
+                    ],
+                }
+            )
             profile, memory_changes = self.engine.update_profile_from_text(device_id, text)
             if memory_changes:
                 emit(
@@ -435,6 +771,33 @@ class LingXiHandler(BaseHTTPRequestHandler):
                         "profile": asdict(profile),
                     },
                     0.08,
+                )
+
+            recall_started = time.perf_counter()
+            feedback_memories = self.engine.search_feedback_memories(device_id, text, limit=3)
+            recall_ms = round((time.perf_counter() - recall_started) * 1000, 2)
+            estimated_memory_tokens = sum(
+                int(memory["estimated_tokens"]) for memory in feedback_memories
+            )
+            emit(
+                {
+                    "type": "tool",
+                    "name": "feedback_memory.search",
+                    "status": "complete",
+                    "hits": len(feedback_memories),
+                    "latency_ms": recall_ms,
+                    "estimated_tokens": estimated_memory_tokens,
+                }
+            )
+            if feedback_memories:
+                emit(
+                    {
+                        "type": "memory_recall",
+                        "count": len(feedback_memories),
+                        "latency_ms": recall_ms,
+                        "estimated_tokens": estimated_memory_tokens,
+                        "items": [memory["rule"] for memory in feedback_memories],
+                    }
                 )
 
             provider = "mock"
@@ -454,7 +817,12 @@ class LingXiHandler(BaseHTTPRequestHandler):
                     }
                 )
                 messages = self.engine.build_stepfun_messages(
-                    device_id, text, mode, profile, image_data_url=image_data_url
+                    device_id,
+                    text,
+                    mode,
+                    profile,
+                    image_data_url=image_data_url,
+                    feedback_memories=feedback_memories,
                 )
                 try:
                     for part in self.engine.stepfun.stream_chat(messages):
@@ -488,16 +856,18 @@ class LingXiHandler(BaseHTTPRequestHandler):
                     emit({"type": "delta", "text": part}, 0.045)
 
             stored_text = f"[图片] {text}" if image_data_url else text
-            self.engine.record_interaction(device_id, mode, stored_text, reply)
+            interaction_id = self.engine.record_interaction(device_id, mode, stored_text, reply)
             emit(
                 {
                     "type": "complete",
+                    "interaction_id": interaction_id,
                     "text": reply,
                     "profile": asdict(profile),
+                    "memory_metrics": self.engine.memory_metrics(device_id),
                     "latency_ms": round((time.perf_counter() - started) * 1000),
-                        "offline": False,
-                        "provider": provider,
-                        "model": model_name,
+                    "offline": False,
+                    "provider": provider,
+                    "model": model_name,
                 }
             )
             emit({"type": "state", "state": "idle", "label": "待机"})
@@ -544,9 +914,81 @@ class LingXiHandler(BaseHTTPRequestHandler):
             return
         self._send_binary(audio, content_type)
 
+    def _record_feedback(self, payload: dict[str, Any]) -> None:
+        device_id = self._clean_device_id(payload.get("device_id", ""))
+        interaction_id = payload.get("interaction_id")
+        rating = payload.get("rating")
+        correction = str(payload.get("correction", ""))
+        if not isinstance(interaction_id, int) or isinstance(interaction_id, bool):
+            self._send_json({"error": "interaction_id must be an integer"}, HTTPStatus.BAD_REQUEST)
+            return
+        if rating not in {-1, 1}:
+            self._send_json({"error": "rating must be -1 or 1"}, HTTPStatus.BAD_REQUEST)
+            return
+        if len(correction) > 240:
+            self._send_json({"error": "correction is too long (max 240 characters)"}, HTTPStatus.BAD_REQUEST)
+            return
+        try:
+            result = self.engine.record_feedback(
+                device_id,
+                interaction_id,
+                int(rating),
+                correction,
+            )
+        except ValueError as error:
+            self._send_json({"error": str(error)}, HTTPStatus.NOT_FOUND)
+            return
+        self._send_json({"ok": True, **result})
+
+    def _handle_device_event(self, payload: dict[str, Any]) -> None:
+        expected_token = os.getenv("LINGXI_DEVICE_TOKEN", "").strip()
+        if not expected_token:
+            self._send_json(
+                {"error": "device ingest is disabled until hardware pairing"},
+                HTTPStatus.SERVICE_UNAVAILABLE,
+            )
+            return
+        supplied = self.headers.get("Authorization", "")
+        expected = f"Bearer {expected_token}"
+        if not hmac.compare_digest(supplied, expected):
+            self._send_json({"error": "invalid device token"}, HTTPStatus.UNAUTHORIZED)
+            return
+        try:
+            event = validate_device_event(payload)
+        except DeviceProtocolError as error:
+            self._send_json({"error": str(error)}, HTTPStatus.BAD_REQUEST)
+            return
+        self._send_json(
+            {
+                "version": PROTOCOL_VERSION,
+                "type": "event.ack",
+                "device_id": event["device_id"],
+                "seq": event["seq"],
+                "accepted_at": utc_now(),
+            },
+            HTTPStatus.ACCEPTED,
+        )
+
     def _finish_chunks(self) -> None:
         self.wfile.write(b"0\r\n\r\n")
         self.wfile.flush()
+
+    def _enforce_rate_limit(self, bucket: str, limit: int) -> bool:
+        forwarded_ip = self.headers.get("X-Real-IP", "").strip()
+        client_ip = forwarded_ip or str(self.client_address[0])
+        allowed, retry_after = self.server.rate_limiter.allow(  # type: ignore[attr-defined]
+            client_ip,
+            bucket,
+            limit,
+        )
+        if allowed:
+            return True
+        self._send_json(
+            {"error": "请求过于频繁，请稍后再试", "retry_after": retry_after},
+            HTTPStatus.TOO_MANY_REQUESTS,
+            extra_headers={"Retry-After": str(retry_after)},
+        )
+        return False
 
     def _read_json(self, max_length: int = 64_000) -> dict[str, Any]:
         try:
@@ -608,18 +1050,24 @@ class LingXiHandler(BaseHTTPRequestHandler):
         self.send_header("Content-Type", content_type)
         self.send_header("Content-Length", str(len(body)))
         self.send_header("Cache-Control", "no-store")
-        self.send_header("X-Content-Type-Options", "nosniff")
-        self.send_header("Content-Security-Policy", "default-src 'self'; style-src 'self'; script-src 'self'; connect-src 'self'; img-src 'self' data:; media-src 'self' blob:")
+        self._send_security_headers(include_csp=True)
         self.end_headers()
         self.wfile.write(body)
 
-    def _send_json(self, payload: Any, status: HTTPStatus = HTTPStatus.OK) -> None:
+    def _send_json(
+        self,
+        payload: Any,
+        status: HTTPStatus = HTTPStatus.OK,
+        extra_headers: dict[str, str] | None = None,
+    ) -> None:
         body = json.dumps(payload, ensure_ascii=False).encode("utf-8")
         self.send_response(status)
         self.send_header("Content-Type", "application/json; charset=utf-8")
         self.send_header("Content-Length", str(len(body)))
         self.send_header("Cache-Control", "no-store")
-        self.send_header("X-Content-Type-Options", "nosniff")
+        self._send_security_headers()
+        for name, value in (extra_headers or {}).items():
+            self.send_header(name, value)
         self.end_headers()
         self.wfile.write(body)
 
@@ -628,9 +1076,26 @@ class LingXiHandler(BaseHTTPRequestHandler):
         self.send_header("Content-Type", content_type)
         self.send_header("Content-Length", str(len(body)))
         self.send_header("Cache-Control", "no-store")
-        self.send_header("X-Content-Type-Options", "nosniff")
+        self._send_security_headers()
         self.end_headers()
         self.wfile.write(body)
+
+    def _send_security_headers(self, include_csp: bool = False) -> None:
+        self.send_header("X-Content-Type-Options", "nosniff")
+        self.send_header("X-Frame-Options", "DENY")
+        self.send_header("Referrer-Policy", "no-referrer")
+        self.send_header("Cross-Origin-Opener-Policy", "same-origin")
+        self.send_header(
+            "Permissions-Policy",
+            "camera=(), geolocation=(), microphone=(self), payment=(), usb=()",
+        )
+        if include_csp:
+            self.send_header(
+                "Content-Security-Policy",
+                "default-src 'self'; style-src 'self'; script-src 'self'; "
+                "connect-src 'self'; img-src 'self' data:; media-src 'self' blob:; "
+                "object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'",
+            )
 
 
 class LingXiServer(ThreadingHTTPServer):
@@ -639,10 +1104,11 @@ class LingXiServer(ThreadingHTTPServer):
     def __init__(self, server_address: tuple[str, int], engine: DemoEngine):
         super().__init__(server_address, LingXiHandler)
         self.engine = engine
+        self.rate_limiter = SlidingWindowRateLimiter()
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Run the LingXi Pendant software demo")
+    parser = argparse.ArgumentParser(description="Run the LingXi Pendant system console")
     parser.add_argument("--host", default="127.0.0.1", help="Bind host (default: 127.0.0.1)")
     parser.add_argument("--port", type=int, default=8787, help="Bind port (default: 8787)")
     parser.add_argument("--database", type=Path, default=DEFAULT_DB, help="SQLite database path")

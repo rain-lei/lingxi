@@ -1,6 +1,6 @@
 # 灵犀挂件系统实施规划（控制台先行）
 
-版本：Console 0.3
+版本：Console 0.4
 目标：先把模型、语音、记忆、状态编排和控制台做成稳定底座，再接入 ESP32-S3 实机。网页端在硬件接入后继续作为设备控制与调试入口。
 
 ## 1. 本轮交付范围
@@ -14,6 +14,8 @@
 5. 轻量记忆：持久化用户称呼和播报语速，下一轮自动带入。
 6. 声音输出：阶跃 StepAudio 2.5 TTS 播放回复；失败时回退浏览器 TTS。
 7. 断网降级：明确提示“网络开小差了”，终止等待并保持界面可操作。
+8. 反馈记忆：用户评价或修改结果后沉淀规则，相似任务自动召回。
+9. 记忆可观测：显示召回条数、检索耗时、估算 token 和使用次数。
 
 ### P1：硬件联调时加入
 
@@ -93,7 +95,11 @@ OFFLINE / ERROR
 | GET | `/api/capabilities` | 返回 StepFun Chat / ASR / TTS 可用状态，不返回密钥 |
 | GET | `/api/profile?device_id=...` | 获取称呼、语速偏好 |
 | GET | `/api/history?device_id=...` | 恢复最近会话 |
+| GET | `/api/memory/metrics?device_id=...` | 获取反馈记忆数量、召回与正反馈指标 |
+| GET | `/api/device/protocol` | 获取 0.4-draft 设备协议清单 |
 | POST | `/api/interactions` | 发起交互并流式接收事件 |
+| POST | `/api/feedback` | 评价结果并把修改意见沉淀为规则 |
+| POST | `/api/device/events` | 校验令牌保护的设备上行事件 |
 | POST | `/api/audio/transcribe` | 接收 16 kHz PCM16 Base64，代理阶跃 SSE ASR |
 | POST | `/api/audio/speech` | 接收回复文本，代理阶跃 TTS 并返回 MP3 |
 | POST | `/api/reset` | 清空当前设备的记忆与会话 |
@@ -141,15 +147,19 @@ OFFLINE / ERROR
 
 ## 5. 数据模型
 
-当前 SQLite 只保留两张表：
+当前 SQLite 保留四张核心表：
 
 - `profiles`：`device_id`、`preferred_name`、`speech_rate`、`updated_at`。
 - `conversations`：模式、用户输入、助手回复、完成状态和时间。
+- `feedback`：结果正/负反馈及用户修改意见。
+- `feedback_memories`：全局或相似任务规则、上下文和召回次数。
 
 约束：
 
 - 只从“我叫/请叫我/语速慢一点”等显式表达写入偏好。
 - 页面提供清空入口；测试环境使用独立临时数据库。
+- 每个浏览器使用独立匿名设备 ID，避免公开 Demo 访客互相读取记忆。
+- 每个访客最多保留最近 50 轮会话，反馈随会话清理。
 - P1 联调前增加最多 10 条会话摘要的轮转策略。
 - 产品化前增加加密、保留期限与用户授权。
 

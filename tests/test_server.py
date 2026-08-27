@@ -2,7 +2,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from server import DemoEngine, chunk_text
+from server import DemoEngine, SlidingWindowRateLimiter, chunk_text
 
 
 class DemoEngineTests(unittest.TestCase):
@@ -63,6 +63,72 @@ class DemoEngineTests(unittest.TestCase):
         image_part = messages[-1]["content"][1]["image_url"]
         self.assertEqual(image_part["detail"], "high")
         self.assertTrue(image_part["url"].startswith("data:image/png;base64,"))
+
+    def test_feedback_rule_is_recalled_and_added_to_prompt(self) -> None:
+        interaction_id = self.engine.record_interaction(
+            self.device_id,
+            "assistant",
+            "帮我安排今天的学习任务",
+            "先学习三小时，再休息。",
+        )
+        result = self.engine.record_feedback(
+            self.device_id,
+            interaction_id,
+            -1,
+            "以后回答更简短，先给结论",
+        )
+        self.assertEqual(result["metrics"]["memory_count"], 1)
+
+        memories = self.engine.search_feedback_memories(
+            self.device_id,
+            "帮我安排明天的复习任务",
+        )
+        self.assertEqual(memories[0]["rule"], "以后回答更简短，先给结论")
+        profile = self.engine.get_profile(self.device_id)
+        messages = self.engine.build_stepfun_messages(
+            self.device_id,
+            "帮我安排明天的复习任务",
+            "assistant",
+            profile,
+            feedback_memories=memories,
+        )
+        self.assertIn("以后回答更简短，先给结论", messages[0]["content"])
+
+    def test_similar_memory_does_not_leak_into_unrelated_task(self) -> None:
+        interaction_id = self.engine.record_interaction(
+            self.device_id,
+            "assistant",
+            "图书馆找座位",
+            "请查看座位系统。",
+        )
+        self.engine.record_feedback(
+            self.device_id,
+            interaction_id,
+            -1,
+            "先说明图书馆楼层，再推荐座位",
+        )
+        self.assertTrue(self.engine.search_feedback_memories(self.device_id, "图书馆哪里安静"))
+        self.assertEqual(self.engine.search_feedback_memories(self.device_id, "明天天气如何"), [])
+
+    def test_conversation_history_is_bounded(self) -> None:
+        for index in range(55):
+            self.engine.record_interaction(
+                self.device_id,
+                "assistant",
+                f"问题 {index}",
+                f"回答 {index}",
+            )
+        self.assertEqual(len(self.engine.recent_history(self.device_id, limit=50)), 50)
+
+
+class SlidingWindowRateLimiterTests(unittest.TestCase):
+    def test_blocks_after_limit(self) -> None:
+        limiter = SlidingWindowRateLimiter()
+        self.assertEqual(limiter.allow("client", "interactions", 2), (True, 0))
+        self.assertEqual(limiter.allow("client", "interactions", 2), (True, 0))
+        allowed, retry_after = limiter.allow("client", "interactions", 2)
+        self.assertFalse(allowed)
+        self.assertGreaterEqual(retry_after, 1)
 
 
 if __name__ == "__main__":

@@ -980,6 +980,38 @@ h2 {
   object-fit: cover;
 }
 
+.feedback-actions {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 9px;
+  color: var(--dim);
+  font-size: 9px;
+}
+
+.feedback-actions > span {
+  margin-right: 2px;
+}
+
+.feedback-actions button {
+  padding: 4px 8px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.025);
+  font-size: 9px;
+  cursor: pointer;
+}
+
+.feedback-actions button:hover {
+  color: var(--acid);
+  border-color: rgba(216, 255, 99, 0.25);
+}
+
+.feedback-actions.completed > span {
+  color: var(--green);
+}
+
 .message.streaming p::after {
   content: "";
   display: inline-block;
@@ -995,6 +1027,33 @@ h2 {
   border-color: rgba(255, 110, 129, 0.22);
   color: #ffd8de;
   background: rgba(255, 110, 129, 0.07);
+}
+
+.agent-trace {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 28px;
+  padding: 9px 11px;
+  border: 1px solid rgba(89, 217, 255, 0.12);
+  border-radius: 10px;
+  background: rgba(89, 217, 255, 0.035);
+}
+
+.agent-trace span {
+  flex: 0 0 auto;
+  color: var(--cyan);
+  font: 8px Consolas, monospace;
+  letter-spacing: 0.09em;
+}
+
+.agent-trace p {
+  margin: 0;
+  overflow: hidden;
+  color: var(--dim);
+  font: 9px Consolas, monospace;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .suggestions {
@@ -1514,6 +1573,60 @@ footer {
   padding: 27px;
 }
 
+.feedback-dialog {
+  width: min(560px, calc(100% - 32px));
+}
+
+.feedback-dialog form > p {
+  margin: 12px 0 22px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.65;
+}
+
+.feedback-dialog label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--dim);
+  font-size: 10px;
+}
+
+.feedback-dialog textarea {
+  width: 100%;
+  resize: vertical;
+  min-height: 108px;
+  padding: 13px;
+  border: 1px solid var(--line-strong);
+  border-radius: 12px;
+  outline: 0;
+  color: var(--text);
+  background: rgba(0, 0, 0, 0.3);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.feedback-dialog textarea:focus {
+  border-color: rgba(216, 255, 99, 0.4);
+  box-shadow: 0 0 0 4px rgba(216, 255, 99, 0.04);
+}
+
+.feedback-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.feedback-dialog-actions > button:first-child {
+  padding: 0 13px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  color: var(--muted);
+  background: transparent;
+  font-size: 10px;
+  cursor: pointer;
+}
+
 .dialog-top {
   display: flex;
   justify-content: space-between;
@@ -1667,6 +1780,7 @@ footer {
   .device-actions { margin-inline: 20px; }
   .conversation { padding-inline: 20px; }
   .suggestions { padding-inline: 20px; }
+  .agent-trace { margin-inline: 20px; }
   .composer { margin-inline: 20px; }
   .send-button span { display: none; }
   .composer-note { margin-right: 22px; }

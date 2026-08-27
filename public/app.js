@@ -1,7 +1,29 @@
-const DEVICE_ID = "demo-pendant-01";
+const DEVICE_STORAGE_KEY = "lingxi-browser-device-id";
+
+function getOrCreateDeviceId() {
+  let existing = null;
+  try {
+    existing = window.localStorage.getItem(DEVICE_STORAGE_KEY);
+  } catch (error) {
+    // Privacy-restricted browsers still receive an isolated in-memory ID.
+  }
+  if (/^web-[A-Za-z0-9-]{8,60}$/.test(existing || "")) return existing;
+  const randomPart = window.crypto?.randomUUID
+    ? window.crypto.randomUUID()
+    : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 14)}`;
+  const deviceId = `web-${randomPart}`;
+  try {
+    window.localStorage.setItem(DEVICE_STORAGE_KEY, deviceId);
+  } catch (error) {
+    // Keep the generated ID for this page when storage is unavailable.
+  }
+  return deviceId;
+}
+
+const DEVICE_ID = getOrCreateDeviceId();
 
 const modeLabels = {
-  assistant: "问答",
+  assistant: "任务",
   companion: "陪伴",
   translate: "翻译",
 };
@@ -28,6 +50,8 @@ const rateValues = {
 
 const elements = {
   serverBadge: document.querySelector("#serverBadge"),
+  deviceIdLabel: document.querySelector("#deviceIdLabel"),
+  protocolLabel: document.querySelector("#protocolLabel"),
   deviceStage: document.querySelector("#deviceStage"),
   oledMode: document.querySelector("#oledMode"),
   oledText: document.querySelector("#oledText"),
@@ -35,6 +59,7 @@ const elements = {
   talkButton: document.querySelector("#talkButton"),
   holdTip: document.querySelector("#holdTip"),
   conversation: document.querySelector("#conversation"),
+  agentTraceText: document.querySelector("#agentTraceText"),
   composer: document.querySelector("#composer"),
   messageInput: document.querySelector("#messageInput"),
   imageButton: document.querySelector("#imageButton"),
@@ -48,6 +73,7 @@ const elements = {
   offlineToggle: document.querySelector("#offlineToggle"),
   profileName: document.querySelector("#profileName"),
   profileRate: document.querySelector("#profileRate"),
+  feedbackMemoryCount: document.querySelector("#feedbackMemoryCount"),
   memoryNote: document.querySelector("#memoryNote"),
   latencyMetric: document.querySelector("#latencyMetric"),
   providerMetric: document.querySelector("#providerMetric"),
@@ -56,6 +82,11 @@ const elements = {
   resetButton: document.querySelector("#resetButton"),
   selfTestButton: document.querySelector("#selfTestButton"),
   exportButton: document.querySelector("#exportButton"),
+  feedbackDialog: document.querySelector("#feedbackDialog"),
+  feedbackForm: document.querySelector("#feedbackForm"),
+  feedbackInput: document.querySelector("#feedbackInput"),
+  cancelFeedbackButton: document.querySelector("#cancelFeedbackButton"),
+  skipFeedbackButton: document.querySelector("#skipFeedbackButton"),
   guideDialog: document.querySelector("#guideDialog"),
   showGuideButton: document.querySelector("#showGuideButton"),
   toast: document.querySelector("#toast"),
@@ -80,6 +111,9 @@ const app = {
   audioPlayer: null,
   audioUrl: null,
   selfTesting: false,
+  feedbackInteractionId: null,
+  feedbackBar: null,
+  memoryMetrics: { memory_count: 0, feedback_count: 0, recall_uses: 0 },
 };
 
 function setServerStatus(status, label) {
@@ -150,8 +184,95 @@ function addMessage(role, text = "", options = {}) {
   }
   wrapper.append(body);
   elements.conversation.append(wrapper);
+  if (role !== "user" && options.interactionId) {
+    attachFeedbackControls(wrapper, options.interactionId, options.feedbackRating);
+  }
   scrollConversation();
   return { wrapper, content };
+}
+
+function attachFeedbackControls(wrapper, interactionId, feedbackRating = null) {
+  if (!interactionId || wrapper.querySelector(".feedback-actions")) return;
+  const bar = document.createElement("div");
+  bar.className = "feedback-actions";
+  const label = document.createElement("span");
+  label.textContent = "这次结果怎么样？";
+  const helpfulButton = document.createElement("button");
+  helpfulButton.type = "button";
+  helpfulButton.textContent = "有帮助";
+  helpfulButton.addEventListener("click", () => submitFeedback(interactionId, 1, "", bar));
+  const improveButton = document.createElement("button");
+  improveButton.type = "button";
+  improveButton.textContent = "需要调整";
+  improveButton.addEventListener("click", () => openFeedbackDialog(interactionId, bar));
+  bar.append(label, helpfulButton, improveButton);
+  wrapper.querySelector(":scope > div:last-child")?.append(bar);
+  if (feedbackRating) markFeedbackComplete(bar, feedbackRating === 1 ? "已记录：有帮助" : "已记录改进反馈");
+}
+
+function markFeedbackComplete(bar, message) {
+  bar.classList.add("completed");
+  bar.replaceChildren();
+  const status = document.createElement("span");
+  status.textContent = message;
+  bar.append(status);
+}
+
+function openFeedbackDialog(interactionId, bar) {
+  app.feedbackInteractionId = interactionId;
+  app.feedbackBar = bar;
+  elements.feedbackInput.value = "";
+  elements.feedbackDialog.showModal();
+  window.setTimeout(() => elements.feedbackInput.focus(), 0);
+}
+
+function closeFeedbackDialog() {
+  elements.feedbackDialog.close();
+  app.feedbackInteractionId = null;
+  app.feedbackBar = null;
+  elements.feedbackInput.value = "";
+}
+
+async function submitFeedback(interactionId, rating, correction, bar) {
+  if (!interactionId || !bar) return;
+  bar.querySelectorAll("button").forEach((button) => {
+    button.disabled = true;
+  });
+  try {
+    const result = await fetchJson("/api/feedback", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        device_id: DEVICE_ID,
+        interaction_id: interactionId,
+        rating,
+        correction,
+      }),
+    });
+    updateMemoryMetrics(result.metrics);
+    markFeedbackComplete(
+      bar,
+      result.memory ? "已沉淀为反馈记忆" : rating === 1 ? "已记录：有帮助" : "已记录不满意",
+    );
+    if (result.memory) {
+      elements.memoryNote.textContent = `已学习规则：${result.memory.rule}`;
+      addLog("LEARN", "用户反馈已沉淀为可召回规则");
+    } else {
+      addLog("FEEDBACK", rating === 1 ? "结果标记为有帮助" : "结果标记为需改进");
+    }
+    showToast(result.memory ? "已保存，下次相似任务会自动参考" : "反馈已记录");
+  } catch (error) {
+    bar.querySelectorAll("button").forEach((button) => {
+      button.disabled = false;
+    });
+    showToast(error.message);
+  }
+}
+
+function updateMemoryMetrics(metrics) {
+  if (!metrics) return;
+  app.memoryMetrics = metrics;
+  elements.feedbackMemoryCount.textContent = `${metrics.memory_count || 0} 条`;
 }
 
 function scrollConversation() {
@@ -230,10 +351,11 @@ async function loadInitialData() {
     await fetchJson("/api/health");
     setServerStatus("connected", "灵犀服务已连接");
 
-    const [capabilities, profile, history] = await Promise.all([
+    const [capabilities, profile, history, memoryMetrics] = await Promise.all([
       fetchJson("/api/capabilities"),
       fetchJson(`/api/profile?device_id=${encodeURIComponent(DEVICE_ID)}`),
       fetchJson(`/api/history?device_id=${encodeURIComponent(DEVICE_ID)}`),
+      fetchJson(`/api/memory/metrics?device_id=${encodeURIComponent(DEVICE_ID)}`),
     ]);
     app.capabilities = capabilities;
     if (capabilities.enabled) {
@@ -244,10 +366,18 @@ async function loadInitialData() {
     } else {
       elements.providerMetric.textContent = "Mock + 浏览器";
     }
+    if (capabilities.device_bridge?.protocol_version) {
+      elements.protocolLabel.textContent = `WEB-SIM / PROTOCOL ${capabilities.device_bridge.protocol_version.toUpperCase()}`;
+    }
     updateProfile(profile);
+    updateMemoryMetrics(memoryMetrics);
     history.items.forEach((item) => {
       addMessage("user", item.user_text);
-      addMessage("assistant", item.assistant_text, { offline: item.status === "offline" });
+      addMessage("assistant", item.assistant_text, {
+        offline: item.status === "offline",
+        interactionId: item.id,
+        feedbackRating: item.feedback_rating,
+      });
     });
     if (history.items.length) addLog("MEM", `恢复 ${history.items.length} 轮历史会话`);
   } catch (error) {
@@ -292,6 +422,7 @@ async function sendInteraction(text) {
   let completed = false;
 
   elements.oledText.textContent = cleanText;
+  elements.agentTraceText.textContent = "任务已接收 · 正在生成执行计划";
   setDeviceState("listening", "收到输入");
   addLog("INPUT", `${cleanText.length} 字符`);
 
@@ -373,9 +504,27 @@ function handleStreamEvent(event, assistant, appendDelta) {
     return;
   }
 
+  if (event.type === "plan") {
+    elements.agentTraceText.textContent = event.steps.join(" → ");
+    addLog("PLAN", `${event.steps.length} 步执行计划已生成`);
+    return;
+  }
+
+  if (event.type === "tool") {
+    elements.agentTraceText.textContent = `${event.name} · ${event.hits} 条命中 · ${event.estimated_tokens} tokens · ${event.latency_ms} ms`;
+    addLog("TOOL", `${event.name} / ${event.hits} hits`);
+    return;
+  }
+
   if (event.type === "memory") {
     updateProfile(event.profile, `已写入：${event.changes.join(" · ")}`);
     addLog("MEM", event.changes.join(" / "));
+    return;
+  }
+
+  if (event.type === "memory_recall") {
+    elements.memoryNote.textContent = `本轮召回 ${event.count} 条反馈记忆 · 约 ${event.estimated_tokens} tokens · ${event.latency_ms} ms`;
+    addLog("RECALL", `${event.count} 条 / ${event.estimated_tokens} tokens / ${event.latency_ms} ms`);
     return;
   }
 
@@ -383,16 +532,20 @@ function handleStreamEvent(event, assistant, appendDelta) {
     const isStepFun = event.provider === "stepfun";
     const model = event.model || "Step 3.7 Flash";
     elements.providerMetric.textContent = isStepFun ? model : "本地 Mock";
+    elements.agentTraceText.textContent = isStepFun ? `feedback_memory.search → ${model}` : "记忆检索 → 本地兜底";
     addLog("AI", event.label || (isStepFun ? "阶跃模型开始生成" : "已切换本地兜底"));
     return;
   }
 
   if (event.type === "complete") {
     assistant.wrapper.classList.remove("streaming");
+    attachFeedbackControls(assistant.wrapper, event.interaction_id);
     elements.latencyMetric.textContent = `${event.latency_ms} ms`;
     updateProfile(event.profile);
+    updateMemoryMetrics(event.memory_metrics);
     if (event.provider === "stepfun") elements.providerMetric.textContent = event.model || "Step 3.7 Flash";
     if (event.provider === "mock") elements.providerMetric.textContent = "本地 Mock";
+    elements.agentTraceText.textContent = `任务完成 · ${event.provider} · ${event.latency_ms} ms`;
     addLog(event.offline ? "FALLBACK" : "DONE", `${event.latency_ms} ms`);
     if (!event.offline && elements.audioToggle.checked) speakResponse(event.text);
     else if (!event.offline) setDeviceState("idle", "自动播报已关闭");
@@ -435,7 +588,7 @@ async function runDeviceSelfTest() {
 function exportDiagnostics() {
   const diagnostic = {
     exported_at: new Date().toISOString(),
-    console_version: "0.3",
+    console_version: "0.4",
     device_id: DEVICE_ID,
     device_transport: "web-simulator",
     mode: app.mode,
@@ -443,6 +596,7 @@ function exportDiagnostics() {
     provider: app.capabilities.provider,
     capabilities: app.capabilities,
     profile: app.profile,
+    feedback_memory: app.memoryMetrics,
     metrics: {
       latency: elements.latencyMetric.textContent,
       session: elements.sessionMetric.textContent,
@@ -804,6 +958,7 @@ async function resetDemo() {
       body: JSON.stringify({ device_id: DEVICE_ID }),
     });
     updateProfile(payload.profile, "记忆已清空。再次对话时会重新建立用户画像。");
+    updateMemoryMetrics({ memory_count: 0, feedback_count: 0, recall_uses: 0 });
     elements.conversation.querySelectorAll(".message:not(.welcome-message)").forEach((message) => message.remove());
     elements.latencyMetric.textContent = "—";
     addLog("RESET", "本地记忆已清空");
@@ -874,10 +1029,27 @@ elements.resetButton.addEventListener("click", resetDemo);
 elements.selfTestButton.addEventListener("click", runDeviceSelfTest);
 elements.exportButton.addEventListener("click", exportDiagnostics);
 elements.showGuideButton.addEventListener("click", () => elements.guideDialog.showModal());
+elements.cancelFeedbackButton.addEventListener("click", closeFeedbackDialog);
+elements.feedbackForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const correction = elements.feedbackInput.value.trim();
+  if (!correction) return;
+  const interactionId = app.feedbackInteractionId;
+  const bar = app.feedbackBar;
+  closeFeedbackDialog();
+  submitFeedback(interactionId, -1, correction, bar);
+});
+elements.skipFeedbackButton.addEventListener("click", () => {
+  const interactionId = app.feedbackInteractionId;
+  const bar = app.feedbackBar;
+  closeFeedbackDialog();
+  submitFeedback(interactionId, -1, "", bar);
+});
 
 window.addEventListener("beforeunload", stopSpeech);
 
 setDeviceState("idle");
+elements.deviceIdLabel.lastChild.textContent = ` WEB-${DEVICE_ID.slice(-6).toUpperCase()} 在线`;
 elements.audioToggle.checked = window.localStorage.getItem("lingxi-auto-speech") !== "off";
 setupRecognition();
 loadInitialData();
