@@ -120,6 +120,7 @@ Invoke-RestMethod http://127.0.0.1:8787/api/health
 ├── THIRD_PARTY.md          # 第三方资源与 AI 工具使用声明
 └── docs/
     ├── competition-alignment.md # 官方赛题与提交材料对齐审计
+    ├── demo-video-script.md # 4 分钟初赛演示视频分镜与旁白
     ├── project-brief.md    # 可直接用于提交的项目简介
     ├── software-plan.md    # 当前实现、架构、协议与硬件接入计划
     └── upgrade-roadmap.md  # 持续升级路线、阶段指标与黑客松脚本
