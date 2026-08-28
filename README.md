@@ -81,6 +81,12 @@ python server.py --port 9000
 python -m unittest discover -s tests -v
 ```
 
+运行一次不触碰生产库的记忆闭环评测，输出命中、误召回、提示注入和 token/耗时证据：
+
+```powershell
+python tools/memory_eval.py
+```
+
 启动服务后也可以检查：
 
 ```powershell
