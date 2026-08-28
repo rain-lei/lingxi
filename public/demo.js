@@ -5,6 +5,7 @@ const els = {
   form: document.querySelector("#demoForm"),
   input: document.querySelector("#demoMessageInput"),
   send: document.querySelector("#demoSendButton"),
+  cancel: document.querySelector("#demoCancelButton"),
   sample: document.querySelector("#sampleButton"),
   imageButton: document.querySelector("#demoImageButton"),
   imageInput: document.querySelector("#demoImageInput"),
@@ -26,9 +27,19 @@ const els = {
   toast: document.querySelector("#demoToast"),
 };
 
-const state = { busy: false, image: null, deviceId: getDeviceId(), outputText: "", task: null };
+const state = {
+  busy: false,
+  image: null,
+  deviceId: getDeviceId(),
+  outputText: "",
+  task: null,
+  controller: null,
+  timer: null,
+  abortReason: null,
+};
 const taskStatusLabels = { pending: "待确认", confirmed: "已确认", completed: "已完成", cancelled: "已取消" };
 const samplePrompt = "8月30日18:30主楼302有未来实验室公开讲座，请整理成任务卡，并提前一小时提醒我报名。";
+const DEMO_INTERACTION_TIMEOUT_MS = 45_000;
 
 function getDeviceId() {
   let existing = null;
@@ -154,13 +165,36 @@ function setBusy(busy) {
   els.sample.disabled = busy;
   els.imageButton.disabled = busy;
   document.querySelectorAll(".demo-input-suggestions button").forEach((button) => { button.disabled = busy; });
+  els.cancel.hidden = !state.controller;
+}
+
+function beginRequest() {
+  const controller = new AbortController();
+  state.controller = controller;
+  state.abortReason = null;
+  state.timer = window.setTimeout(() => {
+    state.abortReason = "timeout";
+    controller.abort("timeout");
+  }, DEMO_INTERACTION_TIMEOUT_MS);
+  return controller;
+}
+
+function finishRequest(controller) {
+  if (state.timer) window.clearTimeout(state.timer);
+  if (state.controller === controller) state.controller = null;
+  state.timer = null;
+}
+
+function cancelRequest() {
+  if (!state.controller) return;
+  state.abortReason = "user";
+  state.controller.abort("user");
 }
 
 async function runInteraction() {
   const input = els.input.value.trim();
   if ((!input && !state.image) || state.busy) return;
   const requestText = input || "请分析这张校园图片，并整理成一个可执行任务。";
-  setBusy(true);
   state.outputText = "";
   state.task = null;
   els.result.hidden = true;
@@ -168,11 +202,14 @@ async function runInteraction() {
   els.trace.textContent = "任务已接收 · 正在生成执行计划";
   setStep("recognize");
   renderResponse();
+  const controller = beginRequest();
+  setBusy(true);
   try {
     const response = await fetch("/api/interactions", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ device_id: state.deviceId, text: requestText, mode: "assistant", offline: false, ...(state.image ? { image_data_url: state.image.dataUrl } : {}) }),
+      signal: controller.signal,
     });
     if (!response.ok) {
       const payload = await response.json();
@@ -194,11 +231,20 @@ async function runInteraction() {
     if (buffer.trim()) completed = handleEvent(JSON.parse(buffer), requestText) || completed;
     if (completed && state.task) showTaskResult(state.task, completed);
   } catch (error) {
-    els.outputState.textContent = "OFFLINE";
-    els.trace.textContent = "链路异常 · 请进入控制台查看诊断";
-    renderResponse(`暂时无法连接灵犀服务：${error.message}`);
-    setServerStatus("error", "服务未连接");
+    if (controller.signal.aborted) {
+      const timedOut = state.abortReason === "timeout";
+      els.outputState.textContent = timedOut ? "TIMEOUT" : "CANCELLED";
+      els.trace.textContent = timedOut ? "等待超时 · 已恢复可操作状态" : "已停止本次请求 · 可立即重试";
+      renderResponse(state.outputText || (timedOut ? "等待超过 45 秒，已停止请求。请稍后重试。" : "已停止本次请求。你可以调整任务后重试。"));
+      showToast(timedOut ? "等待超时，已恢复可操作状态" : "已停止本次请求");
+    } else {
+      els.outputState.textContent = "OFFLINE";
+      els.trace.textContent = "链路异常 · 请进入控制台查看诊断";
+      renderResponse(`暂时无法连接灵犀服务：${error.message}`);
+      setServerStatus("error", "服务未连接");
+    }
   } finally {
+    finishRequest(controller);
     setBusy(false);
     clearImage();
     if (els.outputState.textContent === "RUNNING") els.outputState.textContent = "DONE";
@@ -269,5 +315,6 @@ els.imageButton.addEventListener("click", () => els.imageInput.click());
 els.imageInput.addEventListener("change", handleImage);
 els.removeImage.addEventListener("click", clearImage);
 els.confirmTask.addEventListener("click", confirmCurrentTask);
+els.cancel.addEventListener("click", cancelRequest);
 document.querySelectorAll("[data-demo-prompt]").forEach((button) => button.addEventListener("click", () => { els.input.value = button.dataset.demoPrompt || ""; els.input.focus(); }));
 loadStatus();

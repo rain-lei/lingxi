@@ -84,6 +84,7 @@ const elements = {
   imagePreviewName: document.querySelector("#imagePreviewName"),
   removeImageButton: document.querySelector("#removeImageButton"),
   sendButton: document.querySelector("#sendButton"),
+  cancelRunButton: document.querySelector("#cancelRunButton"),
   audioToggle: document.querySelector("#audioToggle"),
   offlineToggle: document.querySelector("#offlineToggle"),
   taskList: document.querySelector("#taskList"),
@@ -144,7 +145,13 @@ const app = {
   tasks: [],
   taskFilter: "all",
   lastRunEvidence: null,
+  interactionController: null,
+  interactionTimer: null,
+  interactionAbortReason: null,
 };
+
+const TEXT_INTERACTION_TIMEOUT_MS = 45_000;
+const VISION_INTERACTION_TIMEOUT_MS = 60_000;
 
 function setServerStatus(status, label) {
   elements.serverBadge.classList.remove("connected", "error");
@@ -634,6 +641,30 @@ function setBusy(busy) {
   document.querySelectorAll(".suggestions button").forEach((button) => {
     button.disabled = busy;
   });
+  elements.cancelRunButton.hidden = !app.interactionController;
+}
+
+function beginInteractionRequest(timeoutMs) {
+  const controller = new AbortController();
+  app.interactionController = controller;
+  app.interactionAbortReason = null;
+  app.interactionTimer = window.setTimeout(() => {
+    app.interactionAbortReason = "timeout";
+    controller.abort("timeout");
+  }, timeoutMs);
+  return controller;
+}
+
+function finishInteractionRequest(controller) {
+  if (app.interactionTimer) window.clearTimeout(app.interactionTimer);
+  if (app.interactionController === controller) app.interactionController = null;
+  app.interactionTimer = null;
+}
+
+function cancelInteraction() {
+  if (!app.interactionController) return;
+  app.interactionAbortReason = "user";
+  app.interactionController.abort("user");
 }
 
 async function sendInteraction(text) {
@@ -647,6 +678,8 @@ async function sendInteraction(text) {
     input_type: image ? "image" : "text",
     memory_recall: null,
   };
+  const timeoutMs = image ? VISION_INTERACTION_TIMEOUT_MS : TEXT_INTERACTION_TIMEOUT_MS;
+  const controller = beginInteractionRequest(timeoutMs);
   setBusy(true);
   stopSpeech();
   elements.messageInput.value = "";
@@ -673,6 +706,7 @@ async function sendInteraction(text) {
         offline: elements.offlineToggle.checked,
         ...(image ? { image_data_url: image.dataUrl } : {}),
       }),
+      signal: controller.signal,
     });
 
     if (!response.ok) {
@@ -710,14 +744,35 @@ async function sendInteraction(text) {
     }
     completed = true;
   } catch (error) {
-    assistant.wrapper.classList.add("offline");
-    assistant.content.textContent = `连接失败：${error.message}`;
-    assistant.wrapper.classList.remove("streaming");
-    elements.oledText.textContent = "服务连接失败";
-    setDeviceState("offline", "服务连接失败");
-    setServerStatus("error", "本地服务异常");
-    addLog("ERROR", error.message);
+    if (controller.signal.aborted) {
+      const timedOut = app.interactionAbortReason === "timeout";
+      const message = timedOut
+        ? `等待超过 ${Math.round(timeoutMs / 1000)} 秒，已停止本次请求。请稍后重试，或开启断网演练查看兜底链路。`
+        : "已停止本次请求。你可以调整任务后立即重试。";
+      assistant.content.textContent = responseText || message;
+      assistant.wrapper.classList.remove("streaming");
+      elements.oledText.textContent = timedOut ? "等待超时 · 可重试" : "已停止 · 可重试";
+      elements.agentTraceText.textContent = timedOut ? "请求超时 · 已恢复可操作状态" : "用户停止 · 已恢复可操作状态";
+      app.lastRunEvidence = {
+        ...(app.lastRunEvidence || {}),
+        aborted: true,
+        abort_reason: app.interactionAbortReason || "unknown",
+        completed_at: new Date().toISOString(),
+      };
+      setDeviceState("idle", timedOut ? "等待超时" : "已停止");
+      addLog(timedOut ? "TIMEOUT" : "CANCEL", timedOut ? `${Math.round(timeoutMs / 1000)} 秒未完成，已停止等待` : "用户停止本次请求");
+      showToast(timedOut ? "等待超时，已恢复可操作状态" : "已停止本次请求");
+    } else {
+      assistant.wrapper.classList.add("offline");
+      assistant.content.textContent = `连接失败：${error.message}`;
+      assistant.wrapper.classList.remove("streaming");
+      elements.oledText.textContent = "服务连接失败";
+      setDeviceState("offline", "服务连接失败");
+      setServerStatus("error", "本地服务异常");
+      addLog("ERROR", error.message);
+    }
   } finally {
+    finishInteractionRequest(controller);
     assistant.wrapper.classList.remove("streaming");
     setBusy(false);
     if (!completed && elements.deviceStage.dataset.state !== "offline") {
@@ -1325,6 +1380,7 @@ elements.memoryList.addEventListener("click", (event) => {
   deleteMemory(Number(button.dataset.memoryId), button);
 });
 elements.selfTestButton.addEventListener("click", runDeviceSelfTest);
+elements.cancelRunButton.addEventListener("click", cancelInteraction);
 elements.exportButton.addEventListener("click", exportDiagnostics);
 elements.showGuideButton.addEventListener("click", () => elements.guideDialog.showModal());
 elements.cancelFeedbackButton.addEventListener("click", closeFeedbackDialog);

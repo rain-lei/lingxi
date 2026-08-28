@@ -50,6 +50,7 @@ class HttpApiTests(unittest.TestCase):
         status, headers, body = self.request("GET", "/")
         self.assertEqual(status, 200)
         self.assertIn(b"feedbackCountMetric", body)
+        self.assertIn(b"cancelRunButton", body)
         self.assertEqual(headers["X-Frame-Options"], "DENY")
         self.assertIn("default-src 'self'", headers["Content-Security-Policy"])
         self.assertEqual(headers["Referrer-Policy"], "no-referrer")
@@ -167,6 +168,7 @@ class HttpApiTests(unittest.TestCase):
         self.assertEqual(status, 200)
         self.assertIn("在线演示".encode("utf-8"), demo_body)
         self.assertIn(b"demoTaskResult", demo_body)
+        self.assertIn(b"demoCancelButton", demo_body)
 
         status, _, console_body = self.request("GET", "/console")
         self.assertEqual(status, 200)

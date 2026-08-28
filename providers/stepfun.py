@@ -42,7 +42,7 @@ class StepFunClient:
         return cls(
             api_key=os.getenv("STEPFUN_API_KEY"),
             base_url=os.getenv("STEPFUN_BASE_URL", DEFAULT_BASE_URL),
-            timeout=float(os.getenv("STEPFUN_TIMEOUT", "90")),
+            timeout=float(os.getenv("STEPFUN_TIMEOUT", "45")),
         )
 
     @property

@@ -1,7 +1,9 @@
 import io
 import json
+import os
 import unittest
 from email.message import Message
+from unittest.mock import patch
 
 from providers.stepfun import StepFunClient
 
@@ -31,6 +33,11 @@ class StepFunClientTests(unittest.TestCase):
         client = StepFunClient(api_key="")
         self.assertFalse(client.enabled)
         self.assertEqual(client.capabilities()["provider"], "mock")
+
+    def test_environment_defaults_to_45_second_timeout(self) -> None:
+        with patch.dict(os.environ, {}, clear=True):
+            client = StepFunClient.from_environment()
+        self.assertEqual(client.timeout, 45)
 
     def test_stream_chat_parses_sse_deltas(self) -> None:
         events = [

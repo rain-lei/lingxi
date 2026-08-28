@@ -75,6 +75,8 @@ $env:LINGXI_DEVICE_TOKEN="使用密码生成器创建的随机值"
 python server.py --port 9000
 ```
 
+一次文本任务默认最多等待 45 秒，图片任务最多等待 60 秒；控制台和在线演示均可点击“停止”立即恢复可操作状态。服务端的 StepFun 上游超时默认为 45 秒，可通过 `STEPFUN_TIMEOUT` 调整。
+
 ## 30 秒验证
 
 ```powershell
