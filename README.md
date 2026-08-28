@@ -1,4 +1,4 @@
-# 灵犀挂件 · 系统控制台
+# 灵犀挂件 · 在线演示与系统控制台
 
 这是“灵犀挂件”的系统控制台与云端编排实现。当前使用网页数字孪生验证完整链路；接入真实硬件后，网页端继续用于设备配置、调试、遥测和记忆管理：
 
@@ -24,7 +24,7 @@
 python server.py
 ```
 
-浏览器打开：<http://127.0.0.1:8787>
+浏览器打开在线演示：<http://127.0.0.1:8787/demo>；完整控制台：<http://127.0.0.1:8787/console>
 
 ### Docker 运行
 
@@ -132,7 +132,9 @@ python tools/device_simulator.py --send --base-url http://127.0.0.1:8787
 ├── server.py               # HTTP 服务、流式编排、SQLite 记忆、Mock AI
 ├── device_protocol.py      # 0.4-draft 设备事件协议与校验
 ├── public/
-│   ├── index.html          # 挂件与对话控制台
+│   ├── index.html          # 系统控制台（兼容根路径与 /console）
+│   ├── demo.html           # 对外在线演示页
+│   ├── demo.js             # 在线演示流式交互客户端
 │   ├── styles.css          # 响应式视觉与设备状态动画
 │   └── app.js              # 流式客户端、PCM 采集、语音、状态机与交互
 ├── providers/stepfun.py    # 阶跃 Step Plan Chat / ASR / TTS 客户端

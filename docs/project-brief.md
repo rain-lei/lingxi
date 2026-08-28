@@ -48,7 +48,8 @@
 
 ## 使用方式与演示入口
 
-- 在线 Demo：<https://lingxi.rainlei.xyz/>
+- 在线演示：<https://lingxi.rainlei.xyz/demo>
+- 系统控制台：<https://lingxi.rainlei.xyz/console>
 - 公开仓库：<https://github.com/rain-lei/lingxi>
 - 本地运行：安装 Python 3.10+，配置 `STEPFUN_API_KEY` 后执行 `python server.py`，访问 <http://127.0.0.1:8787/>。
 

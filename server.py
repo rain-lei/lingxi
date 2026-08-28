@@ -1095,7 +1095,12 @@ class LingXiHandler(BaseHTTPRequestHandler):
         return decoded_length <= 8 * 1024 * 1024
 
     def _serve_static(self, request_path: str, head_only: bool = False) -> None:
-        relative = "index.html" if request_path in ("", "/") else request_path.lstrip("/")
+        if request_path in ("", "/", "/console", "/console/"):
+            relative = "index.html"
+        elif request_path in ("/demo", "/demo/"):
+            relative = "demo.html"
+        else:
+            relative = request_path.lstrip("/")
         candidate = (PUBLIC_DIR / relative).resolve()
         try:
             candidate.relative_to(PUBLIC_DIR.resolve())

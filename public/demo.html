@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="灵犀挂件在线演示：把校园现场信息转化为可执行任务，并从反馈中持续学习。" />
+    <title>灵犀挂件 · 在线演示</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body class="demo-page">
+    <div class="ambient ambient-one" aria-hidden="true"></div>
+    <div class="ambient ambient-two" aria-hidden="true"></div>
+
+    <header class="topbar demo-topbar">
+      <a class="brand" href="/demo" aria-label="灵犀挂件在线演示首页">
+        <span class="brand-mark" aria-hidden="true">灵</span>
+        <span>
+          <strong>灵犀挂件</strong>
+          <small>HACKATHON BUILD / ONLINE DEMO</small>
+        </span>
+      </a>
+      <nav class="site-nav" aria-label="产品入口">
+        <a class="active" href="/demo" aria-current="page">在线演示</a>
+        <a href="/console">控制台</a>
+      </nav>
+      <div class="topbar-actions">
+        <span class="server-badge" id="demoServerBadge"><i aria-hidden="true"></i><span>连接中</span></span>
+        <span class="demo-mode-label">访客体验</span>
+      </div>
+    </header>
+
+    <main class="demo-main">
+      <section class="demo-hero" aria-labelledby="demoTitle">
+        <div class="demo-hero-copy">
+          <p class="kicker"><span>LINGXI / ONLINE DEMO</span> · 校园短任务 Agent</p>
+          <h1 id="demoTitle">把现场信息，<br /><em>变成下一步行动。</em></h1>
+          <p class="demo-lede">
+            上传一张海报、说一句需求，灵犀会提取关键信息，生成可执行任务，并把你的修改沉淀成下一次更合适的做法。
+          </p>
+          <div class="demo-actions">
+            <button class="primary-demo-button" id="sampleButton" type="button">用示例任务开始 <span>↗</span></button>
+            <a class="ghost-demo-button" href="/console">打开完整控制台 <span>→</span></a>
+          </div>
+          <div class="demo-proof" aria-label="在线演示流程">
+            <span><b>01</b> 识别现场</span>
+            <i></i>
+            <span><b>02</b> 规划任务</span>
+            <i></i>
+            <span><b>03</b> 记住偏好</span>
+          </div>
+        </div>
+
+        <div class="demo-hero-visual" aria-label="灵犀从海报识别到任务卡的示意">
+          <div class="demo-grid-lines" aria-hidden="true"></div>
+          <div class="poster-card">
+            <div class="poster-topline"><span>DALIAN UNIVERSITY</span><span>SPRING / 06</span></div>
+            <div class="poster-orbit orbit-one"></div>
+            <div class="poster-orbit orbit-two"></div>
+            <p class="poster-kicker">CAMPUS OPEN STUDIO</p>
+            <h2>未来实验室<br /><span>公开讲座</span></h2>
+            <p class="poster-detail">08.30 · 18:30<br />主楼 302 · 现场报名</p>
+            <div class="poster-scan" aria-hidden="true"></div>
+            <span class="poster-tag">视觉识别中</span>
+          </div>
+          <div class="hero-task-card">
+            <span class="task-status"><i></i> TASK CARD / READY</span>
+            <strong>公开讲座 · 18:30</strong>
+            <span>主楼 302 · 提前 1 小时提醒</span>
+            <div class="task-card-footer"><span>已提取 4 项信息</span><b>待确认</b></div>
+          </div>
+          <div class="hero-signal signal-one" aria-hidden="true"></div>
+          <div class="hero-signal signal-two" aria-hidden="true"></div>
+        </div>
+      </section>
+
+      <section class="demo-stage" id="experience" aria-labelledby="experienceTitle">
+        <div class="demo-section-heading">
+          <div>
+            <span class="section-index">LIVE EXPERIENCE / 01</span>
+            <h2 id="experienceTitle">试试把一句话交给灵犀</h2>
+          </div>
+          <p>下面的结果会进入同一条真实 API 链路；想看完整的 Agent Trace、反馈记忆和设备状态，请进入控制台。</p>
+        </div>
+
+        <div class="demo-stage-grid">
+          <article class="demo-input-card panel">
+            <div class="demo-card-label"><span>INPUT</span><small>TEXT · IMAGE</small></div>
+            <h3>描述你眼前的事情</h3>
+            <p class="demo-card-note">可以输入任务，也可以上传一张校园通知、课程表或活动海报。</p>
+            <div class="demo-input-suggestions" aria-label="示例输入">
+              <button type="button" data-demo-prompt="请把这张校园活动海报整理成任务卡：告诉我时间、地点，并提前一小时提醒。">活动海报</button>
+              <button type="button" data-demo-prompt="帮我制定今晚两小时的复习计划，先给结论，只列三步。">复习计划</button>
+              <button type="button" data-demo-prompt="翻译这条校园通知，并告诉我最需要注意的一件事。">校园通知</button>
+            </div>
+            <form class="demo-composer" id="demoForm">
+              <label class="sr-only" for="demoMessageInput">输入任务</label>
+              <textarea id="demoMessageInput" rows="5" maxlength="500" placeholder="例如：把这张讲座海报整理成任务，并提前一小时提醒我…"></textarea>
+              <div class="demo-composer-actions">
+                <button class="demo-attach-button" id="demoImageButton" type="button">添加图片</button>
+                <input class="sr-only" id="demoImageInput" type="file" accept="image/jpeg,image/png,image/gif,image/webp" />
+                <button class="primary-demo-button compact" id="demoSendButton" type="submit">生成任务 <span>↗</span></button>
+              </div>
+            </form>
+            <div class="demo-image-preview" id="demoImagePreview" hidden>
+              <img id="demoImagePreviewImage" alt="待分析的图片预览" />
+              <span id="demoImagePreviewName"></span>
+              <button id="demoRemoveImageButton" type="button" aria-label="移除图片">×</button>
+            </div>
+            <p class="demo-privacy-note"><span>●</span> 图片仅用于本次演示，不会展示给其他访客</p>
+          </article>
+
+          <article class="demo-output-card panel" aria-live="polite">
+            <div class="demo-card-label"><span>LINGXI AGENT</span><small id="demoModelLabel">准备就绪</small></div>
+            <div class="demo-stepper" id="demoStepper">
+              <div class="demo-step active" data-demo-step="recognize"><span>01</span><strong>识别</strong><small>接收输入</small></div>
+              <i></i>
+              <div class="demo-step" data-demo-step="plan"><span>02</span><strong>规划</strong><small>拆成任务</small></div>
+              <i></i>
+              <div class="demo-step" data-demo-step="remember"><span>03</span><strong>记住</strong><small>等待反馈</small></div>
+            </div>
+            <div class="demo-response" id="demoResponse">
+              <div class="response-placeholder"><span class="placeholder-orb">灵</span><p>还没有任务。<br /><em>从左侧示例开始，看看灵犀如何把输入变成行动。</em></p></div>
+            </div>
+            <div class="demo-task-result" id="demoTaskResult" hidden>
+              <div class="demo-task-result-head"><span>可执行任务</span><b id="demoTaskStatus">待确认</b></div>
+              <h3 id="demoTaskTitle">—</h3>
+              <p id="demoTaskMeta">—</p>
+              <div class="demo-task-result-actions"><a href="/console">在控制台查看详情 →</a><span id="demoLatency">—</span></div>
+            </div>
+            <div class="demo-output-footer"><span id="demoTrace">等待输入 · Agent 链路就绪</span><span id="demoOutputState">IDLE</span></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="demo-value-grid" aria-label="灵犀在线演示价值">
+        <article class="demo-value-item"><span>01</span><h3>不止识别</h3><p>从图片和语音里提取关键信息，再给出下一步，而不是停在一段回答。</p></article>
+        <article class="demo-value-item"><span>02</span><h3>不止一次</h3><p>你说“以后提前一小时提醒”，这条反馈会成为下一次任务的默认偏好。</p></article>
+        <article class="demo-value-item"><span>03</span><h3>一套控制面</h3><p>在线演示负责体验，控制台负责观测、调试和后续真实设备接入。</p></article>
+      </section>
+    </main>
+
+    <footer class="demo-footer"><p>LINGXI PENDANT · ONLINE DEMO</p><p>Step 3.7 Flash · StepAudio · FEEDBACK MEMORY</p></footer>
+    <div class="toast" id="demoToast" role="status" aria-live="polite"></div>
+    <script src="/demo.js" defer></script>
+  </body>
+</html>
