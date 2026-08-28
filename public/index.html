@@ -45,7 +45,7 @@
         <p class="hero-description">
           面向走路、通勤、学习和双手忙碌时的校园短任务，灵犀用按住说话和简短反馈减少反复操作。
           网页端是挂件的系统控制台，当前用于验证
-          <strong>多模态输入 → Agent 规划 → 反馈记忆 → 语音输出</strong>，
+          <strong>多模态输入 → Agent 规划 → 可执行任务 → 反馈记忆</strong>，
           后续继续承担真实设备的配置、调试与状态管理。
         </p>
       </section>
@@ -53,7 +53,7 @@
       <div class="build-strip" aria-label="当前系统能力">
         <span><i></i> Step 3.7 多模态</span>
         <span><i></i> StepAudio 语音链路</span>
-        <span><i></i> 反馈记忆 Agent</span>
+        <span><i></i> 任务队列 + 反馈记忆</span>
         <span class="planned"><i></i> ESP32-S3 硬件桥接待联调</span>
       </div>
 
@@ -205,11 +205,37 @@
         </article>
       </section>
 
+      <section class="task-center panel" aria-labelledby="taskCenterTitle">
+        <div class="task-center-heading">
+          <div>
+            <span class="section-index">03 / ACTION QUEUE</span>
+            <h2 id="taskCenterTitle">可执行任务中心</h2>
+            <p>在线演示与控制台共用同一条任务队列。每张卡片都已由服务器保存，可确认、完成、取消或恢复。</p>
+          </div>
+          <div class="task-center-controls">
+            <div class="task-filters" role="group" aria-label="筛选任务状态">
+              <button class="active" type="button" data-task-filter="all">全部</button>
+              <button type="button" data-task-filter="open">进行中</button>
+              <button type="button" data-task-filter="completed">已完成</button>
+            </div>
+            <button class="text-button" id="refreshTasksButton" type="button">刷新任务</button>
+          </div>
+        </div>
+        <div class="task-summary" aria-label="任务统计">
+          <div><small>待确认</small><strong id="pendingTaskCount">0</strong></div>
+          <div><small>已确认</small><strong id="confirmedTaskCount">0</strong></div>
+          <div><small>已完成</small><strong id="completedTaskCount">0</strong></div>
+        </div>
+        <div class="task-list" id="taskList" aria-live="polite">
+          <div class="task-empty"><span>QUEUE / EMPTY</span><p>完成一次带“提醒、计划、活动或清单”的任务后，任务卡会出现在这里。</p></div>
+        </div>
+      </section>
+
       <section class="insights-grid" aria-label="控制台状态与记忆">
         <article class="memory-card panel">
           <div class="mini-heading">
             <div>
-              <span class="section-index">03 / USER MEMORY</span>
+              <span class="section-index">04 / USER MEMORY</span>
               <h2>用户记忆</h2>
             </div>
             <div class="memory-card-actions">
@@ -253,7 +279,7 @@
         <article class="metrics-card panel">
           <div class="mini-heading">
             <div>
-              <span class="section-index">04 / TELEMETRY</span>
+              <span class="section-index">05 / TELEMETRY</span>
               <h2>运行遥测</h2>
             </div>
             <div class="telemetry-actions">
@@ -275,7 +301,7 @@
       <section class="system-section" aria-labelledby="systemTitle">
         <div class="section-heading-wide">
           <div>
-            <span class="section-index">05 / SYSTEM ARCHITECTURE</span>
+            <span class="section-index">06 / SYSTEM ARCHITECTURE</span>
             <h2 id="systemTitle">从控制台验证到真实挂件</h2>
           </div>
           <p>控制台、云端编排和设备协议保持解耦，接入硬件时复用同一套状态与能力接口。</p>
@@ -330,7 +356,7 @@
       <section class="roadmap-card panel" aria-labelledby="roadmapTitle">
         <div class="section-heading-wide roadmap-heading">
           <div>
-            <span class="section-index">06 / CONTINUOUS UPGRADE</span>
+            <span class="section-index">07 / CONTINUOUS UPGRADE</span>
             <h2 id="roadmapTitle">持续升级路线</h2>
           </div>
           <p>每一阶段都有可演示成果、可量化指标和明确回退路径。</p>
@@ -360,7 +386,7 @@
 
     <footer>
       <p>LINGXI PENDANT · HACKATHON SYSTEM BUILD</p>
-      <p>CONSOLE 0.4 · FEEDBACK MEMORY AGENT</p>
+      <p>CONSOLE 0.5 · TASK + FEEDBACK MEMORY AGENT</p>
     </footer>
 
     <dialog class="guide-dialog feedback-dialog" id="feedbackDialog">

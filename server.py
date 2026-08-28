@@ -42,7 +42,10 @@ ROOT = Path(__file__).resolve().parent
 PUBLIC_DIR = ROOT / "public"
 DEFAULT_DB = ROOT / "data" / "lingxi_demo.db"
 ALLOWED_MODES = {"assistant", "companion", "translate"}
+TASK_STATUSES = {"pending", "confirmed", "completed", "cancelled"}
+TASK_KINDS = {"event", "reminder", "checklist", "plan", "note"}
 MAX_CONVERSATIONS_PER_DEVICE = 50
+MAX_TASKS_PER_DEVICE = 100
 
 
 def utc_now() -> str:
@@ -176,8 +179,31 @@ class DemoEngine:
 
                 CREATE INDEX IF NOT EXISTS feedback_memories_device_id_idx
                     ON feedback_memories(device_id, updated_at DESC);
+
+                CREATE TABLE IF NOT EXISTS tasks (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    device_id TEXT NOT NULL,
+                    conversation_id INTEGER,
+                    kind TEXT NOT NULL CHECK(kind IN ('event', 'reminder', 'checklist', 'plan', 'note')),
+                    status TEXT NOT NULL DEFAULT 'pending'
+                        CHECK(status IN ('pending', 'confirmed', 'completed', 'cancelled')),
+                    title TEXT NOT NULL,
+                    summary TEXT NOT NULL DEFAULT '',
+                    schedule_text TEXT NOT NULL DEFAULT '',
+                    location TEXT NOT NULL DEFAULT '',
+                    checklist_json TEXT NOT NULL DEFAULT '[]',
+                    source TEXT NOT NULL CHECK(source IN ('text', 'image', 'voice', 'system')),
+                    created_at TEXT NOT NULL,
+                    updated_at TEXT NOT NULL,
+                    FOREIGN KEY(conversation_id) REFERENCES conversations(id) ON DELETE SET NULL,
+                    UNIQUE(device_id, conversation_id)
+                );
+
+                CREATE INDEX IF NOT EXISTS idx_tasks_device_status
+                    ON tasks(device_id, status, id DESC);
                 """
             )
+            connection.execute("PRAGMA optimize")
 
     def get_profile(self, device_id: str) -> Profile:
         with self._connection() as connection:
@@ -241,6 +267,7 @@ class DemoEngine:
 
     def reset_device(self, device_id: str) -> Profile:
         with self._connection() as connection:
+            connection.execute("DELETE FROM tasks WHERE device_id = ?", (device_id,))
             connection.execute("DELETE FROM conversations WHERE device_id = ?", (device_id,))
             connection.execute("DELETE FROM feedback_memories WHERE device_id = ?", (device_id,))
             connection.execute("DELETE FROM profiles WHERE device_id = ?", (device_id,))
@@ -297,6 +324,228 @@ class DemoEngine:
                 (device_id, device_id, MAX_CONVERSATIONS_PER_DEVICE),
             )
         return interaction_id
+
+    @staticmethod
+    def _task_row(row: sqlite3.Row) -> dict[str, Any]:
+        task = dict(row)
+        raw_checklist = task.pop("checklist_json", "[]")
+        try:
+            checklist = json.loads(raw_checklist)
+        except (TypeError, json.JSONDecodeError):
+            checklist = []
+        task["checklist"] = [str(item)[:80] for item in checklist if str(item).strip()][:8]
+        return task
+
+    @staticmethod
+    def _task_kind(user_text: str, source: str) -> str | None:
+        compact = " ".join(user_text.strip().split())
+        if any(marker in compact for marker in ("讲座", "活动", "比赛", "会议", "报名", "海报")):
+            return "event"
+        if "提醒" in compact or "别忘" in compact or "到点" in compact:
+            return "reminder"
+        if any(marker in compact for marker in ("清单", "准备什么", "待办")):
+            return "checklist"
+        if any(marker in compact for marker in ("计划", "安排", "复习", "学习", "作业", "考试")):
+            return "plan"
+        if any(marker in compact for marker in ("任务", "记录", "记下", "保存")):
+            return "note"
+        return "note" if source == "image" else None
+
+    @staticmethod
+    def _task_title(user_text: str, assistant_text: str, kind: str) -> str:
+        combined = f"{user_text} {assistant_text}"
+        if kind == "event":
+            if "讲座" in combined:
+                return "校园讲座 · 待确认"
+            if "比赛" in combined:
+                return "校园比赛 · 待确认"
+            if "报名" in combined:
+                return "活动报名 · 待确认"
+            return "校园活动 · 待确认"
+        if kind == "plan":
+            if "复习" in combined:
+                return "复习计划"
+            if "作业" in combined:
+                return "作业计划"
+            if "考试" in combined:
+                return "考试准备计划"
+            return "学习计划"
+        if kind == "reminder":
+            return "提醒事项"
+        if kind == "checklist":
+            return "准备清单"
+        for candidate in (user_text, assistant_text):
+            clean = re.sub(r"^(?:请|帮我|请帮我|把|将)\s*", "", " ".join(candidate.split()))
+            clean = re.split(r"[。！？；\n]", clean)[0].strip(" ：:，,")
+            if clean:
+                return clean[:32]
+        return "灵犀任务"
+
+    @staticmethod
+    def _task_schedule_text(user_text: str, assistant_text: str) -> str:
+        combined = " ".join(f"{user_text} {assistant_text}".split())
+        values: list[str] = []
+        patterns = (
+            r"(?:今天|今晚|明天|明晚|后天|本周[一二三四五六日天]|下周[一二三四五六日天])[^，。；\n]{0,20}",
+            r"\d{1,2}月\d{1,2}日[^，。；\n]{0,18}",
+            r"\d{1,2}[:：]\d{2}",
+            r"提前[^，。；\n]{1,12}提醒",
+        )
+        for pattern in patterns:
+            match = re.search(pattern, combined)
+            if match:
+                value = match.group(0).strip()
+                if value and value not in values:
+                    values.append(value[:36])
+        return " · ".join(values[:2])
+
+    @staticmethod
+    def _task_location(user_text: str, assistant_text: str) -> str:
+        combined = " ".join(f"{user_text} {assistant_text}".split())
+        explicit = re.search(r"(?:地点|地址)[:：]\s*([^，。；\n]{2,30})", combined)
+        if explicit:
+            return explicit.group(1).strip()[:40]
+        campus = re.search(
+            r"((?:主楼|教学楼|图书馆|实验室|体育馆|礼堂|报告厅|校区)"
+            r"[A-Za-z0-9一二三四五六七八九十号楼\- ]{0,16})",
+            combined,
+        )
+        return campus.group(1).strip()[:40] if campus else ""
+
+    @staticmethod
+    def _task_checklist(user_text: str, assistant_text: str, kind: str) -> list[str]:
+        checklist = [
+            " ".join(item.split())[:80]
+            for item in re.findall(
+                r"(?:^|[。；\n])\s*(?:\d+[.、)]|[一二三四五六]+[、.])\s*([^。；\n]{2,80})",
+                assistant_text,
+            )
+        ]
+        if kind == "event":
+            checklist.insert(0, "确认活动时间与地点")
+            if "报名" in f"{user_text} {assistant_text}":
+                checklist.append("完成活动报名")
+        elif kind in {"plan", "checklist"} and not checklist:
+            checklist = [
+                " ".join(item.split())[:80]
+                for item in re.split(r"[。；\n]", assistant_text)
+                if len(" ".join(item.split())) >= 4
+            ][:3]
+        deduplicated: list[str] = []
+        for item in checklist:
+            if item and item not in deduplicated:
+                deduplicated.append(item)
+        return deduplicated[:8]
+
+    def create_task_from_interaction(
+        self,
+        device_id: str,
+        conversation_id: int,
+        user_text: str,
+        assistant_text: str,
+        source: str = "text",
+    ) -> dict[str, Any] | None:
+        safe_source = source if source in {"text", "image", "voice", "system"} else "text"
+        kind = self._task_kind(user_text, safe_source)
+        if kind is None or kind not in TASK_KINDS:
+            return None
+        title = self._task_title(user_text, assistant_text, kind)
+        summary = " ".join(assistant_text.strip().split())[:280]
+        schedule_text = self._task_schedule_text(user_text, assistant_text)
+        location = self._task_location(user_text, assistant_text)
+        checklist = self._task_checklist(user_text, assistant_text, kind)
+        now = utc_now()
+        with self._connection() as connection:
+            connection.execute(
+                """
+                INSERT INTO tasks(
+                    device_id, conversation_id, kind, status, title, summary,
+                    schedule_text, location, checklist_json, source, created_at, updated_at
+                ) VALUES (?, ?, ?, 'pending', ?, ?, ?, ?, ?, ?, ?, ?)
+                ON CONFLICT(device_id, conversation_id) DO UPDATE SET
+                    kind = excluded.kind,
+                    title = excluded.title,
+                    summary = excluded.summary,
+                    schedule_text = excluded.schedule_text,
+                    location = excluded.location,
+                    checklist_json = excluded.checklist_json,
+                    source = excluded.source,
+                    updated_at = excluded.updated_at
+                """,
+                (
+                    device_id,
+                    conversation_id,
+                    kind,
+                    title,
+                    summary,
+                    schedule_text,
+                    location,
+                    json.dumps(checklist, ensure_ascii=False),
+                    safe_source,
+                    now,
+                    now,
+                ),
+            )
+            row = connection.execute(
+                "SELECT * FROM tasks WHERE device_id = ? AND conversation_id = ?",
+                (device_id, conversation_id),
+            ).fetchone()
+            connection.execute(
+                """
+                DELETE FROM tasks
+                WHERE device_id = ? AND id NOT IN (
+                    SELECT id FROM tasks WHERE device_id = ? ORDER BY id DESC LIMIT ?
+                )
+                """,
+                (device_id, device_id, MAX_TASKS_PER_DEVICE),
+            )
+        return self._task_row(row) if row else None
+
+    def list_tasks(
+        self,
+        device_id: str,
+        status: str | None = None,
+        limit: int = 50,
+    ) -> list[dict[str, Any]]:
+        safe_limit = max(1, min(limit, MAX_TASKS_PER_DEVICE))
+        if status is not None and status not in TASK_STATUSES:
+            raise ValueError("unsupported task status")
+        query = "SELECT * FROM tasks WHERE device_id = ?"
+        parameters: list[Any] = [device_id]
+        if status:
+            query += " AND status = ?"
+            parameters.append(status)
+        query += " ORDER BY id DESC LIMIT ?"
+        parameters.append(safe_limit)
+        with self._connection() as connection:
+            rows = connection.execute(query, parameters).fetchall()
+        return [self._task_row(row) for row in rows]
+
+    def update_task_status(
+        self,
+        device_id: str,
+        task_id: int,
+        status: str,
+    ) -> dict[str, Any]:
+        if status not in TASK_STATUSES:
+            raise ValueError("unsupported task status")
+        with self._connection() as connection:
+            cursor = connection.execute(
+                """
+                UPDATE tasks SET status = ?, updated_at = ?
+                WHERE id = ? AND device_id = ?
+                """,
+                (status, utc_now(), task_id, device_id),
+            )
+            if cursor.rowcount != 1:
+                raise LookupError("task not found for this visitor")
+            row = connection.execute(
+                "SELECT * FROM tasks WHERE id = ? AND device_id = ?",
+                (task_id, device_id),
+            ).fetchone()
+        if row is None:
+            raise LookupError("task not found for this visitor")
+        return self._task_row(row)
 
     def record_feedback(
         self,
@@ -615,7 +864,7 @@ def chunk_text(text: str, width: int = 5) -> Iterable[str]:
 
 class LingXiHandler(BaseHTTPRequestHandler):
     protocol_version = "HTTP/1.1"
-    server_version = "LingXi/0.4"
+    server_version = "LingXi/0.5"
     sys_version = ""
 
     @property
@@ -651,6 +900,11 @@ class LingXiHandler(BaseHTTPRequestHandler):
                 "protocol_version": PROTOCOL_VERSION,
                 "ingest_enabled": bool(os.getenv("LINGXI_DEVICE_TOKEN", "").strip()),
             }
+            capabilities["task_center"] = {
+                "enabled": True,
+                "statuses": sorted(TASK_STATUSES),
+                "kinds": sorted(TASK_KINDS),
+            }
             self._send_json(capabilities)
             return
         if parsed.path == "/api/device/protocol":
@@ -663,6 +917,17 @@ class LingXiHandler(BaseHTTPRequestHandler):
         if parsed.path == "/api/history":
             device_id = self._device_id(parsed.query)
             self._send_json({"items": self.engine.recent_history(device_id)})
+            return
+        if parsed.path == "/api/tasks":
+            device_id = self._device_id(parsed.query)
+            params = parse_qs(parsed.query)
+            status = params.get("status", [None])[0]
+            try:
+                tasks = self.engine.list_tasks(device_id, status=status)
+            except ValueError as error:
+                self._send_json({"error": str(error)}, HTTPStatus.BAD_REQUEST)
+                return
+            self._send_json({"items": tasks})
             return
         if parsed.path == "/api/memory/metrics":
             device_id = self._device_id(parsed.query)
@@ -681,6 +946,7 @@ class LingXiHandler(BaseHTTPRequestHandler):
             "/api/audio/transcribe": ("audio", 12),
             "/api/audio/speech": ("audio", 12),
             "/api/feedback": ("feedback", 40),
+            "/api/tasks/update": ("task-update", 60),
             "/api/memory/delete": ("memory-delete", 30),
             "/api/device/events": ("device-events", 240),
             "/api/reset": ("reset", 8),
@@ -713,6 +979,9 @@ class LingXiHandler(BaseHTTPRequestHandler):
             return
         if parsed.path == "/api/feedback":
             self._record_feedback(payload)
+            return
+        if parsed.path == "/api/tasks/update":
+            self._update_task(payload)
             return
         if parsed.path == "/api/memory/delete":
             self._delete_memory(payload)
@@ -803,7 +1072,7 @@ class LingXiHandler(BaseHTTPRequestHandler):
                         "识别任务与当前模式",
                         "调用 feedback_memory.search",
                         "调用多模态模型生成结果",
-                        "输出到控制台与设备反馈层",
+                        "提取并保存可执行任务",
                     ],
                 }
             )
@@ -902,10 +1171,34 @@ class LingXiHandler(BaseHTTPRequestHandler):
 
             stored_text = f"[图片] {text}" if image_data_url else text
             interaction_id = self.engine.record_interaction(device_id, mode, stored_text, reply)
+            task = None
+            if mode == "assistant":
+                task_started = time.perf_counter()
+                task = self.engine.create_task_from_interaction(
+                    device_id,
+                    interaction_id,
+                    text,
+                    reply,
+                    source="image" if image_data_url else "text",
+                )
+                if task:
+                    task_ms = round((time.perf_counter() - task_started) * 1000, 2)
+                    emit(
+                        {
+                            "type": "tool",
+                            "name": "task.create",
+                            "status": "complete",
+                            "hits": 1,
+                            "latency_ms": task_ms,
+                            "estimated_tokens": 0,
+                        }
+                    )
+                    emit({"type": "task", "action": "created", "task": task})
             emit(
                 {
                     "type": "complete",
                     "interaction_id": interaction_id,
+                    "task_id": task["id"] if task else None,
                     "text": reply,
                     "profile": asdict(profile),
                     "memory_metrics": self.engine.memory_metrics(device_id),
@@ -984,6 +1277,23 @@ class LingXiHandler(BaseHTTPRequestHandler):
             self._send_json({"error": str(error)}, HTTPStatus.NOT_FOUND)
             return
         self._send_json({"ok": True, **result})
+
+    def _update_task(self, payload: dict[str, Any]) -> None:
+        device_id = self._clean_device_id(payload.get("device_id", ""))
+        task_id = payload.get("task_id")
+        status = str(payload.get("status", ""))
+        if not isinstance(task_id, int) or isinstance(task_id, bool) or task_id <= 0:
+            self._send_json({"error": "task_id must be a positive integer"}, HTTPStatus.BAD_REQUEST)
+            return
+        if status not in TASK_STATUSES:
+            self._send_json({"error": "unsupported task status"}, HTTPStatus.BAD_REQUEST)
+            return
+        try:
+            task = self.engine.update_task_status(device_id, task_id, status)
+        except LookupError as error:
+            self._send_json({"error": str(error)}, HTTPStatus.NOT_FOUND)
+            return
+        self._send_json({"ok": True, "task": task})
 
     def _delete_memory(self, payload: dict[str, Any]) -> None:
         device_id = self._clean_device_id(payload.get("device_id", ""))

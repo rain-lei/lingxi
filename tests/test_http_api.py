@@ -112,6 +112,56 @@ class HttpApiTests(unittest.TestCase):
         self.assertEqual(status, 200)
         self.assertEqual(json.loads(body)["metrics"]["memory_count"], 0)
 
+    def test_task_http_lifecycle_is_visitor_scoped(self) -> None:
+        device_id = "web-task-http-01"
+        status, _, body = self.request(
+            "POST",
+            "/api/interactions",
+            {
+                "device_id": device_id,
+                "text": "8月30日18:30主楼302有讲座，提前一小时提醒我报名",
+                "mode": "assistant",
+                "offline": False,
+            },
+        )
+        self.assertEqual(status, 200)
+        events = [json.loads(line) for line in body.decode("utf-8").splitlines() if line]
+        task_event = next(event for event in events if event["type"] == "task")
+        task_id = int(task_event["task"]["id"])
+        self.assertEqual(task_event["task"]["status"], "pending")
+        self.assertTrue(
+            any(
+                event["type"] == "tool" and event["name"] == "task.create"
+                for event in events
+            )
+        )
+
+        status, _, body = self.request("GET", f"/api/tasks?device_id={device_id}")
+        self.assertEqual(status, 200)
+        self.assertEqual(json.loads(body)["items"][0]["id"], task_id)
+
+        status, _, body = self.request(
+            "POST",
+            "/api/tasks/update",
+            {"device_id": "web-task-http-02", "task_id": task_id, "status": "confirmed"},
+        )
+        self.assertEqual(status, 404)
+
+        status, _, body = self.request(
+            "POST",
+            "/api/tasks/update",
+            {"device_id": device_id, "task_id": task_id, "status": "confirmed"},
+        )
+        self.assertEqual(status, 200)
+        self.assertEqual(json.loads(body)["task"]["status"], "confirmed")
+
+        status, _, body = self.request(
+            "GET",
+            f"/api/tasks?device_id={device_id}&status=confirmed",
+        )
+        self.assertEqual(status, 200)
+        self.assertEqual(len(json.loads(body)["items"]), 1)
+
     def test_device_endpoint_enforces_auth_hello_and_sequence(self) -> None:
         token = "integration-test-device-token"
         headers = {"Authorization": f"Bearer {token}"}

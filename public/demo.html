@@ -126,7 +126,12 @@
               <div class="demo-task-result-head"><span>可执行任务</span><b id="demoTaskStatus">待确认</b></div>
               <h3 id="demoTaskTitle">—</h3>
               <p id="demoTaskMeta">—</p>
-              <div class="demo-task-result-actions"><a href="/console">在控制台查看详情 →</a><span id="demoLatency">—</span></div>
+              <ul class="demo-task-checklist" id="demoTaskChecklist" hidden></ul>
+              <div class="demo-task-result-actions">
+                <button id="demoConfirmTaskButton" type="button">确认任务</button>
+                <a href="/console">在控制台查看详情 →</a>
+                <span id="demoLatency">—</span>
+              </div>
             </div>
             <div class="demo-output-footer"><span id="demoTrace">等待输入 · Agent 链路就绪</span><span id="demoOutputState">IDLE</span></div>
           </article>

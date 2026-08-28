@@ -48,6 +48,21 @@ const rateValues = {
   fast: 1.18,
 };
 
+const taskStatusLabels = {
+  pending: "待确认",
+  confirmed: "已确认",
+  completed: "已完成",
+  cancelled: "已取消",
+};
+
+const taskKindLabels = {
+  event: "校园活动",
+  reminder: "提醒",
+  checklist: "清单",
+  plan: "计划",
+  note: "任务记录",
+};
+
 const elements = {
   serverBadge: document.querySelector("#serverBadge"),
   deviceIdLabel: document.querySelector("#deviceIdLabel"),
@@ -71,6 +86,11 @@ const elements = {
   sendButton: document.querySelector("#sendButton"),
   audioToggle: document.querySelector("#audioToggle"),
   offlineToggle: document.querySelector("#offlineToggle"),
+  taskList: document.querySelector("#taskList"),
+  refreshTasksButton: document.querySelector("#refreshTasksButton"),
+  pendingTaskCount: document.querySelector("#pendingTaskCount"),
+  confirmedTaskCount: document.querySelector("#confirmedTaskCount"),
+  completedTaskCount: document.querySelector("#completedTaskCount"),
   profileName: document.querySelector("#profileName"),
   profileRate: document.querySelector("#profileRate"),
   feedbackMemoryCount: document.querySelector("#feedbackMemoryCount"),
@@ -121,6 +141,8 @@ const app = {
   feedbackInteractionId: null,
   feedbackBar: null,
   memoryMetrics: { memory_count: 0, feedback_count: 0, recall_uses: 0 },
+  tasks: [],
+  taskFilter: "all",
   lastRunEvidence: null,
 };
 
@@ -289,6 +311,127 @@ function updateMemoryMetrics(metrics) {
     : "待验证";
 }
 
+function updateTaskSummary() {
+  const counts = app.tasks.reduce(
+    (result, task) => {
+      result[task.status] = (result[task.status] || 0) + 1;
+      return result;
+    },
+    {},
+  );
+  elements.pendingTaskCount.textContent = String(counts.pending || 0);
+  elements.confirmedTaskCount.textContent = String(counts.confirmed || 0);
+  elements.completedTaskCount.textContent = String(counts.completed || 0);
+}
+
+function taskMatchesFilter(task) {
+  if (app.taskFilter === "open") return task.status === "pending" || task.status === "confirmed";
+  if (app.taskFilter === "completed") return task.status === "completed";
+  return true;
+}
+
+function renderTasks() {
+  updateTaskSummary();
+  elements.taskList.replaceChildren();
+  const visible = app.tasks.filter(taskMatchesFilter);
+  if (!visible.length) {
+    const empty = document.createElement("div");
+    empty.className = "task-empty";
+    const label = document.createElement("span");
+    label.textContent = app.tasks.length ? "QUEUE / FILTERED" : "QUEUE / EMPTY";
+    const message = document.createElement("p");
+    message.textContent = app.tasks.length
+      ? "当前筛选条件下没有任务。"
+      : "完成一次带“提醒、计划、活动或清单”的任务后，任务卡会出现在这里。";
+    empty.append(label, message);
+    elements.taskList.append(empty);
+    return;
+  }
+
+  visible.forEach((task) => {
+    const card = document.createElement("article");
+    card.className = `task-item task-${task.status}`;
+
+    const top = document.createElement("div");
+    top.className = "task-item-top";
+    const kind = document.createElement("span");
+    kind.textContent = taskKindLabels[task.kind] || task.kind;
+    const status = document.createElement("b");
+    status.textContent = taskStatusLabels[task.status] || task.status;
+    top.append(kind, status);
+
+    const title = document.createElement("h3");
+    title.textContent = task.title;
+    const summary = document.createElement("p");
+    summary.textContent = task.summary || "任务已保存，等待下一步操作。";
+
+    const meta = document.createElement("div");
+    meta.className = "task-item-meta";
+    [task.schedule_text, task.location, task.source === "image" ? "图片识别" : "文字输入"]
+      .filter(Boolean)
+      .forEach((value) => {
+        const item = document.createElement("span");
+        item.textContent = value;
+        meta.append(item);
+      });
+
+    const checklist = document.createElement("ul");
+    checklist.className = "task-item-checklist";
+    (task.checklist || []).slice(0, 4).forEach((value) => {
+      const item = document.createElement("li");
+      item.textContent = value;
+      checklist.append(item);
+    });
+
+    const actions = document.createElement("div");
+    actions.className = "task-item-actions";
+    const actionMap = {
+      pending: [["确认任务", "confirmed"], ["取消", "cancelled"]],
+      confirmed: [["标记完成", "completed"], ["取消", "cancelled"]],
+      completed: [["重新打开", "confirmed"]],
+      cancelled: [["恢复待确认", "pending"]],
+    };
+    (actionMap[task.status] || []).forEach(([label, nextStatus], index) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.dataset.taskId = String(task.id);
+      button.dataset.taskStatus = nextStatus;
+      button.textContent = label;
+      if (index === 0) button.className = "task-primary-action";
+      actions.append(button);
+    });
+
+    card.append(top, title, summary, meta);
+    if (checklist.children.length) card.append(checklist);
+    card.append(actions);
+    elements.taskList.append(card);
+  });
+}
+
+async function loadTasks() {
+  const result = await fetchJson(`/api/tasks?device_id=${encodeURIComponent(DEVICE_ID)}`);
+  app.tasks = result.items || [];
+  renderTasks();
+}
+
+async function updateTaskStatus(taskId, status, button) {
+  button.disabled = true;
+  try {
+    const result = await fetchJson("/api/tasks/update", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ device_id: DEVICE_ID, task_id: taskId, status }),
+    });
+    app.tasks = app.tasks.map((task) => task.id === result.task.id ? result.task : task);
+    renderTasks();
+    addLog("TASK", `#${taskId} → ${taskStatusLabels[status] || status}`);
+    showToast(`任务已更新为“${taskStatusLabels[status] || status}”`);
+  } catch (error) {
+    button.disabled = false;
+    showToast(error.message);
+  }
+}
+
 function renderMemoryItems(items) {
   elements.memoryList.replaceChildren();
   if (!items.length) {
@@ -435,11 +578,12 @@ async function loadInitialData() {
     await fetchJson("/api/health");
     setServerStatus("connected", "灵犀服务已连接");
 
-    const [capabilities, profile, history, memoryMetrics] = await Promise.all([
+    const [capabilities, profile, history, memoryMetrics, tasks] = await Promise.all([
       fetchJson("/api/capabilities"),
       fetchJson(`/api/profile?device_id=${encodeURIComponent(DEVICE_ID)}`),
       fetchJson(`/api/history?device_id=${encodeURIComponent(DEVICE_ID)}`),
       fetchJson(`/api/memory/metrics?device_id=${encodeURIComponent(DEVICE_ID)}`),
+      fetchJson(`/api/tasks?device_id=${encodeURIComponent(DEVICE_ID)}`),
     ]);
     app.capabilities = capabilities;
     if (capabilities.enabled) {
@@ -455,6 +599,8 @@ async function loadInitialData() {
     }
     updateProfile(profile);
     updateMemoryMetrics(memoryMetrics);
+    app.tasks = tasks.items || [];
+    renderTasks();
     history.items.forEach((item) => {
       addMessage("user", item.user_text);
       addMessage("assistant", item.assistant_text, {
@@ -601,6 +747,15 @@ function handleStreamEvent(event, assistant, appendDelta) {
   }
 
   if (event.type === "tool") {
+    if (event.name === "task.create") {
+      app.lastRunEvidence = {
+        ...(app.lastRunEvidence || {}),
+        task_tool: { tool: event.name, latency_ms: event.latency_ms },
+      };
+      elements.agentTraceText.textContent = `task.create · 已持久化 · ${event.latency_ms} ms`;
+      addLog("TOOL", `task.create / ${event.latency_ms} ms`);
+      return;
+    }
     app.lastRunEvidence = {
       ...(app.lastRunEvidence || {}),
       memory_recall: {
@@ -612,6 +767,15 @@ function handleStreamEvent(event, assistant, appendDelta) {
     };
     elements.agentTraceText.textContent = `${event.name} · ${event.hits} 条命中 · ${event.estimated_tokens} tokens · ${event.latency_ms} ms`;
     addLog("TOOL", `${event.name} / ${event.hits} hits`);
+    return;
+  }
+
+  if (event.type === "task") {
+    app.tasks = [event.task, ...app.tasks.filter((task) => task.id !== event.task.id)];
+    renderTasks();
+    elements.agentTraceText.textContent = `task.create · #${event.task.id} · 等待确认`;
+    addLog("TASK", `${event.task.title} 已进入任务队列`);
+    showToast("已生成真实任务卡，可在任务中心确认");
     return;
   }
 
@@ -696,7 +860,7 @@ async function runDeviceSelfTest() {
 function exportDiagnostics() {
   const diagnostic = {
     exported_at: new Date().toISOString(),
-    console_version: "0.4",
+    console_version: "0.5",
     device_id: DEVICE_ID,
     device_transport: "web-simulator",
     mode: app.mode,
@@ -705,6 +869,7 @@ function exportDiagnostics() {
     capabilities: app.capabilities,
     profile: app.profile,
     feedback_memory: app.memoryMetrics,
+    tasks: app.tasks.map(({ id, kind, status, source, created_at }) => ({ id, kind, status, source, created_at })),
     last_run: app.lastRunEvidence,
     metrics: {
       latency: elements.latencyMetric.textContent,
@@ -1069,6 +1234,8 @@ async function resetDemo() {
     updateProfile(payload.profile, "记忆已清空。再次对话时会重新建立用户画像。");
     updateMemoryMetrics({ memory_count: 0, feedback_count: 0, recall_uses: 0 });
     app.lastRunEvidence = null;
+    app.tasks = [];
+    renderTasks();
     if (elements.memoryDialog.open) renderMemoryItems([]);
     elements.conversation.querySelectorAll(".message:not(.welcome-message)").forEach((message) => message.remove());
     elements.latencyMetric.textContent = "—";
@@ -1137,6 +1304,19 @@ elements.audioToggle.addEventListener("change", () => {
 });
 
 elements.resetButton.addEventListener("click", resetDemo);
+elements.refreshTasksButton.addEventListener("click", () => loadTasks().catch((error) => showToast(error.message)));
+elements.taskList.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-task-id][data-task-status]");
+  if (!button) return;
+  updateTaskStatus(Number(button.dataset.taskId), button.dataset.taskStatus, button);
+});
+document.querySelectorAll("[data-task-filter]").forEach((button) => {
+  button.addEventListener("click", () => {
+    app.taskFilter = button.dataset.taskFilter || "all";
+    document.querySelectorAll("[data-task-filter]").forEach((item) => item.classList.toggle("active", item === button));
+    renderTasks();
+  });
+});
 elements.manageMemoryButton.addEventListener("click", openMemoryDialog);
 elements.closeMemoryButton.addEventListener("click", () => elements.memoryDialog.close());
 elements.memoryList.addEventListener("click", (event) => {

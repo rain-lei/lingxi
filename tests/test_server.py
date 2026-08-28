@@ -134,6 +134,66 @@ class DemoEngineTests(unittest.TestCase):
         self.assertEqual(self.engine.list_feedback_memories(self.device_id), [])
         self.assertEqual(self.engine.memory_metrics(self.device_id)["memory_count"], 0)
 
+    def test_task_lifecycle_is_persisted_scoped_and_indexed(self) -> None:
+        interaction_id = self.engine.record_interaction(
+            self.device_id,
+            "assistant",
+            "8月30日18:30主楼302有校园讲座，提前一小时提醒我报名",
+            "已识别讲座时间和地点，可以生成待确认任务。",
+        )
+        task = self.engine.create_task_from_interaction(
+            self.device_id,
+            interaction_id,
+            "8月30日18:30主楼302有校园讲座，提前一小时提醒我报名",
+            "已识别讲座时间和地点，可以生成待确认任务。",
+        )
+        self.assertIsNotNone(task)
+        self.assertEqual(task["kind"], "event")
+        self.assertEqual(task["status"], "pending")
+        self.assertIn("8月30日", task["schedule_text"])
+        self.assertIn("主楼302", task["location"])
+        self.assertIn("确认活动时间与地点", task["checklist"])
+        self.assertEqual(self.engine.list_tasks("another-device"), [])
+
+        with self.assertRaises(LookupError):
+            self.engine.update_task_status("another-device", int(task["id"]), "confirmed")
+        confirmed = self.engine.update_task_status(
+            self.device_id,
+            int(task["id"]),
+            "confirmed",
+        )
+        self.assertEqual(confirmed["status"], "confirmed")
+        self.assertEqual(len(self.engine.list_tasks(self.device_id, status="confirmed")), 1)
+
+        with self.engine._connection() as connection:
+            plan = connection.execute(
+                "EXPLAIN QUERY PLAN SELECT * FROM tasks "
+                "WHERE device_id = ? AND status = ? ORDER BY id DESC LIMIT 50",
+                (self.device_id, "confirmed"),
+            ).fetchall()
+        self.assertTrue(
+            any("idx_tasks_device_status" in str(row["detail"]) for row in plan)
+        )
+
+        self.engine.reset_device(self.device_id)
+        self.assertEqual(self.engine.list_tasks(self.device_id), [])
+
+    def test_non_actionable_chat_does_not_create_task(self) -> None:
+        interaction_id = self.engine.record_interaction(
+            self.device_id,
+            "assistant",
+            "你好",
+            "你好呀",
+        )
+        self.assertIsNone(
+            self.engine.create_task_from_interaction(
+                self.device_id,
+                interaction_id,
+                "你好",
+                "你好呀",
+            )
+        )
+
     def test_conversation_history_is_bounded(self) -> None:
         for index in range(55):
             self.engine.record_interaction(

@@ -18,14 +18,17 @@ const els = {
   taskTitle: document.querySelector("#demoTaskTitle"),
   taskStatus: document.querySelector("#demoTaskStatus"),
   taskMeta: document.querySelector("#demoTaskMeta"),
+  taskChecklist: document.querySelector("#demoTaskChecklist"),
+  confirmTask: document.querySelector("#demoConfirmTaskButton"),
   latency: document.querySelector("#demoLatency"),
   trace: document.querySelector("#demoTrace"),
   outputState: document.querySelector("#demoOutputState"),
   toast: document.querySelector("#demoToast"),
 };
 
-const state = { busy: false, image: null, deviceId: getDeviceId(), outputText: "" };
-const samplePrompt = "请把这张校园活动海报整理成任务卡：告诉我时间、地点，并提前一小时提醒。";
+const state = { busy: false, image: null, deviceId: getDeviceId(), outputText: "", task: null };
+const taskStatusLabels = { pending: "待确认", confirmed: "已确认", completed: "已完成", cancelled: "已取消" };
+const samplePrompt = "8月30日18:30主楼302有未来实验室公开讲座，请整理成任务卡，并提前一小时提醒我报名。";
 
 function getDeviceId() {
   let existing = null;
@@ -82,19 +85,41 @@ function renderResponse(text = "") {
   els.response.append(label, body);
 }
 
-function inferTitle(input, output) {
-  if (/海报|讲座|活动|报名/.test(input)) return "校园活动 · 已整理为待确认任务";
-  if (/复习|学习|作业|计划/.test(input)) return "学习计划 · 今晚两小时";
-  if (/翻译|通知|英文|日文/.test(input)) return "校园通知 · 重点已提取";
-  return (output || input).split(/[。！？\n]/)[0].slice(0, 28) || "灵犀任务 · 待确认";
+function showTaskResult(task, event = null) {
+  if (!task) return;
+  state.task = task;
+  els.result.hidden = false;
+  els.taskStatus.textContent = taskStatusLabels[task.status] || task.status;
+  els.taskTitle.textContent = task.title;
+  const meta = [task.schedule_text, task.location, task.source === "image" ? "图片识别" : "文字输入"].filter(Boolean);
+  els.taskMeta.textContent = meta.join(" · ") || task.summary || "任务已由服务器保存";
+  els.taskChecklist.replaceChildren();
+  (task.checklist || []).forEach((item) => {
+    const row = document.createElement("li");
+    row.textContent = item;
+    els.taskChecklist.append(row);
+  });
+  els.taskChecklist.hidden = !els.taskChecklist.children.length;
+  els.confirmTask.hidden = task.status !== "pending";
+  els.confirmTask.disabled = false;
+  els.latency.textContent = event?.latency_ms ? `${event.latency_ms} ms` : "已保存";
 }
 
-function showTaskResult(input, output, event) {
-  els.result.hidden = false;
-  els.taskStatus.textContent = "待确认";
-  els.taskTitle.textContent = inferTitle(input, output);
-  els.taskMeta.textContent = state.image ? "图片已分析 · 可前往控制台继续编辑提醒和清单" : "任务已生成 · 可前往控制台查看完整执行链路";
-  els.latency.textContent = event?.latency_ms ? `${event.latency_ms} ms` : "已完成";
+async function confirmCurrentTask() {
+  if (!state.task || state.task.status !== "pending") return;
+  els.confirmTask.disabled = true;
+  try {
+    const result = await fetchJson("/api/tasks/update", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ device_id: state.deviceId, task_id: state.task.id, status: "confirmed" }),
+    });
+    showTaskResult(result.task);
+    showToast("任务已确认，可在控制台继续管理");
+  } catch (error) {
+    els.confirmTask.disabled = false;
+    showToast(error.message);
+  }
 }
 
 function clearImage() {
@@ -137,6 +162,7 @@ async function runInteraction() {
   const requestText = input || "请分析这张校园图片，并整理成一个可执行任务。";
   setBusy(true);
   state.outputText = "";
+  state.task = null;
   els.result.hidden = true;
   els.outputState.textContent = "RUNNING";
   els.trace.textContent = "任务已接收 · 正在生成执行计划";
@@ -166,7 +192,7 @@ async function runInteraction() {
       if (done) break;
     }
     if (buffer.trim()) completed = handleEvent(JSON.parse(buffer), requestText) || completed;
-    if (completed) showTaskResult(requestText, state.outputText, completed);
+    if (completed && state.task) showTaskResult(state.task, completed);
   } catch (error) {
     els.outputState.textContent = "OFFLINE";
     els.trace.textContent = "链路异常 · 请进入控制台查看诊断";
@@ -197,7 +223,15 @@ function handleEvent(event, input) {
     return null;
   }
   if (event.type === "tool") {
-    els.trace.textContent = `${event.name || "agent.tool"} · ${event.hits || 0} 条记忆命中`;
+    els.trace.textContent = event.name === "task.create"
+      ? `task.create · 任务已持久化 · ${event.latency_ms || 0} ms`
+      : `${event.name || "agent.tool"} · ${event.hits || 0} 条记忆命中`;
+    return null;
+  }
+  if (event.type === "task") {
+    state.task = event.task;
+    showTaskResult(event.task);
+    els.trace.textContent = `task.create · #${event.task.id} · 等待用户确认`;
     return null;
   }
   if (event.type === "memory_recall") {
@@ -234,5 +268,6 @@ els.sample.addEventListener("click", () => { els.input.value = samplePrompt; els
 els.imageButton.addEventListener("click", () => els.imageInput.click());
 els.imageInput.addEventListener("change", handleImage);
 els.removeImage.addEventListener("click", clearImage);
+els.confirmTask.addEventListener("click", confirmCurrentTask);
 document.querySelectorAll("[data-demo-prompt]").forEach((button) => button.addEventListener("click", () => { els.input.value = button.dataset.demoPrompt || ""; els.input.focus(); }));
 loadStatus();
