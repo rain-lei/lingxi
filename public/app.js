@@ -69,6 +69,11 @@ const reminderStateLabels = {
   dismissed: "提醒已关闭",
 };
 
+const reminderSourceLabels = {
+  memory: "按记忆偏好",
+  explicit: "按本次设置",
+};
+
 const elements = {
   serverBadge: document.querySelector("#serverBadge"),
   deviceIdLabel: document.querySelector("#deviceIdLabel"),
@@ -396,13 +401,16 @@ function renderTasks() {
     title.textContent = task.title;
     const summary = document.createElement("p");
     summary.textContent = task.summary || "任务已保存，等待下一步操作。";
+    const reminderSource = reminderSourceLabels[task.reminder_source] || "";
 
     const meta = document.createElement("div");
     meta.className = "task-item-meta";
     [
       task.schedule_text,
       task.scheduled_at ? `活动 ${formatTaskDate(task.scheduled_at)}` : "",
-      task.remind_at ? `提醒 ${formatTaskDate(task.remind_at)}` : "",
+      task.remind_at
+        ? `提醒 ${formatTaskDate(task.remind_at)}${reminderSource ? ` · ${reminderSource}` : ""}`
+        : "",
       task.location,
       task.source === "image" ? "图片识别" : "文字输入",
     ]

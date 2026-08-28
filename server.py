@@ -45,6 +45,7 @@ ALLOWED_MODES = {"assistant", "companion", "translate"}
 TASK_STATUSES = {"pending", "confirmed", "completed", "cancelled"}
 TASK_KINDS = {"event", "reminder", "checklist", "plan", "note"}
 TASK_REMINDER_STATES = {"none", "scheduled", "due", "dismissed"}
+TASK_REMINDER_SOURCES = {"none", "explicit", "memory"}
 MAX_CONVERSATIONS_PER_DEVICE = 50
 MAX_TASKS_PER_DEVICE = 100
 # China Standard Time is UTC+8 and has no daylight-saving transitions. A fixed
@@ -200,6 +201,8 @@ class DemoEngine:
                     remind_at TEXT NOT NULL DEFAULT '',
                     reminder_state TEXT NOT NULL DEFAULT 'none'
                         CHECK(reminder_state IN ('none', 'scheduled', 'due', 'dismissed')),
+                    reminder_source TEXT NOT NULL DEFAULT 'none'
+                        CHECK(reminder_source IN ('none', 'explicit', 'memory')),
                     checklist_json TEXT NOT NULL DEFAULT '[]',
                     source TEXT NOT NULL CHECK(source IN ('text', 'image', 'voice', 'system')),
                     created_at TEXT NOT NULL,
@@ -221,6 +224,7 @@ class DemoEngine:
                 "scheduled_at": "ALTER TABLE tasks ADD COLUMN scheduled_at TEXT NOT NULL DEFAULT ''",
                 "remind_at": "ALTER TABLE tasks ADD COLUMN remind_at TEXT NOT NULL DEFAULT ''",
                 "reminder_state": "ALTER TABLE tasks ADD COLUMN reminder_state TEXT NOT NULL DEFAULT 'none'",
+                "reminder_source": "ALTER TABLE tasks ADD COLUMN reminder_source TEXT NOT NULL DEFAULT 'none'",
             }
             for column, statement in migrations.items():
                 if column not in task_columns:
@@ -439,16 +443,47 @@ class DemoEngine:
         return values.get(value)
 
     @classmethod
-    def _task_timing(cls, user_text: str) -> tuple[str, str]:
-        """Extract an absolute event time and optional lead-time reminder.
+    def _reminder_lead_minutes(cls, text: str) -> int | None:
+        """Read a bounded lead time such as ``提前一小时提醒`` from text."""
+        compact = " ".join(text.strip().split()).replace("：", ":")
+        lead = re.search(
+            r"提前\s*([0-9一二两三四五六七八九十]+)\s*(小时|分钟|分)\s*提醒",
+            compact,
+        )
+        if not lead:
+            return None
+        amount = cls._chinese_number(lead.group(1))
+        if not amount or amount > 168:
+            return None
+        return amount * 60 if lead.group(2) == "小时" else amount
 
-        The demo only schedules reminders when both a date and a clock time are
-        explicit, so ambiguous phrases never create a surprising notification.
+    @classmethod
+    def _reminder_default_from_memories(
+        cls, feedback_memories: list[dict[str, Any]] | None
+    ) -> int | None:
+        """Use only memories selected for this task, never all visitor data."""
+        for memory in feedback_memories or []:
+            minutes = cls._reminder_lead_minutes(str(memory.get("rule", "")))
+            if minutes is not None:
+                return minutes
+        return None
+
+    @classmethod
+    def _task_timing(
+        cls,
+        user_text: str,
+        default_reminder_minutes: int | None = None,
+    ) -> tuple[str, str, str]:
+        """Extract an explicit time and resolve an explicit or remembered lead.
+
+        A task must always contain both a date and a clock time. Explicit user
+        wording wins. A selected feedback-memory rule may provide the lead only
+        when the user did not opt out of reminders.
         """
         compact = " ".join(user_text.strip().split()).replace("：", ":")
         clock = re.search(r"(?<!\d)([01]?\d|2[0-3]):([0-5]\d)(?!\d)", compact)
         if not clock:
-            return "", ""
+            return "", "", "none"
         now = datetime.now(LOCAL_TIMEZONE)
         event_date = None
         month_day = re.search(r"(?<!\d)(\d{1,2})月(\d{1,2})日", compact)
@@ -457,12 +492,12 @@ class DemoEngine:
             try:
                 event_date = now.date().replace(year=now.year, month=month, day=day)
             except ValueError:
-                return "", ""
+                return "", "", "none"
             if event_date < now.date():
                 try:
                     event_date = event_date.replace(year=now.year + 1)
                 except ValueError:
-                    return "", ""
+                    return "", "", "none"
         elif "明天" in compact or "明晚" in compact:
             event_date = (now + timedelta(days=1)).date()
         elif "后天" in compact:
@@ -470,7 +505,7 @@ class DemoEngine:
         elif "今天" in compact or "今晚" in compact:
             event_date = now.date()
         if event_date is None:
-            return "", ""
+            return "", "", "none"
 
         event_at = datetime(
             event_date.year,
@@ -481,15 +516,16 @@ class DemoEngine:
             tzinfo=LOCAL_TIMEZONE,
         ).astimezone(timezone.utc)
         scheduled_at = event_at.isoformat(timespec="seconds")
-        lead = re.search(r"提前\s*([0-9一二两三四五六七八九十]+)\s*(小时|分钟|分)\s*提醒", compact)
-        if not lead:
-            return scheduled_at, ""
-        amount = cls._chinese_number(lead.group(1))
-        if not amount or amount > 168:
-            return scheduled_at, ""
-        minutes = amount * 60 if lead.group(2) == "小时" else amount
-        reminder_at = event_at - timedelta(minutes=minutes)
-        return scheduled_at, reminder_at.isoformat(timespec="seconds")
+        explicit_minutes = cls._reminder_lead_minutes(compact)
+        if explicit_minutes is not None:
+            reminder_at = event_at - timedelta(minutes=explicit_minutes)
+            return scheduled_at, reminder_at.isoformat(timespec="seconds"), "explicit"
+        if re.search(r"(?:不|不用|无需|别)\s*(?:再)?提醒", compact):
+            return scheduled_at, "", "none"
+        if default_reminder_minutes is not None:
+            reminder_at = event_at - timedelta(minutes=default_reminder_minutes)
+            return scheduled_at, reminder_at.isoformat(timespec="seconds"), "memory"
+        return scheduled_at, "", "none"
 
     @staticmethod
     def _task_location(user_text: str, assistant_text: str) -> str:
@@ -536,6 +572,7 @@ class DemoEngine:
         user_text: str,
         assistant_text: str,
         source: str = "text",
+        feedback_memories: list[dict[str, Any]] | None = None,
     ) -> dict[str, Any] | None:
         safe_source = source if source in {"text", "image", "voice", "system"} else "text"
         kind = self._task_kind(user_text, safe_source)
@@ -545,7 +582,10 @@ class DemoEngine:
         summary = " ".join(assistant_text.strip().split())[:280]
         schedule_text = self._task_schedule_text(user_text, assistant_text)
         location = self._task_location(user_text, assistant_text)
-        scheduled_at, remind_at = self._task_timing(user_text)
+        scheduled_at, remind_at, reminder_source = self._task_timing(
+            user_text,
+            self._reminder_default_from_memories(feedback_memories),
+        )
         reminder_state = "scheduled" if remind_at else "none"
         checklist = self._task_checklist(user_text, assistant_text, kind)
         now = utc_now()
@@ -554,9 +594,9 @@ class DemoEngine:
                 """
                 INSERT INTO tasks(
                     device_id, conversation_id, kind, status, title, summary,
-                    schedule_text, location, scheduled_at, remind_at, reminder_state,
+                    schedule_text, location, scheduled_at, remind_at, reminder_state, reminder_source,
                     checklist_json, source, created_at, updated_at
-                ) VALUES (?, ?, ?, 'pending', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ) VALUES (?, ?, ?, 'pending', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ON CONFLICT(device_id, conversation_id) DO UPDATE SET
                     kind = excluded.kind,
                     title = excluded.title,
@@ -566,6 +606,7 @@ class DemoEngine:
                     scheduled_at = excluded.scheduled_at,
                     remind_at = excluded.remind_at,
                     reminder_state = excluded.reminder_state,
+                    reminder_source = excluded.reminder_source,
                     checklist_json = excluded.checklist_json,
                     source = excluded.source,
                     updated_at = excluded.updated_at
@@ -581,6 +622,7 @@ class DemoEngine:
                     scheduled_at,
                     remind_at,
                     reminder_state,
+                    reminder_source,
                     json.dumps(checklist, ensure_ascii=False),
                     safe_source,
                     now,
@@ -861,7 +903,21 @@ class DemoEngine:
 
     @staticmethod
     def _feedback_scope(rule: str) -> str:
-        global_markers = ("以后", "每次", "总是", "回答", "语气", "格式", "简短", "详细", "称呼")
+        global_markers = ("每次", "总是", "回答", "语气", "格式", "简短", "详细", "称呼")
+        domain_markers = (
+            "活动",
+            "讲座",
+            "会议",
+            "比赛",
+            "课程",
+            "复习",
+            "作业",
+            "考试",
+            "图书馆",
+            "通勤",
+        )
+        if "以后" in rule and not any(marker in rule for marker in domain_markers):
+            return "global"
         return "global" if any(marker in rule for marker in global_markers) else "similar"
 
     @staticmethod
@@ -1039,6 +1095,7 @@ class LingXiHandler(BaseHTTPRequestHandler):
                 "reminders": {
                     "enabled": True,
                     "states": sorted(TASK_REMINDER_STATES),
+                    "sources": sorted(TASK_REMINDER_SOURCES),
                     "delivery": "persistent scheduler + console polling",
                 },
             }
@@ -1317,6 +1374,7 @@ class LingXiHandler(BaseHTTPRequestHandler):
                     text,
                     reply,
                     source="image" if image_data_url else "text",
+                    feedback_memories=feedback_memories,
                 )
                 if task:
                     task_ms = round((time.perf_counter() - task_started) * 1000, 2)

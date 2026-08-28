@@ -165,6 +165,51 @@ class HttpApiTests(unittest.TestCase):
         self.assertEqual(status, 200)
         self.assertEqual(len(json.loads(body)["items"]), 1)
 
+    def test_recalled_reminder_preference_reaches_task_scheduler(self) -> None:
+        device_id = "web-reminder-memory-01"
+        status, _, body = self.request(
+            "POST",
+            "/api/interactions",
+            {
+                "device_id": device_id,
+                "text": "明天18:30主楼302有讲座",
+                "mode": "assistant",
+                "offline": False,
+            },
+        )
+        self.assertEqual(status, 200)
+        first_events = [json.loads(line) for line in body.decode("utf-8").splitlines() if line]
+        complete = next(event for event in first_events if event["type"] == "complete")
+
+        status, _, _ = self.request(
+            "POST",
+            "/api/feedback",
+            {
+                "device_id": device_id,
+                "interaction_id": complete["interaction_id"],
+                "rating": -1,
+                "correction": "以后校园活动都提前一小时提醒",
+            },
+        )
+        self.assertEqual(status, 200)
+
+        status, _, body = self.request(
+            "POST",
+            "/api/interactions",
+            {
+                "device_id": device_id,
+                "text": "后天18:30图书馆有校园讲座",
+                "mode": "assistant",
+                "offline": False,
+            },
+        )
+        self.assertEqual(status, 200)
+        events = [json.loads(line) for line in body.decode("utf-8").splitlines() if line]
+        task = next(event["task"] for event in events if event["type"] == "task")
+        self.assertEqual(task["reminder_source"], "memory")
+        self.assertEqual(task["reminder_state"], "scheduled")
+        self.assertTrue(task["remind_at"])
+
     def test_demo_and_console_routes_are_distinct(self) -> None:
         status, _, demo_body = self.request("GET", "/demo")
         self.assertEqual(status, 200)

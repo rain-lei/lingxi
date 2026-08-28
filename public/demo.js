@@ -108,9 +108,12 @@ function showTaskResult(task, event = null) {
       month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit", hour12: false,
     });
   };
+  const reminderSource = task.reminder_source === "memory" ? " · 按记忆偏好" : "";
   const meta = [
     task.schedule_text,
-    task.remind_at ? `提醒 ${formatTime(task.remind_at)}` : "",
+    task.remind_at
+      ? `提醒 ${formatTime(task.remind_at)}${reminderSource}`
+      : "",
     task.location,
     task.source === "image" ? "图片识别" : "文字输入",
   ].filter(Boolean);

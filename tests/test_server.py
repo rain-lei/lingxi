@@ -1,6 +1,7 @@
 import tempfile
 import unittest
 import sqlite3
+from datetime import datetime
 from pathlib import Path
 
 from server import DemoEngine, SlidingWindowRateLimiter, chunk_text
@@ -157,6 +158,7 @@ class DemoEngineTests(unittest.TestCase):
         self.assertIn("提前一小时提醒", task["schedule_text"])
         self.assertIn("主楼302", task["location"])
         self.assertIn("确认活动时间与地点", task["checklist"])
+        self.assertEqual(task["reminder_source"], "explicit")
         self.assertEqual(self.engine.list_tasks("another-device"), [])
 
         with self.assertRaises(LookupError):
@@ -231,6 +233,94 @@ class DemoEngineTests(unittest.TestCase):
         )
         self.assertEqual(completed["reminder_state"], "dismissed")
 
+    def test_recalled_reminder_preference_schedules_task_unless_user_overrides(self) -> None:
+        first_interaction = self.engine.record_interaction(
+            self.device_id,
+            "assistant",
+            "明天18:30主楼302有讲座",
+            "已整理讲座信息。",
+        )
+        self.engine.record_feedback(
+            self.device_id,
+            first_interaction,
+            -1,
+            "以后校园活动都提前一小时提醒",
+        )
+        memories = self.engine.search_feedback_memories(
+            self.device_id,
+            "后天18:30图书馆有校园讲座",
+        )
+        self.assertEqual(memories[0]["rule"], "以后校园活动都提前一小时提醒")
+        self.assertEqual(memories[0]["scope"], "similar")
+        self.assertEqual(
+            self.engine.search_feedback_memories(self.device_id, "帮我制定高数复习计划"),
+            [],
+        )
+
+        interaction_id = self.engine.record_interaction(
+            self.device_id,
+            "assistant",
+            "后天18:30图书馆有校园讲座",
+            "已整理讲座信息。",
+        )
+        inherited = self.engine.create_task_from_interaction(
+            self.device_id,
+            interaction_id,
+            "后天18:30图书馆有校园讲座",
+            "已整理讲座信息。",
+            feedback_memories=memories,
+        )
+        self.assertIsNotNone(inherited)
+        self.assertEqual(inherited["reminder_source"], "memory")
+        self.assertEqual(inherited["reminder_state"], "scheduled")
+        self.assertEqual(
+            (
+                datetime.fromisoformat(inherited["scheduled_at"])
+                - datetime.fromisoformat(inherited["remind_at"])
+            ).total_seconds(),
+            3600,
+        )
+
+        explicit_id = self.engine.record_interaction(
+            self.device_id,
+            "assistant",
+            "后天18:30图书馆有校园讲座，提前30分钟提醒",
+            "已整理讲座信息。",
+        )
+        explicit = self.engine.create_task_from_interaction(
+            self.device_id,
+            explicit_id,
+            "后天18:30图书馆有校园讲座，提前30分钟提醒",
+            "已整理讲座信息。",
+            feedback_memories=memories,
+        )
+        self.assertIsNotNone(explicit)
+        self.assertEqual(explicit["reminder_source"], "explicit")
+        self.assertEqual(
+            (
+                datetime.fromisoformat(explicit["scheduled_at"])
+                - datetime.fromisoformat(explicit["remind_at"])
+            ).total_seconds(),
+            1800,
+        )
+
+        opt_out_id = self.engine.record_interaction(
+            self.device_id,
+            "assistant",
+            "后天18:30图书馆有校园讲座，不用提醒",
+            "已整理讲座信息。",
+        )
+        opt_out = self.engine.create_task_from_interaction(
+            self.device_id,
+            opt_out_id,
+            "后天18:30图书馆有校园讲座，不用提醒",
+            "已整理讲座信息。",
+            feedback_memories=memories,
+        )
+        self.assertIsNotNone(opt_out)
+        self.assertEqual(opt_out["reminder_source"], "none")
+        self.assertEqual(opt_out["remind_at"], "")
+
     def test_existing_task_table_is_migrated_for_reminders(self) -> None:
         legacy_database = Path(self.temp_dir.name) / "legacy-tasks.db"
         connection = sqlite3.connect(legacy_database)
@@ -264,7 +354,9 @@ class DemoEngineTests(unittest.TestCase):
                 row["name"]
                 for row in migrated_connection.execute("PRAGMA table_info(tasks)").fetchall()
             }
-        self.assertTrue({"scheduled_at", "remind_at", "reminder_state"}.issubset(columns))
+        self.assertTrue(
+            {"scheduled_at", "remind_at", "reminder_state", "reminder_source"}.issubset(columns)
+        )
 
     def test_conversation_history_is_bounded(self) -> None:
         for index in range(55):
