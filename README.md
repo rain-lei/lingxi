@@ -93,6 +93,12 @@ python tools/memory_eval.py
 
 需要保存脱敏证据时可指定输出文件（例如 `python tools/memory_eval.py --output .tmp/memory-eval.json`）。
 
+提交前运行以下命令，会检查必备材料、`.env` 是否误入 Git、公开 Demo/控制台、健康检查、模型、视觉和提醒能力；它不读取或输出密钥：
+
+```powershell
+python tools/submission_preflight.py
+```
+
 启动服务后也可以检查：
 
 ```powershell
@@ -167,4 +173,4 @@ python tools/device_simulator.py --send --base-url http://127.0.0.1:8787
 
 ## 当前状态
 
-没有 API Key 时系统使用确定性的 Mock AI，确保黑客松现场仍可演示。当前已实现持久化任务卡、确认/完成/取消闭环，以及对显式日期、时间和“提前 N 小时/分钟提醒”的服务器端调度；到期状态会在控制台轮询显示。它尚不是系统推送、短信或实机震动，ESP32-S3 WebSocket、I2S 音频和 OTA 仍属于 Device 0.5 实机阶段。完整阶段指标见[持续升级路线](docs/upgrade-roadmap.md)。
+没有 API Key 时系统使用确定性的 Mock AI，确保黑客松现场仍可演示。当前已实现持久化任务卡、确认/完成/取消闭环，对日期、相对日期、本/下周星期和图片提取时间的服务器端调度，以及反馈记忆驱动的提醒偏好；到期状态与来源会在控制台显示。它尚不是系统推送、短信或实机震动，ESP32-S3 WebSocket、I2S 音频和 OTA 属于 Device 0.5 实机阶段。完整阶段指标见[持续升级路线](docs/upgrade-roadmap.md)。
