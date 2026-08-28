@@ -87,6 +87,8 @@ python -m unittest discover -s tests -v
 python tools/memory_eval.py
 ```
 
+需要保存脱敏证据时可指定输出文件（例如 `python tools/memory_eval.py --output .tmp/memory-eval.json`）。
+
 启动服务后也可以检查：
 
 ```powershell

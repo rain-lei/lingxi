@@ -11,6 +11,7 @@ import json
 import sys
 import tempfile
 import time
+import argparse
 from pathlib import Path
 from typing import Any
 
@@ -92,8 +93,19 @@ def run_replay() -> dict[str, Any]:
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--output",
+        type=Path,
+        help="optionally save the UTF-8 JSON report to this path",
+    )
+    args = parser.parse_args()
     report = run_replay()
-    print(json.dumps(report, ensure_ascii=False, indent=2))
+    rendered = json.dumps(report, ensure_ascii=False, indent=2) + "\n"
+    if args.output:
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        args.output.write_text(rendered, encoding="utf-8")
+    print(rendered, end="")
     return 0 if report["ok"] else 1
 
 
