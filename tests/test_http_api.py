@@ -162,6 +162,18 @@ class HttpApiTests(unittest.TestCase):
         self.assertEqual(status, 200)
         self.assertEqual(len(json.loads(body)["items"]), 1)
 
+    def test_demo_and_console_routes_are_distinct(self) -> None:
+        status, _, demo_body = self.request("GET", "/demo")
+        self.assertEqual(status, 200)
+        self.assertIn("在线演示".encode("utf-8"), demo_body)
+        self.assertIn(b"demoTaskResult", demo_body)
+
+        status, _, console_body = self.request("GET", "/console")
+        self.assertEqual(status, 200)
+        self.assertIn("系统控制台".encode("utf-8"), console_body)
+        self.assertIn(b"taskCenterTitle", console_body)
+        self.assertNotEqual(demo_body, console_body)
+
     def test_device_endpoint_enforces_auth_hello_and_sequence(self) -> None:
         token = "integration-test-device-token"
         headers = {"Authorization": f"Bearer {token}"}

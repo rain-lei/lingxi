@@ -356,12 +356,12 @@ class DemoEngine:
         combined = f"{user_text} {assistant_text}"
         if kind == "event":
             if "讲座" in combined:
-                return "校园讲座 · 待确认"
+                return "校园讲座"
             if "比赛" in combined:
-                return "校园比赛 · 待确认"
+                return "校园比赛"
             if "报名" in combined:
-                return "活动报名 · 待确认"
-            return "校园活动 · 待确认"
+                return "活动报名"
+            return "校园活动"
         if kind == "plan":
             if "复习" in combined:
                 return "复习计划"
@@ -385,19 +385,18 @@ class DemoEngine:
     def _task_schedule_text(user_text: str, assistant_text: str) -> str:
         combined = " ".join(f"{user_text} {assistant_text}".split())
         values: list[str] = []
-        patterns = (
-            r"(?:今天|今晚|明天|明晚|后天|本周[一二三四五六日天]|下周[一二三四五六日天])[^，。；\n]{0,20}",
-            r"\d{1,2}月\d{1,2}日[^，。；\n]{0,18}",
-            r"\d{1,2}[:：]\d{2}",
-            r"提前[^，。；\n]{1,12}提醒",
+        date_match = re.search(
+            r"(?:今天|今晚|明天|明晚|后天|本周[一二三四五六日天]|下周[一二三四五六日天]|\d{1,2}月\d{1,2}日)",
+            combined,
         )
-        for pattern in patterns:
-            match = re.search(pattern, combined)
+        time_match = re.search(r"\d{1,2}[:：]\d{2}", combined)
+        reminder_match = re.search(r"提前[^，。；\n]{1,12}提醒", combined)
+        for match in (date_match, time_match, reminder_match):
             if match:
-                value = match.group(0).strip()
+                value = match.group(0).strip().replace("：", ":")
                 if value and value not in values:
-                    values.append(value[:36])
-        return " · ".join(values[:2])
+                    values.append(value[:24])
+        return " · ".join(values[:3])
 
     @staticmethod
     def _task_location(user_text: str, assistant_text: str) -> str:
