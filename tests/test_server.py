@@ -1,5 +1,6 @@
 import tempfile
 import unittest
+import sqlite3
 from pathlib import Path
 
 from server import DemoEngine, SlidingWindowRateLimiter, chunk_text
@@ -196,6 +197,74 @@ class DemoEngineTests(unittest.TestCase):
                 "你好呀",
             )
         )
+
+    def test_confirmed_reminder_becomes_due_and_is_dismissed_on_completion(self) -> None:
+        interaction_id = self.engine.record_interaction(
+            self.device_id,
+            "assistant",
+            "明天18:30主楼302有讲座，提前一小时提醒我报名",
+            "已整理为讲座任务。",
+        )
+        task = self.engine.create_task_from_interaction(
+            self.device_id,
+            interaction_id,
+            "明天18:30主楼302有讲座，提前一小时提醒我报名",
+            "已整理为讲座任务。",
+        )
+        self.assertIsNotNone(task)
+        self.assertTrue(task["scheduled_at"])
+        self.assertTrue(task["remind_at"])
+        self.assertLess(task["remind_at"], task["scheduled_at"])
+        self.assertEqual(task["reminder_state"], "scheduled")
+        self.assertEqual(self.engine.mark_due_reminders("2099-01-01T00:00:00+00:00"), 0)
+
+        confirmed = self.engine.update_task_status(
+            self.device_id, int(task["id"]), "confirmed"
+        )
+        self.assertEqual(confirmed["reminder_state"], "scheduled")
+        self.assertEqual(self.engine.mark_due_reminders("2099-01-01T00:00:00+00:00"), 1)
+        due = self.engine.list_tasks(self.device_id)[0]
+        self.assertEqual(due["reminder_state"], "due")
+
+        completed = self.engine.update_task_status(
+            self.device_id, int(task["id"]), "completed"
+        )
+        self.assertEqual(completed["reminder_state"], "dismissed")
+
+    def test_existing_task_table_is_migrated_for_reminders(self) -> None:
+        legacy_database = Path(self.temp_dir.name) / "legacy-tasks.db"
+        connection = sqlite3.connect(legacy_database)
+        try:
+            connection.execute(
+                """
+                CREATE TABLE tasks (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    device_id TEXT NOT NULL,
+                    conversation_id INTEGER,
+                    kind TEXT NOT NULL,
+                    status TEXT NOT NULL DEFAULT 'pending',
+                    title TEXT NOT NULL,
+                    summary TEXT NOT NULL DEFAULT '',
+                    schedule_text TEXT NOT NULL DEFAULT '',
+                    location TEXT NOT NULL DEFAULT '',
+                    checklist_json TEXT NOT NULL DEFAULT '[]',
+                    source TEXT NOT NULL,
+                    created_at TEXT NOT NULL,
+                    updated_at TEXT NOT NULL
+                )
+                """
+            )
+            connection.commit()
+        finally:
+            connection.close()
+
+        migrated = DemoEngine(legacy_database)
+        with migrated._connection() as migrated_connection:
+            columns = {
+                row["name"]
+                for row in migrated_connection.execute("PRAGMA table_info(tasks)").fetchall()
+            }
+        self.assertTrue({"scheduled_at", "remind_at", "reminder_state"}.issubset(columns))
 
     def test_conversation_history_is_bounded(self) -> None:
         for index in range(55):

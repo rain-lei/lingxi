@@ -63,6 +63,12 @@ const taskKindLabels = {
   note: "任务记录",
 };
 
+const reminderStateLabels = {
+  scheduled: "提醒已排期",
+  due: "提醒已到期",
+  dismissed: "提醒已关闭",
+};
+
 const elements = {
   serverBadge: document.querySelector("#serverBadge"),
   deviceIdLabel: document.querySelector("#deviceIdLabel"),
@@ -331,6 +337,19 @@ function updateTaskSummary() {
   elements.completedTaskCount.textContent = String(counts.completed || 0);
 }
 
+function formatTaskDate(isoString) {
+  if (!isoString) return "";
+  const date = new Date(isoString);
+  if (Number.isNaN(date.getTime())) return "";
+  return date.toLocaleString("zh-CN", {
+    month: "numeric",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
+}
+
 function taskMatchesFilter(task) {
   if (app.taskFilter === "open") return task.status === "pending" || task.status === "confirmed";
   if (app.taskFilter === "completed") return task.status === "completed";
@@ -366,6 +385,12 @@ function renderTasks() {
     const status = document.createElement("b");
     status.textContent = taskStatusLabels[task.status] || task.status;
     top.append(kind, status);
+    if (task.reminder_state && task.reminder_state !== "none") {
+      const reminder = document.createElement("small");
+      reminder.className = `task-reminder task-reminder-${task.reminder_state}`;
+      reminder.textContent = reminderStateLabels[task.reminder_state] || task.reminder_state;
+      top.append(reminder);
+    }
 
     const title = document.createElement("h3");
     title.textContent = task.title;
@@ -374,7 +399,13 @@ function renderTasks() {
 
     const meta = document.createElement("div");
     meta.className = "task-item-meta";
-    [task.schedule_text, task.location, task.source === "image" ? "图片识别" : "文字输入"]
+    [
+      task.schedule_text,
+      task.scheduled_at ? `活动 ${formatTaskDate(task.scheduled_at)}` : "",
+      task.remind_at ? `提醒 ${formatTaskDate(task.remind_at)}` : "",
+      task.location,
+      task.source === "image" ? "图片识别" : "文字输入",
+    ]
       .filter(Boolean)
       .forEach((value) => {
         const item = document.createElement("span");
@@ -415,10 +446,23 @@ function renderTasks() {
   });
 }
 
-async function loadTasks() {
+async function loadTasks({ notifyDue = false } = {}) {
+  const previousDue = new Set(
+    app.tasks.filter((task) => task.reminder_state === "due").map((task) => task.id),
+  );
   const result = await fetchJson(`/api/tasks?device_id=${encodeURIComponent(DEVICE_ID)}`);
   app.tasks = result.items || [];
   renderTasks();
+  if (notifyDue) {
+    const dueTasks = app.tasks.filter(
+      (task) => task.reminder_state === "due" && !previousDue.has(task.id),
+    );
+    if (dueTasks.length) {
+      const titles = dueTasks.slice(0, 2).map((task) => task.title).join("、");
+      showToast(`提醒到期：${titles}`);
+      addLog("REMINDER", `${dueTasks.length} 个确认任务到期`);
+    }
+  }
 }
 
 async function updateTaskStatus(taskId, status, button) {
@@ -1408,3 +1452,6 @@ elements.audioToggle.checked = window.localStorage.getItem("lingxi-auto-speech")
 setupRecognition();
 loadInitialData();
 window.setInterval(refreshServiceStatus, 30000);
+window.setInterval(() => {
+  if (!app.busy) loadTasks({ notifyDue: true }).catch(() => undefined);
+}, 15000);

@@ -2447,6 +2447,26 @@ footer {
 .task-confirmed .task-item-top b { color: var(--cyan); }
 .task-completed .task-item-top b { color: var(--green); }
 .task-cancelled .task-item-top b { color: var(--danger); }
+.task-reminder {
+  margin-left: auto;
+  padding: 4px 7px;
+  border: 1px solid rgba(89, 217, 255, 0.22);
+  border-radius: 999px;
+  color: var(--cyan);
+  font: 8px Consolas, monospace;
+  letter-spacing: 0.04em;
+}
+.task-reminder-due {
+  border-color: rgba(255, 196, 107, 0.5);
+  color: var(--warm);
+  background: rgba(255, 196, 107, 0.08);
+  animation: reminder-pulse 1.8s ease-in-out infinite;
+}
+.task-reminder-dismissed { border-color: rgba(255,255,255,0.12); color: var(--dim); }
+
+@keyframes reminder-pulse {
+  50% { box-shadow: 0 0 0 4px rgba(255, 196, 107, 0.07); }
+}
 
 .task-item h3 {
   margin: 23px 0 8px;

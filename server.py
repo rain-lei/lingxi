@@ -21,7 +21,7 @@ import time
 from collections import defaultdict, deque
 from contextlib import contextmanager
 from dataclasses import asdict, dataclass
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -44,8 +44,13 @@ DEFAULT_DB = ROOT / "data" / "lingxi_demo.db"
 ALLOWED_MODES = {"assistant", "companion", "translate"}
 TASK_STATUSES = {"pending", "confirmed", "completed", "cancelled"}
 TASK_KINDS = {"event", "reminder", "checklist", "plan", "note"}
+TASK_REMINDER_STATES = {"none", "scheduled", "due", "dismissed"}
 MAX_CONVERSATIONS_PER_DEVICE = 50
 MAX_TASKS_PER_DEVICE = 100
+# China Standard Time is UTC+8 and has no daylight-saving transitions. A fixed
+# standard-library timezone keeps the zero-install demo portable on Windows,
+# where the IANA zone database is not necessarily present.
+LOCAL_TIMEZONE = timezone(timedelta(hours=8), name="Asia/Shanghai")
 
 
 def utc_now() -> str:
@@ -191,6 +196,10 @@ class DemoEngine:
                     summary TEXT NOT NULL DEFAULT '',
                     schedule_text TEXT NOT NULL DEFAULT '',
                     location TEXT NOT NULL DEFAULT '',
+                    scheduled_at TEXT NOT NULL DEFAULT '',
+                    remind_at TEXT NOT NULL DEFAULT '',
+                    reminder_state TEXT NOT NULL DEFAULT 'none'
+                        CHECK(reminder_state IN ('none', 'scheduled', 'due', 'dismissed')),
                     checklist_json TEXT NOT NULL DEFAULT '[]',
                     source TEXT NOT NULL CHECK(source IN ('text', 'image', 'voice', 'system')),
                     created_at TEXT NOT NULL,
@@ -201,7 +210,24 @@ class DemoEngine:
 
                 CREATE INDEX IF NOT EXISTS idx_tasks_device_status
                     ON tasks(device_id, status, id DESC);
+
                 """
+            )
+            task_columns = {
+                str(row["name"])
+                for row in connection.execute("PRAGMA table_info(tasks)").fetchall()
+            }
+            migrations = {
+                "scheduled_at": "ALTER TABLE tasks ADD COLUMN scheduled_at TEXT NOT NULL DEFAULT ''",
+                "remind_at": "ALTER TABLE tasks ADD COLUMN remind_at TEXT NOT NULL DEFAULT ''",
+                "reminder_state": "ALTER TABLE tasks ADD COLUMN reminder_state TEXT NOT NULL DEFAULT 'none'",
+            }
+            for column, statement in migrations.items():
+                if column not in task_columns:
+                    connection.execute(statement)
+            connection.execute(
+                "CREATE INDEX IF NOT EXISTS idx_tasks_reminder_due "
+                "ON tasks(reminder_state, remind_at, status)"
             )
             connection.execute("PRAGMA optimize")
 
@@ -399,6 +425,73 @@ class DemoEngine:
         return " · ".join(values[:3])
 
     @staticmethod
+    def _chinese_number(value: str) -> int | None:
+        if value.isdigit():
+            return int(value)
+        values = {"一": 1, "二": 2, "两": 2, "三": 3, "四": 4, "五": 5, "六": 6, "七": 7, "八": 8, "九": 9}
+        if value == "十":
+            return 10
+        if "十" in value:
+            before, _, after = value.partition("十")
+            tens = values.get(before, 1) if before else 1
+            ones = values.get(after, 0) if after else 0
+            return tens * 10 + ones
+        return values.get(value)
+
+    @classmethod
+    def _task_timing(cls, user_text: str) -> tuple[str, str]:
+        """Extract an absolute event time and optional lead-time reminder.
+
+        The demo only schedules reminders when both a date and a clock time are
+        explicit, so ambiguous phrases never create a surprising notification.
+        """
+        compact = " ".join(user_text.strip().split()).replace("：", ":")
+        clock = re.search(r"(?<!\d)([01]?\d|2[0-3]):([0-5]\d)(?!\d)", compact)
+        if not clock:
+            return "", ""
+        now = datetime.now(LOCAL_TIMEZONE)
+        event_date = None
+        month_day = re.search(r"(?<!\d)(\d{1,2})月(\d{1,2})日", compact)
+        if month_day:
+            month, day = int(month_day.group(1)), int(month_day.group(2))
+            try:
+                event_date = now.date().replace(year=now.year, month=month, day=day)
+            except ValueError:
+                return "", ""
+            if event_date < now.date():
+                try:
+                    event_date = event_date.replace(year=now.year + 1)
+                except ValueError:
+                    return "", ""
+        elif "明天" in compact or "明晚" in compact:
+            event_date = (now + timedelta(days=1)).date()
+        elif "后天" in compact:
+            event_date = (now + timedelta(days=2)).date()
+        elif "今天" in compact or "今晚" in compact:
+            event_date = now.date()
+        if event_date is None:
+            return "", ""
+
+        event_at = datetime(
+            event_date.year,
+            event_date.month,
+            event_date.day,
+            int(clock.group(1)),
+            int(clock.group(2)),
+            tzinfo=LOCAL_TIMEZONE,
+        ).astimezone(timezone.utc)
+        scheduled_at = event_at.isoformat(timespec="seconds")
+        lead = re.search(r"提前\s*([0-9一二两三四五六七八九十]+)\s*(小时|分钟|分)\s*提醒", compact)
+        if not lead:
+            return scheduled_at, ""
+        amount = cls._chinese_number(lead.group(1))
+        if not amount or amount > 168:
+            return scheduled_at, ""
+        minutes = amount * 60 if lead.group(2) == "小时" else amount
+        reminder_at = event_at - timedelta(minutes=minutes)
+        return scheduled_at, reminder_at.isoformat(timespec="seconds")
+
+    @staticmethod
     def _task_location(user_text: str, assistant_text: str) -> str:
         combined = " ".join(f"{user_text} {assistant_text}".split())
         explicit = re.search(r"(?:地点|地址)[:：]\s*([^，。；\n]{2,30})", combined)
@@ -452,6 +545,8 @@ class DemoEngine:
         summary = " ".join(assistant_text.strip().split())[:280]
         schedule_text = self._task_schedule_text(user_text, assistant_text)
         location = self._task_location(user_text, assistant_text)
+        scheduled_at, remind_at = self._task_timing(user_text)
+        reminder_state = "scheduled" if remind_at else "none"
         checklist = self._task_checklist(user_text, assistant_text, kind)
         now = utc_now()
         with self._connection() as connection:
@@ -459,14 +554,18 @@ class DemoEngine:
                 """
                 INSERT INTO tasks(
                     device_id, conversation_id, kind, status, title, summary,
-                    schedule_text, location, checklist_json, source, created_at, updated_at
-                ) VALUES (?, ?, ?, 'pending', ?, ?, ?, ?, ?, ?, ?, ?)
+                    schedule_text, location, scheduled_at, remind_at, reminder_state,
+                    checklist_json, source, created_at, updated_at
+                ) VALUES (?, ?, ?, 'pending', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ON CONFLICT(device_id, conversation_id) DO UPDATE SET
                     kind = excluded.kind,
                     title = excluded.title,
                     summary = excluded.summary,
                     schedule_text = excluded.schedule_text,
                     location = excluded.location,
+                    scheduled_at = excluded.scheduled_at,
+                    remind_at = excluded.remind_at,
+                    reminder_state = excluded.reminder_state,
                     checklist_json = excluded.checklist_json,
                     source = excluded.source,
                     updated_at = excluded.updated_at
@@ -479,6 +578,9 @@ class DemoEngine:
                     summary,
                     schedule_text,
                     location,
+                    scheduled_at,
+                    remind_at,
+                    reminder_state,
                     json.dumps(checklist, ensure_ascii=False),
                     safe_source,
                     now,
@@ -506,6 +608,7 @@ class DemoEngine:
         status: str | None = None,
         limit: int = 50,
     ) -> list[dict[str, Any]]:
+        self.mark_due_reminders()
         safe_limit = max(1, min(limit, MAX_TASKS_PER_DEVICE))
         if status is not None and status not in TASK_STATUSES:
             raise ValueError("unsupported task status")
@@ -529,12 +632,25 @@ class DemoEngine:
         if status not in TASK_STATUSES:
             raise ValueError("unsupported task status")
         with self._connection() as connection:
+            existing = connection.execute(
+                "SELECT reminder_state, remind_at FROM tasks WHERE id = ? AND device_id = ?",
+                (task_id, device_id),
+            ).fetchone()
+            if existing is None:
+                raise LookupError("task not found for this visitor")
+            now = utc_now()
+            reminder_state = str(existing["reminder_state"] or "none")
+            remind_at = str(existing["remind_at"] or "")
+            if status in {"completed", "cancelled"} and reminder_state in {"scheduled", "due"}:
+                reminder_state = "dismissed"
+            elif status == "confirmed" and reminder_state == "dismissed" and remind_at > now:
+                reminder_state = "scheduled"
             cursor = connection.execute(
                 """
-                UPDATE tasks SET status = ?, updated_at = ?
+                UPDATE tasks SET status = ?, reminder_state = ?, updated_at = ?
                 WHERE id = ? AND device_id = ?
                 """,
-                (status, utc_now(), task_id, device_id),
+                (status, reminder_state, now, task_id, device_id),
             )
             if cursor.rowcount != 1:
                 raise LookupError("task not found for this visitor")
@@ -545,6 +661,23 @@ class DemoEngine:
         if row is None:
             raise LookupError("task not found for this visitor")
         return self._task_row(row)
+
+    def mark_due_reminders(self, now: str | None = None) -> int:
+        """Persist reminders that became due while no browser was open."""
+        current_time = now or utc_now()
+        with self._connection() as connection:
+            cursor = connection.execute(
+                """
+                UPDATE tasks
+                SET reminder_state = 'due', updated_at = ?
+                WHERE status = 'confirmed'
+                  AND reminder_state = 'scheduled'
+                  AND remind_at != ''
+                  AND remind_at <= ?
+                """,
+                (current_time, current_time),
+            )
+        return int(cursor.rowcount)
 
     def record_feedback(
         self,
@@ -903,6 +1036,11 @@ class LingXiHandler(BaseHTTPRequestHandler):
                 "enabled": True,
                 "statuses": sorted(TASK_STATUSES),
                 "kinds": sorted(TASK_KINDS),
+                "reminders": {
+                    "enabled": True,
+                    "states": sorted(TASK_REMINDER_STATES),
+                    "delivery": "persistent scheduler + console polling",
+                },
             }
             self._send_json(capabilities)
             return
@@ -1485,6 +1623,29 @@ class LingXiServer(ThreadingHTTPServer):
         self.engine = engine
         self.rate_limiter = SlidingWindowRateLimiter()
         self.device_sessions = DeviceSessionRegistry()
+        self._scheduler_stop = threading.Event()
+        self._reminder_thread = threading.Thread(
+            target=self._run_reminder_scheduler,
+            name="lingxi-reminder-scheduler",
+            daemon=True,
+        )
+        self.engine.mark_due_reminders()
+        self._reminder_thread.start()
+
+    def _run_reminder_scheduler(self) -> None:
+        while not self._scheduler_stop.wait(15):
+            try:
+                due_count = self.engine.mark_due_reminders()
+                if due_count:
+                    print(f"[reminder] marked {due_count} task(s) due")
+            except (OSError, sqlite3.Error) as error:
+                print(f"[reminder] scheduler error: {error}")
+
+    def server_close(self) -> None:
+        self._scheduler_stop.set()
+        if self._reminder_thread.is_alive():
+            self._reminder_thread.join(timeout=1)
+        super().server_close()
 
 
 def parse_args() -> argparse.Namespace:

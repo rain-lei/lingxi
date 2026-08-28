@@ -130,6 +130,8 @@ class HttpApiTests(unittest.TestCase):
         task_event = next(event for event in events if event["type"] == "task")
         task_id = int(task_event["task"]["id"])
         self.assertEqual(task_event["task"]["status"], "pending")
+        self.assertEqual(task_event["task"]["reminder_state"], "scheduled")
+        self.assertTrue(task_event["task"]["remind_at"])
         self.assertTrue(
             any(
                 event["type"] == "tool" and event["name"] == "task.create"

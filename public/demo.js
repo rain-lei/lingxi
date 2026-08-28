@@ -102,7 +102,18 @@ function showTaskResult(task, event = null) {
   els.result.hidden = false;
   els.taskStatus.textContent = taskStatusLabels[task.status] || task.status;
   els.taskTitle.textContent = task.title;
-  const meta = [task.schedule_text, task.location, task.source === "image" ? "图片识别" : "文字输入"].filter(Boolean);
+  const formatTime = (value) => {
+    const date = new Date(value || "");
+    return Number.isNaN(date.getTime()) ? "" : date.toLocaleString("zh-CN", {
+      month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit", hour12: false,
+    });
+  };
+  const meta = [
+    task.schedule_text,
+    task.remind_at ? `提醒 ${formatTime(task.remind_at)}` : "",
+    task.location,
+    task.source === "image" ? "图片识别" : "文字输入",
+  ].filter(Boolean);
   els.taskMeta.textContent = meta.join(" · ") || task.summary || "任务已由服务器保存";
   els.taskChecklist.replaceChildren();
   (task.checklist || []).forEach((item) => {
