@@ -4,7 +4,7 @@ import sqlite3
 from datetime import datetime
 from pathlib import Path
 
-from server import DemoEngine, SlidingWindowRateLimiter, chunk_text
+from server import LOCAL_TIMEZONE, DemoEngine, SlidingWindowRateLimiter, chunk_text
 
 
 class DemoEngineTests(unittest.TestCase):
@@ -232,6 +232,53 @@ class DemoEngineTests(unittest.TestCase):
             self.device_id, int(task["id"]), "completed"
         )
         self.assertEqual(completed["reminder_state"], "dismissed")
+
+    def test_weekday_reminder_uses_future_calendar_date(self) -> None:
+        scheduled_at, remind_at, source = self.engine._task_timing(
+            "下周三18:30图书馆有校园讲座，提前30分钟提醒"
+        )
+        self.assertEqual(source, "explicit")
+        self.assertTrue(scheduled_at)
+        self.assertTrue(remind_at)
+        scheduled = datetime.fromisoformat(scheduled_at).astimezone(LOCAL_TIMEZONE)
+        reminder = datetime.fromisoformat(remind_at).astimezone(LOCAL_TIMEZONE)
+        self.assertEqual(scheduled.weekday(), 2)
+        self.assertGreater(scheduled, datetime.now(LOCAL_TIMEZONE))
+        self.assertEqual((scheduled - reminder).total_seconds(), 1800)
+        self.assertEqual(
+            self.engine._task_timing("今天00:00有活动，提前一小时提醒"),
+            ("", "", "none"),
+        )
+        self.assertEqual(
+            self.engine._task_timing("本周一00:00有活动，提前一小时提醒"),
+            ("", "", "none"),
+        )
+
+    def test_image_extracted_schedule_keeps_user_in_control_of_reminder_lead(self) -> None:
+        interaction_id = self.engine.record_interaction(
+            self.device_id,
+            "assistant",
+            "请把这张校园活动海报整理成任务，并提前一小时提醒我",
+            "未来实验室公开讲座：下周三18:30，地点：主楼302。",
+        )
+        task = self.engine.create_task_from_interaction(
+            self.device_id,
+            interaction_id,
+            "请把这张校园活动海报整理成任务，并提前一小时提醒我",
+            "未来实验室公开讲座：下周三18:30，地点：主楼302。",
+            source="image",
+        )
+        self.assertIsNotNone(task)
+        self.assertEqual(task["source"], "image")
+        self.assertEqual(task["reminder_source"], "explicit")
+        self.assertEqual(task["reminder_state"], "scheduled")
+        self.assertEqual(
+            (
+                datetime.fromisoformat(task["scheduled_at"])
+                - datetime.fromisoformat(task["remind_at"])
+            ).total_seconds(),
+            3600,
+        )
 
     def test_recalled_reminder_preference_schedules_task_unless_user_overrides(self) -> None:
         first_interaction = self.engine.record_interaction(

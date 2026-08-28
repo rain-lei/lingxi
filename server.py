@@ -473,14 +473,17 @@ class DemoEngine:
         cls,
         user_text: str,
         default_reminder_minutes: int | None = None,
+        schedule_text: str | None = None,
     ) -> tuple[str, str, str]:
         """Extract an explicit time and resolve an explicit or remembered lead.
 
-        A task must always contain both a date and a clock time. Explicit user
-        wording wins. A selected feedback-memory rule may provide the lead only
-        when the user did not opt out of reminders.
+        A task must always contain both a date and a clock time. For image
+        tasks, ``schedule_text`` may include structured facts extracted from
+        the image; the reminder lead itself still comes only from the user's
+        wording or a selected feedback-memory rule.
         """
-        compact = " ".join(user_text.strip().split()).replace("：", ":")
+        compact = " ".join((schedule_text or user_text).strip().split()).replace("：", ":")
+        user_compact = " ".join(user_text.strip().split()).replace("：", ":")
         clock = re.search(r"(?<!\d)([01]?\d|2[0-3]):([0-5]\d)(?!\d)", compact)
         if not clock:
             return "", "", "none"
@@ -504,6 +507,28 @@ class DemoEngine:
             event_date = (now + timedelta(days=2)).date()
         elif "今天" in compact or "今晚" in compact:
             event_date = now.date()
+        else:
+            weekday = re.search(r"(本|这|下)周([一二三四五六日天])", compact)
+            if weekday:
+                weekday_index = {
+                    "一": 0,
+                    "二": 1,
+                    "三": 2,
+                    "四": 3,
+                    "五": 4,
+                    "六": 5,
+                    "日": 6,
+                    "天": 6,
+                }[weekday.group(2)]
+                if weekday.group(1) == "下":
+                    days_until = 7 - now.weekday() + weekday_index
+                else:
+                    days_until = weekday_index - now.weekday()
+                    if days_until < 0:
+                        # “本周一”在周四说已经是过去的日期，不能悄悄改排到
+                        # 下一周；用户需要给出一个仍有效的明确日期。
+                        return "", "", "none"
+                event_date = (now + timedelta(days=days_until)).date()
         if event_date is None:
             return "", "", "none"
 
@@ -515,12 +540,16 @@ class DemoEngine:
             int(clock.group(2)),
             tzinfo=LOCAL_TIMEZONE,
         ).astimezone(timezone.utc)
+        if event_at <= now.astimezone(timezone.utc):
+            # A same-day clock time that already passed should never fire a
+            # surprise immediate reminder. Ask for a future explicit date.
+            return "", "", "none"
         scheduled_at = event_at.isoformat(timespec="seconds")
-        explicit_minutes = cls._reminder_lead_minutes(compact)
+        explicit_minutes = cls._reminder_lead_minutes(user_compact)
         if explicit_minutes is not None:
             reminder_at = event_at - timedelta(minutes=explicit_minutes)
             return scheduled_at, reminder_at.isoformat(timespec="seconds"), "explicit"
-        if re.search(r"(?:不|不用|无需|别)\s*(?:再)?提醒", compact):
+        if re.search(r"(?:不|不用|无需|别)\s*(?:再)?提醒", user_compact):
             return scheduled_at, "", "none"
         if default_reminder_minutes is not None:
             reminder_at = event_at - timedelta(minutes=default_reminder_minutes)
@@ -582,9 +611,11 @@ class DemoEngine:
         summary = " ".join(assistant_text.strip().split())[:280]
         schedule_text = self._task_schedule_text(user_text, assistant_text)
         location = self._task_location(user_text, assistant_text)
+        timing_text = f"{user_text} {assistant_text}" if safe_source == "image" else user_text
         scheduled_at, remind_at, reminder_source = self._task_timing(
             user_text,
             self._reminder_default_from_memories(feedback_memories),
+            schedule_text=timing_text,
         )
         reminder_state = "scheduled" if remind_at else "none"
         checklist = self._task_checklist(user_text, assistant_text, kind)

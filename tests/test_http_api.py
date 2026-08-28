@@ -120,7 +120,7 @@ class HttpApiTests(unittest.TestCase):
             "/api/interactions",
             {
                 "device_id": device_id,
-                "text": "8月30日18:30主楼302有讲座，提前一小时提醒我报名",
+                "text": "下周三18:30主楼302有讲座，提前一小时提醒我报名",
                 "mode": "assistant",
                 "offline": False,
             },
