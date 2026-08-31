@@ -38,7 +38,7 @@ const state = {
   abortReason: null,
 };
 const taskStatusLabels = { pending: "待确认", confirmed: "已确认", completed: "已完成", cancelled: "已取消" };
-const samplePrompt = "8月30日18:30主楼302有未来实验室公开讲座，请整理成任务卡，并提前一小时提醒我报名。";
+const samplePrompt = "下周三18:30主楼302有未来实验室公开讲座，请整理成任务卡，并提前一小时提醒我报名。";
 const DEMO_INTERACTION_TIMEOUT_MS = 45_000;
 
 function getDeviceId() {
