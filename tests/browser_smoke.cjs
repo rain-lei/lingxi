@@ -20,8 +20,8 @@ async function run() {
       fixture.once('error', reject);
       fixture.once('exit', code => { clearTimeout(timer); reject(new Error(`Fixture exited: ${code}`)); });
     });
-    browser = await chromium.launch({ channel: process.env.LINGXI_TEST_BROWSER || 'msedge', headless: true });
-    const context = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
+    browser = await chromium.launch({ channel: process.env.LINGXI_TEST_BROWSER || 'msedge', headless: true, args: ['--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream'] });
+    const context = await browser.newContext({ viewport: { width: 1440, height: 1000 }, permissions: ['microphone'] });
     const errors = [], failures = [];
     context.on('page', page => {
       page.on('pageerror', error => errors.push(error.message));
@@ -46,6 +46,23 @@ async function run() {
     await consolePage.locator('#taskList').getByText(title, { exact: true }).waitFor({ timeout: 5000 });
     await consolePage.locator('#taskList article').filter({ hasText: title }).getByRole('button', { name: '标记完成', exact: true }).click();
     await learning.waitForFunction(title => ![...document.querySelectorAll('#studyTaskList strong')].some(el => el.textContent === title), title, { timeout: 5000 });
+
+    // Device protection must not break the original console's microphone/TTS.
+    // Actual UI handlers send to the local backend, whose loopback bypass is off.
+    const audioResponses = [];
+    consolePage.on('response', response => {
+      if (/\/api\/audio\/(transcribe|speech)$/.test(response.url())) audioResponses.push(response);
+    });
+    await consolePage.locator('#audioToggle').check();
+    await consolePage.locator('#talkButton').dispatchEvent('pointerdown');
+    await consolePage.waitForFunction(() => app.audioCapture?.chunks.length > 0 && performance.now() - app.audioCapture.startedAt > 500);
+    await consolePage.locator('#talkButton').dispatchEvent('pointerup');
+    await consolePage.waitForResponse(response => response.url().endsWith('/api/audio/speech'), { timeout: 15000 });
+    assert.equal(audioResponses.length, 2);
+    for (const response of audioResponses) {
+      assert.equal(response.status(), 200, response.url());
+      assert.equal(response.request().postDataJSON().device_id, id);
+    }
 
     // Pairing uses only the submitted code; unsaved input cannot poison polls.
     await learning.goto(base + '/companion?pair=1#settings');
@@ -98,7 +115,7 @@ async function run() {
     assert.notEqual(await first.evaluate(() => LingxiIdentity.get()), id);
     assert.deepEqual(errors, []);
     assert.deepEqual(failures, []);
-    console.log(JSON.stringify({ crossTabTaskSync: true, pairingDraftIsolated: true, pairingFailurePreservesState: true, deviceSwitchClearsMessages: true, browserCache304: cached.length, mobileLayout: true, storageFallback: true, errors, failures }));
+    console.log(JSON.stringify({ crossTabTaskSync: true, consoleMicrophoneAndTts: true, pairingDraftIsolated: true, pairingFailurePreservesState: true, deviceSwitchClearsMessages: true, browserCache304: cached.length, mobileLayout: true, storageFallback: true, errors, failures }));
   } finally {
     if (browser) await browser.close();
     fixture.stdin.end();

@@ -999,6 +999,7 @@ async function speakResponse(text) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          device_id: DEVICE_ID,
           text,
           mode: app.mode,
           speech_rate: app.profile.speech_rate,
@@ -1171,7 +1172,7 @@ async function stopStepFunCapture(event) {
     const result = await fetchJson("/api/audio/transcribe", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ audio_base64: audioBase64, language: "zh" }),
+      body: JSON.stringify({ device_id: DEVICE_ID, audio_base64: audioBase64, language: "zh" }),
     });
     elements.messageInput.value = result.text;
     elements.oledText.textContent = result.text;
