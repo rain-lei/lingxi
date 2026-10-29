@@ -1,0 +1,1164 @@
+{
+  "version": 1,
+  "width": 128,
+  "height": 128,
+  "pixel_format": "RGB565LE+alpha8 interleaved",
+  "clip_count": 30,
+  "body_sha256": "671122fff9d806ea378e511fab532f5dc04772259ed584c1d5007469fed1461a",
+  "clips": [
+    {
+      "avatar_id": 0,
+      "state_id": 0,
+      "avatar": "kangaroo",
+      "state": "idle",
+      "frames": 48,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 1024,
+      "bytes": 2359296,
+      "crc32": "885dc77d"
+    },
+    {
+      "avatar_id": 0,
+      "state_id": 1,
+      "avatar": "kangaroo",
+      "state": "listening",
+      "frames": 36,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 2360320,
+      "bytes": 1769472,
+      "crc32": "902e638c"
+    },
+    {
+      "avatar_id": 0,
+      "state_id": 2,
+      "avatar": "kangaroo",
+      "state": "thinking",
+      "frames": 42,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 4129792,
+      "bytes": 2064384,
+      "crc32": "cee53481"
+    },
+    {
+      "avatar_id": 0,
+      "state_id": 3,
+      "avatar": "kangaroo",
+      "state": "speaking",
+      "frames": 36,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 6194176,
+      "bytes": 1769472,
+      "crc32": "cdcc631d"
+    },
+    {
+      "avatar_id": 0,
+      "state_id": 4,
+      "avatar": "kangaroo",
+      "state": "comfort",
+      "frames": 48,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 7963648,
+      "bytes": 2359296,
+      "crc32": "852ec7de"
+    },
+    {
+      "avatar_id": 0,
+      "state_id": 5,
+      "avatar": "kangaroo",
+      "state": "celebrate",
+      "frames": 36,
+      "frame_ms": 83,
+      "loop": false,
+      "offset": 10322944,
+      "bytes": 1769472,
+      "crc32": "6425ef74"
+    },
+    {
+      "avatar_id": 1,
+      "state_id": 0,
+      "avatar": "robot",
+      "state": "idle",
+      "frames": 48,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 12092416,
+      "bytes": 2359296,
+      "crc32": "647b8b6d"
+    },
+    {
+      "avatar_id": 1,
+      "state_id": 1,
+      "avatar": "robot",
+      "state": "listening",
+      "frames": 36,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 14451712,
+      "bytes": 1769472,
+      "crc32": "122be5e0"
+    },
+    {
+      "avatar_id": 1,
+      "state_id": 2,
+      "avatar": "robot",
+      "state": "thinking",
+      "frames": 42,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 16221184,
+      "bytes": 2064384,
+      "crc32": "1539a3f0"
+    },
+    {
+      "avatar_id": 1,
+      "state_id": 3,
+      "avatar": "robot",
+      "state": "speaking",
+      "frames": 36,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 18285568,
+      "bytes": 1769472,
+      "crc32": "ce4a4f16"
+    },
+    {
+      "avatar_id": 1,
+      "state_id": 4,
+      "avatar": "robot",
+      "state": "comfort",
+      "frames": 48,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 20055040,
+      "bytes": 2359296,
+      "crc32": "43f0f9c9"
+    },
+    {
+      "avatar_id": 1,
+      "state_id": 5,
+      "avatar": "robot",
+      "state": "celebrate",
+      "frames": 36,
+      "frame_ms": 83,
+      "loop": false,
+      "offset": 22414336,
+      "bytes": 1769472,
+      "crc32": "498056fb"
+    },
+    {
+      "avatar_id": 2,
+      "state_id": 0,
+      "avatar": "cat",
+      "state": "idle",
+      "frames": 48,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 24183808,
+      "bytes": 2359296,
+      "crc32": "12ebc8b5"
+    },
+    {
+      "avatar_id": 2,
+      "state_id": 1,
+      "avatar": "cat",
+      "state": "listening",
+      "frames": 36,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 26543104,
+      "bytes": 1769472,
+      "crc32": "7363e602"
+    },
+    {
+      "avatar_id": 2,
+      "state_id": 2,
+      "avatar": "cat",
+      "state": "thinking",
+      "frames": 42,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 28312576,
+      "bytes": 2064384,
+      "crc32": "10c9f5a4"
+    },
+    {
+      "avatar_id": 2,
+      "state_id": 3,
+      "avatar": "cat",
+      "state": "speaking",
+      "frames": 36,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 30376960,
+      "bytes": 1769472,
+      "crc32": "e922de64"
+    },
+    {
+      "avatar_id": 2,
+      "state_id": 4,
+      "avatar": "cat",
+      "state": "comfort",
+      "frames": 48,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 32146432,
+      "bytes": 2359296,
+      "crc32": "b4fe9059"
+    },
+    {
+      "avatar_id": 2,
+      "state_id": 5,
+      "avatar": "cat",
+      "state": "celebrate",
+      "frames": 36,
+      "frame_ms": 83,
+      "loop": false,
+      "offset": 34505728,
+      "bytes": 1769472,
+      "crc32": "6fb47642"
+    },
+    {
+      "avatar_id": 3,
+      "state_id": 0,
+      "avatar": "otter",
+      "state": "idle",
+      "frames": 48,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 36275200,
+      "bytes": 2359296,
+      "crc32": "c1a8e9e5"
+    },
+    {
+      "avatar_id": 3,
+      "state_id": 1,
+      "avatar": "otter",
+      "state": "listening",
+      "frames": 36,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 38634496,
+      "bytes": 1769472,
+      "crc32": "42b23837"
+    },
+    {
+      "avatar_id": 3,
+      "state_id": 2,
+      "avatar": "otter",
+      "state": "thinking",
+      "frames": 42,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 40403968,
+      "bytes": 2064384,
+      "crc32": "bd3ba040"
+    },
+    {
+      "avatar_id": 3,
+      "state_id": 3,
+      "avatar": "otter",
+      "state": "speaking",
+      "frames": 36,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 42468352,
+      "bytes": 1769472,
+      "crc32": "73b935a7"
+    },
+    {
+      "avatar_id": 3,
+      "state_id": 4,
+      "avatar": "otter",
+      "state": "comfort",
+      "frames": 48,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 44237824,
+      "bytes": 2359296,
+      "crc32": "8ca59b6f"
+    },
+    {
+      "avatar_id": 3,
+      "state_id": 5,
+      "avatar": "otter",
+      "state": "celebrate",
+      "frames": 36,
+      "frame_ms": 83,
+      "loop": false,
+      "offset": 46597120,
+      "bytes": 1769472,
+      "crc32": "7e84007b"
+    },
+    {
+      "avatar_id": 4,
+      "state_id": 0,
+      "avatar": "sprout",
+      "state": "idle",
+      "frames": 48,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 48366592,
+      "bytes": 2359296,
+      "crc32": "775fadcc"
+    },
+    {
+      "avatar_id": 4,
+      "state_id": 1,
+      "avatar": "sprout",
+      "state": "listening",
+      "frames": 36,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 50725888,
+      "bytes": 1769472,
+      "crc32": "af4a77e4"
+    },
+    {
+      "avatar_id": 4,
+      "state_id": 2,
+      "avatar": "sprout",
+      "state": "thinking",
+      "frames": 42,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 52495360,
+      "bytes": 2064384,
+      "crc32": "e156e222"
+    },
+    {
+      "avatar_id": 4,
+      "state_id": 3,
+      "avatar": "sprout",
+      "state": "speaking",
+      "frames": 36,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 54559744,
+      "bytes": 1769472,
+      "crc32": "4bd355b1"
+    },
+    {
+      "avatar_id": 4,
+      "state_id": 4,
+      "avatar": "sprout",
+      "state": "comfort",
+      "frames": 48,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 56329216,
+      "bytes": 2359296,
+      "crc32": "7098b757"
+    },
+    {
+      "avatar_id": 4,
+      "state_id": 5,
+      "avatar": "sprout",
+      "state": "celebrate",
+      "frames": 36,
+      "frame_ms": 83,
+      "loop": false,
+      "offset": 58688512,
+      "bytes": 1769472,
+      "crc32": "bb9c4142"
+    }
+  ],
+  "filename": "lingxi-animations-v2.lxaf",
+  "bytes": 60457984,
+  "sha256": "5cf9b17f1affd729b8a246c732876d02aea52f4801840fb83e28c5a10118f06c",
+  "web_frame_size": {
+    "width": 512,
+    "height": 512
+  },
+  "web_fps": 20,
+  "source_art": [
+    {
+      "source": "firmware/box_audio_ram/assets/tf-v2/kangaroo-poses-v2-source.png",
+      "sha256": "1999962e2dce00bfece449d7fcc086c60720f98a49e9797322d70982d583a6d4",
+      "native_size": [
+        1536,
+        1024
+      ],
+      "components": [
+        {
+          "connectivity": 8,
+          "threshold": 32,
+          "dilation_pixels": 2,
+          "component_count": 3,
+          "kept_pixels_at_threshold": 129656,
+          "removed_pixels_at_threshold": 2810,
+          "largest_component_sizes": [
+            129656,
+            1556,
+            1254
+          ],
+          "expanded_source_bounds": [
+            0,
+            0,
+            597,
+            542
+          ]
+        },
+        {
+          "connectivity": 8,
+          "threshold": 32,
+          "dilation_pixels": 2,
+          "component_count": 6,
+          "kept_pixels_at_threshold": 128951,
+          "removed_pixels_at_threshold": 14138,
+          "largest_component_sizes": [
+            128951,
+            8559,
+            3343,
+            1620,
+            498,
+            118
+          ],
+          "expanded_source_bounds": [
+            472,
+            0,
+            1109,
+            542
+          ]
+        },
+        {
+          "connectivity": 8,
+          "threshold": 32,
+          "dilation_pixels": 2,
+          "component_count": 3,
+          "kept_pixels_at_threshold": 128161,
+          "removed_pixels_at_threshold": 6792,
+          "largest_component_sizes": [
+            128161,
+            5101,
+            1691
+          ],
+          "expanded_source_bounds": [
+            984,
+            0,
+            1536,
+            542
+          ]
+        },
+        {
+          "connectivity": 8,
+          "threshold": 32,
+          "dilation_pixels": 2,
+          "component_count": 5,
+          "kept_pixels_at_threshold": 128295,
+          "removed_pixels_at_threshold": 9335,
+          "largest_component_sizes": [
+            128295,
+            7015,
+            1167,
+            961,
+            192
+          ],
+          "expanded_source_bounds": [
+            0,
+            482,
+            597,
+            1024
+          ]
+        },
+        {
+          "connectivity": 8,
+          "threshold": 32,
+          "dilation_pixels": 2,
+          "component_count": 7,
+          "kept_pixels_at_threshold": 134287,
+          "removed_pixels_at_threshold": 19337,
+          "largest_component_sizes": [
+            134287,
+            8299,
+            7010,
+            3017,
+            664,
+            346,
+            1
+          ],
+          "expanded_source_bounds": [
+            472,
+            482,
+            1109,
+            1024
+          ]
+        },
+        {
+          "connectivity": 8,
+          "threshold": 32,
+          "dilation_pixels": 2,
+          "component_count": 3,
+          "kept_pixels_at_threshold": 124500,
+          "removed_pixels_at_threshold": 11949,
+          "largest_component_sizes": [
+            124500,
+            6762,
+            5187
+          ],
+          "expanded_source_bounds": [
+            984,
+            482,
+            1536,
+            1024
+          ]
+        }
+      ],
+      "baseline_translation_px": [
+        0,
+        0,
+        0,
+        14,
+        15,
+        14
+      ],
+      "common_virtual_crop": [
+        74,
+        36,
+        594,
+        541
+      ],
+      "canonical_origin": [
+        36,
+        49
+      ],
+      "canonical_art_size": [
+        440,
+        427
+      ],
+      "canonical_minimum_gutter": 36
+    },
+    {
+      "source": "firmware/box_audio_ram/assets/mascot-v2/xiaoxi-3d-concept-v2.png",
+      "sha256": "973bbce9aa791fb56bbb01a652658d6f25dc4dfb530a642da2a06ef3dc697ae0",
+      "native_size": [
+        1536,
+        1024
+      ],
+      "components": [
+        {
+          "connectivity": 8,
+          "threshold": 32,
+          "dilation_pixels": 2,
+          "component_count": 3,
+          "kept_pixels_at_threshold": 135030,
+          "removed_pixels_at_threshold": 8300,
+          "largest_component_sizes": [
+            135030,
+            6274,
+            2026
+          ],
+          "expanded_source_bounds": [
+            0,
+            0,
+            597,
+            542
+          ]
+        },
+        {
+          "connectivity": 8,
+          "threshold": 32,
+          "dilation_pixels": 2,
+          "component_count": 4,
+          "kept_pixels_at_threshold": 134682,
+          "removed_pixels_at_threshold": 7633,
+          "largest_component_sizes": [
+            134682,
+            4908,
+            1880,
+            845
+          ],
+          "expanded_source_bounds": [
+            472,
+            0,
+            1109,
+            542
+          ]
+        },
+        {
+          "connectivity": 8,
+          "threshold": 32,
+          "dilation_pixels": 2,
+          "component_count": 3,
+          "kept_pixels_at_threshold": 129868,
+          "removed_pixels_at_threshold": 1347,
+          "largest_component_sizes": [
+            129868,
+            1067,
+            280
+          ],
+          "expanded_source_bounds": [
+            984,
+            0,
+            1536,
+            542
+          ]
+        },
+        {
+          "connectivity": 8,
+          "threshold": 32,
+          "dilation_pixels": 2,
+          "component_count": 3,
+          "kept_pixels_at_threshold": 131385,
+          "removed_pixels_at_threshold": 7908,
+          "largest_component_sizes": [
+            131385,
+            6837,
+            1071
+          ],
+          "expanded_source_bounds": [
+            0,
+            482,
+            597,
+            1024
+          ]
+        },
+        {
+          "connectivity": 8,
+          "threshold": 32,
+          "dilation_pixels": 2,
+          "component_count": 4,
+          "kept_pixels_at_threshold": 137631,
+          "removed_pixels_at_threshold": 6980,
+          "largest_component_sizes": [
+            137631,
+            5349,
+            1071,
+            560
+          ],
+          "expanded_source_bounds": [
+            472,
+            482,
+            1109,
+            1024
+          ]
+        },
+        {
+          "connectivity": 8,
+          "threshold": 32,
+          "dilation_pixels": 2,
+          "component_count": 3,
+          "kept_pixels_at_threshold": 128046,
+          "removed_pixels_at_threshold": 1669,
+          "largest_component_sizes": [
+            128046,
+            1248,
+            421
+          ],
+          "expanded_source_bounds": [
+            984,
+            482,
+            1536,
+            1024
+          ]
+        }
+      ],
+      "baseline_translation_px": [
+        0,
+        0,
+        0,
+        8,
+        10,
+        7
+      ],
+      "common_virtual_crop": [
+        63,
+        45,
+        538,
+        520
+      ],
+      "canonical_origin": [
+        36,
+        36
+      ],
+      "canonical_art_size": [
+        440,
+        440
+      ],
+      "canonical_minimum_gutter": 36
+    },
+    {
+      "source": "firmware/box_audio_ram/assets/tf-v1/cat-poses.png",
+      "sha256": "44ee3ace9d4459d46556a7186a06fccfe1c29caf3abaeb7266d9c704310b53fe",
+      "native_size": [
+        1536,
+        1024
+      ],
+      "components": [
+        {
+          "connectivity": 8,
+          "threshold": 32,
+          "dilation_pixels": 2,
+          "component_count": 4,
+          "kept_pixels_at_threshold": 142121,
+          "removed_pixels_at_threshold": 4237,
+          "largest_component_sizes": [
+            142121,
+            2829,
+            1349,
+            59
+          ],
+          "expanded_source_bounds": [
+            0,
+            0,
+            597,
+            542
+          ]
+        },
+        {
+          "connectivity": 8,
+          "threshold": 32,
+          "dilation_pixels": 2,
+          "component_count": 5,
+          "kept_pixels_at_threshold": 141104,
+          "removed_pixels_at_threshold": 4638,
+          "largest_component_sizes": [
+            141104,
+            2757,
+            1390,
+            490,
+            1
+          ],
+          "expanded_source_bounds": [
+            472,
+            0,
+            1109,
+            542
+          ]
+        },
+        {
+          "connectivity": 8,
+          "threshold": 32,
+          "dilation_pixels": 2,
+          "component_count": 3,
+          "kept_pixels_at_threshold": 146578,
+          "removed_pixels_at_threshold": 1481,
+          "largest_component_sizes": [
+            146578,
+            1431,
+            50
+          ],
+          "expanded_source_bounds": [
+            984,
+            0,
+            1536,
+            542
+          ]
+        },
+        {
+          "connectivity": 8,
+          "threshold": 32,
+          "dilation_pixels": 2,
+          "component_count": 4,
+          "kept_pixels_at_threshold": 144321,
+          "removed_pixels_at_threshold": 8634,
+          "largest_component_sizes": [
+            144321,
+            3845,
+            3407,
+            1382
+          ],
+          "expanded_source_bounds": [
+            0,
+            482,
+            597,
+            1024
+          ]
+        },
+        {
+          "connectivity": 8,
+          "threshold": 32,
+          "dilation_pixels": 2,
+          "component_count": 4,
+          "kept_pixels_at_threshold": 150260,
+          "removed_pixels_at_threshold": 6232,
+          "largest_component_sizes": [
+            150260,
+            3763,
+            2343,
+            126
+          ],
+          "expanded_source_bounds": [
+            472,
+            482,
+            1109,
+            1024
+          ]
+        },
+        {
+          "connectivity": 8,
+          "threshold": 32,
+          "dilation_pixels": 2,
+          "component_count": 2,
+          "kept_pixels_at_threshold": 147955,
+          "removed_pixels_at_threshold": 4295,
+          "largest_component_sizes": [
+            147955,
+            4295
+          ],
+          "expanded_source_bounds": [
+            984,
+            482,
+            1536,
+            1024
+          ]
+        }
+      ],
+      "baseline_translation_px": [
+        1,
+        1,
+        0,
+        11,
+        12,
+        12
+      ],
+      "common_virtual_crop": [
+        65,
+        41,
+        534,
+        533
+      ],
+      "canonical_origin": [
+        46,
+        36
+      ],
+      "canonical_art_size": [
+        419,
+        440
+      ],
+      "canonical_minimum_gutter": 36
+    },
+    {
+      "source": "firmware/box_audio_ram/assets/tf-v1/otter-poses.png",
+      "sha256": "d93dc4b880ed444080a765ac76a30231c217c82fa1e3a9912ed59842463d2085",
+      "native_size": [
+        1536,
+        1024
+      ],
+      "components": [
+        {
+          "connectivity": 8,
+          "threshold": 32,
+          "dilation_pixels": 2,
+          "component_count": 6,
+          "kept_pixels_at_threshold": 149338,
+          "removed_pixels_at_threshold": 4754,
+          "largest_component_sizes": [
+            149338,
+            2391,
+            1855,
+            499,
+            7,
+            2
+          ],
+          "expanded_source_bounds": [
+            0,
+            0,
+            597,
+            542
+          ]
+        },
+        {
+          "connectivity": 8,
+          "threshold": 32,
+          "dilation_pixels": 2,
+          "component_count": 5,
+          "kept_pixels_at_threshold": 155153,
+          "removed_pixels_at_threshold": 11171,
+          "largest_component_sizes": [
+            155153,
+            3959,
+            3851,
+            2659,
+            702
+          ],
+          "expanded_source_bounds": [
+            472,
+            0,
+            1109,
+            542
+          ]
+        },
+        {
+          "connectivity": 8,
+          "threshold": 32,
+          "dilation_pixels": 2,
+          "component_count": 4,
+          "kept_pixels_at_threshold": 156055,
+          "removed_pixels_at_threshold": 6031,
+          "largest_component_sizes": [
+            156055,
+            4192,
+            1835,
+            4
+          ],
+          "expanded_source_bounds": [
+            984,
+            0,
+            1536,
+            542
+          ]
+        },
+        {
+          "connectivity": 8,
+          "threshold": 32,
+          "dilation_pixels": 2,
+          "component_count": 6,
+          "kept_pixels_at_threshold": 152834,
+          "removed_pixels_at_threshold": 4154,
+          "largest_component_sizes": [
+            152834,
+            3017,
+            621,
+            508,
+            5,
+            3
+          ],
+          "expanded_source_bounds": [
+            0,
+            482,
+            597,
+            1024
+          ]
+        },
+        {
+          "connectivity": 8,
+          "threshold": 32,
+          "dilation_pixels": 2,
+          "component_count": 6,
+          "kept_pixels_at_threshold": 156384,
+          "removed_pixels_at_threshold": 9014,
+          "largest_component_sizes": [
+            156384,
+            4515,
+            3030,
+            1175,
+            293,
+            1
+          ],
+          "expanded_source_bounds": [
+            472,
+            482,
+            1109,
+            1024
+          ]
+        },
+        {
+          "connectivity": 8,
+          "threshold": 32,
+          "dilation_pixels": 2,
+          "component_count": 7,
+          "kept_pixels_at_threshold": 151555,
+          "removed_pixels_at_threshold": 5981,
+          "largest_component_sizes": [
+            151555,
+            3034,
+            2900,
+            33,
+            10,
+            3,
+            1
+          ],
+          "expanded_source_bounds": [
+            984,
+            482,
+            1536,
+            1024
+          ]
+        }
+      ],
+      "baseline_translation_px": [
+        0,
+        0,
+        1,
+        8,
+        9,
+        9
+      ],
+      "common_virtual_crop": [
+        93,
+        45,
+        551,
+        533
+      ],
+      "canonical_origin": [
+        49,
+        36
+      ],
+      "canonical_art_size": [
+        413,
+        440
+      ],
+      "canonical_minimum_gutter": 36
+    },
+    {
+      "source": "firmware/box_audio_ram/assets/tf-v2/sprout-poses-v2.png",
+      "sha256": "e06752e63ad5345a92e8fba5d49fd30f308f17bf74157cfe8ec3e6fbc2b7b84a",
+      "native_size": [
+        1536,
+        1024
+      ],
+      "components": [
+        {
+          "connectivity": 8,
+          "threshold": 32,
+          "dilation_pixels": 2,
+          "component_count": 3,
+          "kept_pixels_at_threshold": 145455,
+          "removed_pixels_at_threshold": 2840,
+          "largest_component_sizes": [
+            145455,
+            1661,
+            1179
+          ],
+          "expanded_source_bounds": [
+            0,
+            0,
+            597,
+            542
+          ]
+        },
+        {
+          "connectivity": 8,
+          "threshold": 32,
+          "dilation_pixels": 2,
+          "component_count": 7,
+          "kept_pixels_at_threshold": 145829,
+          "removed_pixels_at_threshold": 6749,
+          "largest_component_sizes": [
+            145829,
+            2969,
+            2182,
+            1166,
+            201,
+            185,
+            46
+          ],
+          "expanded_source_bounds": [
+            472,
+            0,
+            1109,
+            542
+          ]
+        },
+        {
+          "connectivity": 8,
+          "threshold": 32,
+          "dilation_pixels": 2,
+          "component_count": 5,
+          "kept_pixels_at_threshold": 143458,
+          "removed_pixels_at_threshold": 3375,
+          "largest_component_sizes": [
+            143458,
+            2428,
+            850,
+            54,
+            43
+          ],
+          "expanded_source_bounds": [
+            984,
+            0,
+            1536,
+            542
+          ]
+        },
+        {
+          "connectivity": 8,
+          "threshold": 32,
+          "dilation_pixels": 2,
+          "component_count": 6,
+          "kept_pixels_at_threshold": 144708,
+          "removed_pixels_at_threshold": 7729,
+          "largest_component_sizes": [
+            144708,
+            4909,
+            1253,
+            1242,
+            215,
+            110
+          ],
+          "expanded_source_bounds": [
+            0,
+            482,
+            597,
+            1024
+          ]
+        },
+        {
+          "connectivity": 8,
+          "threshold": 32,
+          "dilation_pixels": 2,
+          "component_count": 8,
+          "kept_pixels_at_threshold": 148658,
+          "removed_pixels_at_threshold": 8773,
+          "largest_component_sizes": [
+            148658,
+            4872,
+            2234,
+            937,
+            463,
+            125,
+            91,
+            51
+          ],
+          "expanded_source_bounds": [
+            472,
+            482,
+            1109,
+            1024
+          ]
+        },
+        {
+          "connectivity": 8,
+          "threshold": 32,
+          "dilation_pixels": 2,
+          "component_count": 4,
+          "kept_pixels_at_threshold": 142891,
+          "removed_pixels_at_threshold": 6701,
+          "largest_component_sizes": [
+            142891,
+            4512,
+            2164,
+            25
+          ],
+          "expanded_source_bounds": [
+            984,
+            482,
+            1536,
+            1024
+          ]
+        }
+      ],
+      "baseline_translation_px": [
+        0,
+        1,
+        0,
+        11,
+        11,
+        10
+      ],
+      "common_virtual_crop": [
+        74,
+        46,
+        550,
+        532
+      ],
+      "canonical_origin": [
+        40,
+        36
+      ],
+      "canonical_art_size": [
+        431,
+        440
+      ],
+      "canonical_minimum_gutter": 36
+    }
+  ],
+  "board_frames": 1230,
+  "web_frames": 2050,
+  "no_whole_pose_dissolve": true
+}

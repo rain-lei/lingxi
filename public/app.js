@@ -1,26 +1,4 @@
-const DEVICE_STORAGE_KEY = "lingxi-browser-device-id";
-
-function getOrCreateDeviceId() {
-  let existing = null;
-  try {
-    existing = window.localStorage.getItem(DEVICE_STORAGE_KEY);
-  } catch (error) {
-    // Privacy-restricted browsers still receive an isolated in-memory ID.
-  }
-  if (/^web-[A-Za-z0-9-]{8,60}$/.test(existing || "")) return existing;
-  const randomPart = window.crypto?.randomUUID
-    ? window.crypto.randomUUID()
-    : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 14)}`;
-  const deviceId = `web-${randomPart}`;
-  try {
-    window.localStorage.setItem(DEVICE_STORAGE_KEY, deviceId);
-  } catch (error) {
-    // Keep the generated ID for this page when storage is unavailable.
-  }
-  return deviceId;
-}
-
-const DEVICE_ID = getOrCreateDeviceId();
+const DEVICE_ID = LingxiIdentity.get();
 
 const modeLabels = {
   assistant: "任务",
@@ -626,7 +604,7 @@ function handleImageSelection(event) {
 }
 
 async function fetchJson(url, options) {
-  const response = await fetch(url, options);
+  const response = await LingxiIdentity.fetch(url, options);
   const payload = await response.json();
   if (!response.ok) throw new Error(payload.error || `请求失败：${response.status}`);
   return payload;
@@ -748,7 +726,7 @@ async function sendInteraction(text) {
   addLog("INPUT", `${cleanText.length} 字符`);
 
   try {
-    const response = await fetch("/api/interactions", {
+    const response = await LingxiIdentity.fetch("/api/interactions", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -908,6 +886,7 @@ function handleStreamEvent(event, assistant, appendDelta) {
   }
 
   if (event.type === "complete") {
+    LingxiIdentity.notify(DEVICE_ID);
     app.lastRunEvidence = {
       ...(app.lastRunEvidence || {}),
       interaction_id: event.interaction_id,
@@ -1016,7 +995,7 @@ async function speakResponse(text) {
     app.ttsActive = true;
     setDeviceState("speaking", "阶跃语音合成");
     try {
-      const response = await fetch("/api/audio/speech", {
+      const response = await LingxiIdentity.fetch("/api/audio/speech", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -1461,5 +1440,15 @@ setupRecognition();
 loadInitialData();
 window.setInterval(refreshServiceStatus, 30000);
 window.setInterval(() => {
-  if (!app.busy) loadTasks({ notifyDue: true }).catch(() => undefined);
+  if (!app.busy && !document.hidden) loadTasks({ notifyDue: true }).catch(() => undefined);
 }, 15000);
+let taskSyncTimer;
+function refreshSharedTasks() {
+  clearTimeout(taskSyncTimer);
+  taskSyncTimer = setTimeout(() => {
+    if (app.busy) { refreshSharedTasks(); return; }
+    loadTasks({ notifyDue: false }).catch(() => undefined);
+  }, 150);
+}
+window.addEventListener('lingxi:data-changed', refreshSharedTasks);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) refreshSharedTasks(); });

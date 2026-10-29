@@ -1,0 +1,511 @@
+{
+  "format_version": 2,
+  "bytes": 52793205,
+  "sha256": "27d89a627abfe94385cf8790969717d8492a45695bc3df623ff3de71f2653a83",
+  "clip_count": 50,
+  "board_frames": 2700,
+  "fps_target": 20,
+  "clips": [
+    {
+      "avatar_id": 0,
+      "state_id": 0,
+      "frames": 60,
+      "frame_ms": 50,
+      "flags": 3,
+      "bytes": 1007574,
+      "crc32": 1922531734,
+      "offset": 1664
+    },
+    {
+      "avatar_id": 0,
+      "state_id": 1,
+      "frames": 48,
+      "frame_ms": 50,
+      "flags": 3,
+      "bytes": 792901,
+      "crc32": 3444597727,
+      "offset": 1009238
+    },
+    {
+      "avatar_id": 0,
+      "state_id": 2,
+      "frames": 60,
+      "frame_ms": 50,
+      "flags": 3,
+      "bytes": 994082,
+      "crc32": 783223730,
+      "offset": 1802139
+    },
+    {
+      "avatar_id": 0,
+      "state_id": 3,
+      "frames": 48,
+      "frame_ms": 50,
+      "flags": 3,
+      "bytes": 835533,
+      "crc32": 3686015185,
+      "offset": 2796221
+    },
+    {
+      "avatar_id": 0,
+      "state_id": 4,
+      "frames": 60,
+      "frame_ms": 50,
+      "flags": 3,
+      "bytes": 962112,
+      "crc32": 3776315871,
+      "offset": 3631754
+    },
+    {
+      "avatar_id": 0,
+      "state_id": 5,
+      "frames": 48,
+      "frame_ms": 50,
+      "flags": 2,
+      "bytes": 836482,
+      "crc32": 3657821928,
+      "offset": 4593866
+    },
+    {
+      "avatar_id": 0,
+      "state_id": 6,
+      "frames": 48,
+      "frame_ms": 50,
+      "flags": 2,
+      "bytes": 871510,
+      "crc32": 2769784647,
+      "offset": 5430348
+    },
+    {
+      "avatar_id": 0,
+      "state_id": 7,
+      "frames": 60,
+      "frame_ms": 50,
+      "flags": 3,
+      "bytes": 1022588,
+      "crc32": 3131940890,
+      "offset": 6301858
+    },
+    {
+      "avatar_id": 0,
+      "state_id": 8,
+      "frames": 60,
+      "frame_ms": 50,
+      "flags": 3,
+      "bytes": 982048,
+      "crc32": 2676288553,
+      "offset": 7324446
+    },
+    {
+      "avatar_id": 0,
+      "state_id": 9,
+      "frames": 48,
+      "frame_ms": 50,
+      "flags": 2,
+      "bytes": 928856,
+      "crc32": 3731477818,
+      "offset": 8306494
+    },
+    {
+      "avatar_id": 1,
+      "state_id": 0,
+      "frames": 60,
+      "frame_ms": 50,
+      "flags": 3,
+      "bytes": 1140670,
+      "crc32": 473733034,
+      "offset": 9235350
+    },
+    {
+      "avatar_id": 1,
+      "state_id": 1,
+      "frames": 48,
+      "frame_ms": 50,
+      "flags": 3,
+      "bytes": 882289,
+      "crc32": 2372264116,
+      "offset": 10376020
+    },
+    {
+      "avatar_id": 1,
+      "state_id": 2,
+      "frames": 60,
+      "frame_ms": 50,
+      "flags": 3,
+      "bytes": 1122286,
+      "crc32": 227966961,
+      "offset": 11258309
+    },
+    {
+      "avatar_id": 1,
+      "state_id": 3,
+      "frames": 48,
+      "frame_ms": 50,
+      "flags": 3,
+      "bytes": 913175,
+      "crc32": 1606005053,
+      "offset": 12380595
+    },
+    {
+      "avatar_id": 1,
+      "state_id": 4,
+      "frames": 60,
+      "frame_ms": 50,
+      "flags": 3,
+      "bytes": 1070828,
+      "crc32": 2468776383,
+      "offset": 13293770
+    },
+    {
+      "avatar_id": 1,
+      "state_id": 5,
+      "frames": 48,
+      "frame_ms": 50,
+      "flags": 2,
+      "bytes": 913638,
+      "crc32": 331992351,
+      "offset": 14364598
+    },
+    {
+      "avatar_id": 1,
+      "state_id": 6,
+      "frames": 48,
+      "frame_ms": 50,
+      "flags": 2,
+      "bytes": 914379,
+      "crc32": 2842061128,
+      "offset": 15278236
+    },
+    {
+      "avatar_id": 1,
+      "state_id": 7,
+      "frames": 60,
+      "frame_ms": 50,
+      "flags": 3,
+      "bytes": 1122318,
+      "crc32": 2625882845,
+      "offset": 16192615
+    },
+    {
+      "avatar_id": 1,
+      "state_id": 8,
+      "frames": 60,
+      "frame_ms": 50,
+      "flags": 3,
+      "bytes": 1125674,
+      "crc32": 3591555738,
+      "offset": 17314933
+    },
+    {
+      "avatar_id": 1,
+      "state_id": 9,
+      "frames": 48,
+      "frame_ms": 50,
+      "flags": 2,
+      "bytes": 917538,
+      "crc32": 1703343942,
+      "offset": 18440607
+    },
+    {
+      "avatar_id": 2,
+      "state_id": 0,
+      "frames": 60,
+      "frame_ms": 50,
+      "flags": 3,
+      "bytes": 1149563,
+      "crc32": 124045790,
+      "offset": 19358145
+    },
+    {
+      "avatar_id": 2,
+      "state_id": 1,
+      "frames": 48,
+      "frame_ms": 50,
+      "flags": 3,
+      "bytes": 937836,
+      "crc32": 932793600,
+      "offset": 20507708
+    },
+    {
+      "avatar_id": 2,
+      "state_id": 2,
+      "frames": 60,
+      "frame_ms": 50,
+      "flags": 3,
+      "bytes": 1170466,
+      "crc32": 993653210,
+      "offset": 21445544
+    },
+    {
+      "avatar_id": 2,
+      "state_id": 3,
+      "frames": 48,
+      "frame_ms": 50,
+      "flags": 3,
+      "bytes": 972680,
+      "crc32": 391253322,
+      "offset": 22616010
+    },
+    {
+      "avatar_id": 2,
+      "state_id": 4,
+      "frames": 60,
+      "frame_ms": 50,
+      "flags": 3,
+      "bytes": 1186669,
+      "crc32": 2517016699,
+      "offset": 23588690
+    },
+    {
+      "avatar_id": 2,
+      "state_id": 5,
+      "frames": 48,
+      "frame_ms": 50,
+      "flags": 2,
+      "bytes": 972774,
+      "crc32": 1654220907,
+      "offset": 24775359
+    },
+    {
+      "avatar_id": 2,
+      "state_id": 6,
+      "frames": 48,
+      "frame_ms": 50,
+      "flags": 2,
+      "bytes": 972896,
+      "crc32": 2113376531,
+      "offset": 25748133
+    },
+    {
+      "avatar_id": 2,
+      "state_id": 7,
+      "frames": 60,
+      "frame_ms": 50,
+      "flags": 3,
+      "bytes": 1170752,
+      "crc32": 3820903439,
+      "offset": 26721029
+    },
+    {
+      "avatar_id": 2,
+      "state_id": 8,
+      "frames": 60,
+      "frame_ms": 50,
+      "flags": 3,
+      "bytes": 1131277,
+      "crc32": 1421204913,
+      "offset": 27891781
+    },
+    {
+      "avatar_id": 2,
+      "state_id": 9,
+      "frames": 48,
+      "frame_ms": 50,
+      "flags": 2,
+      "bytes": 976122,
+      "crc32": 2229685507,
+      "offset": 29023058
+    },
+    {
+      "avatar_id": 3,
+      "state_id": 0,
+      "frames": 60,
+      "frame_ms": 50,
+      "flags": 3,
+      "bytes": 1221652,
+      "crc32": 4007621006,
+      "offset": 29999180
+    },
+    {
+      "avatar_id": 3,
+      "state_id": 1,
+      "frames": 48,
+      "frame_ms": 50,
+      "flags": 3,
+      "bytes": 1019380,
+      "crc32": 1255913807,
+      "offset": 31220832
+    },
+    {
+      "avatar_id": 3,
+      "state_id": 2,
+      "frames": 60,
+      "frame_ms": 50,
+      "flags": 3,
+      "bytes": 1255666,
+      "crc32": 443834601,
+      "offset": 32240212
+    },
+    {
+      "avatar_id": 3,
+      "state_id": 3,
+      "frames": 48,
+      "frame_ms": 50,
+      "flags": 3,
+      "bytes": 1024206,
+      "crc32": 2492772352,
+      "offset": 33495878
+    },
+    {
+      "avatar_id": 3,
+      "state_id": 4,
+      "frames": 60,
+      "frame_ms": 50,
+      "flags": 3,
+      "bytes": 1235543,
+      "crc32": 1848176851,
+      "offset": 34520084
+    },
+    {
+      "avatar_id": 3,
+      "state_id": 5,
+      "frames": 48,
+      "frame_ms": 50,
+      "flags": 2,
+      "bytes": 1033333,
+      "crc32": 2628063258,
+      "offset": 35755627
+    },
+    {
+      "avatar_id": 3,
+      "state_id": 6,
+      "frames": 48,
+      "frame_ms": 50,
+      "flags": 2,
+      "bytes": 1032236,
+      "crc32": 3369956650,
+      "offset": 36788960
+    },
+    {
+      "avatar_id": 3,
+      "state_id": 7,
+      "frames": 60,
+      "frame_ms": 50,
+      "flags": 3,
+      "bytes": 1255502,
+      "crc32": 1342101113,
+      "offset": 37821196
+    },
+    {
+      "avatar_id": 3,
+      "state_id": 8,
+      "frames": 60,
+      "frame_ms": 50,
+      "flags": 3,
+      "bytes": 1254060,
+      "crc32": 2052912188,
+      "offset": 39076698
+    },
+    {
+      "avatar_id": 3,
+      "state_id": 9,
+      "frames": 48,
+      "frame_ms": 50,
+      "flags": 2,
+      "bytes": 1013478,
+      "crc32": 2226635262,
+      "offset": 40330758
+    },
+    {
+      "avatar_id": 4,
+      "state_id": 0,
+      "frames": 60,
+      "frame_ms": 50,
+      "flags": 3,
+      "bytes": 1264447,
+      "crc32": 955506320,
+      "offset": 41344236
+    },
+    {
+      "avatar_id": 4,
+      "state_id": 1,
+      "frames": 48,
+      "frame_ms": 50,
+      "flags": 3,
+      "bytes": 1000690,
+      "crc32": 2437189047,
+      "offset": 42608683
+    },
+    {
+      "avatar_id": 4,
+      "state_id": 2,
+      "frames": 60,
+      "frame_ms": 50,
+      "flags": 3,
+      "bytes": 1258328,
+      "crc32": 1848552570,
+      "offset": 43609373
+    },
+    {
+      "avatar_id": 4,
+      "state_id": 3,
+      "frames": 48,
+      "frame_ms": 50,
+      "flags": 3,
+      "bytes": 1039216,
+      "crc32": 2112023189,
+      "offset": 44867701
+    },
+    {
+      "avatar_id": 4,
+      "state_id": 4,
+      "frames": 60,
+      "frame_ms": 50,
+      "flags": 3,
+      "bytes": 1249580,
+      "crc32": 1625026898,
+      "offset": 45906917
+    },
+    {
+      "avatar_id": 4,
+      "state_id": 5,
+      "frames": 48,
+      "frame_ms": 50,
+      "flags": 2,
+      "bytes": 1041079,
+      "crc32": 2101060117,
+      "offset": 47156497
+    },
+    {
+      "avatar_id": 4,
+      "state_id": 6,
+      "frames": 48,
+      "frame_ms": 50,
+      "flags": 2,
+      "bytes": 1040686,
+      "crc32": 2035741367,
+      "offset": 48197576
+    },
+    {
+      "avatar_id": 4,
+      "state_id": 7,
+      "frames": 60,
+      "frame_ms": 50,
+      "flags": 3,
+      "bytes": 1258475,
+      "crc32": 3008138091,
+      "offset": 49238262
+    },
+    {
+      "avatar_id": 4,
+      "state_id": 8,
+      "frames": 60,
+      "frame_ms": 50,
+      "flags": 3,
+      "bytes": 1260199,
+      "crc32": 2908546257,
+      "offset": 50496737
+    },
+    {
+      "avatar_id": 4,
+      "state_id": 9,
+      "frames": 48,
+      "frame_ms": 50,
+      "flags": 2,
+      "bytes": 1036269,
+      "crc32": 1417431235,
+      "offset": 51756936
+    }
+  ],
+  "hardware_verified": false
+}

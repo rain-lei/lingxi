@@ -1,0 +1,200 @@
+{
+  "source": "D:\\比赛项目\\lingxi-main\\firmware\\box_audio_ram\\assets\\mascot-v2\\xiaoxi-3d-concept-v2.png",
+  "source_sha256": "973bbce9aa791fb56bbb01a652658d6f25dc4dfb530a642da2a06ef3dc697ae0",
+  "source_mode": "RGBA",
+  "source_size": [
+    1536,
+    1024
+  ],
+  "grid": {
+    "columns": 3,
+    "rows": 2,
+    "x_boundaries": [
+      0,
+      512,
+      1024,
+      1536
+    ],
+    "y_boundaries": [
+      0,
+      512,
+      1024
+    ]
+  },
+  "poses": [
+    {
+      "pose": "idle",
+      "source_bounds": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "visible_bounds_in_cell": [
+        34,
+        26,
+        498,
+        490
+      ],
+      "alpha": {
+        "minimum": 0,
+        "maximum": 254,
+        "transparent_fraction": 0.48490142822265625,
+        "occupied_fraction": 0.5150985717773438,
+        "partial_fraction": 0.701904296875
+      }
+    },
+    {
+      "pose": "blink",
+      "source_bounds": [
+        512,
+        0,
+        1024,
+        512
+      ],
+      "visible_bounds_in_cell": [
+        23,
+        24,
+        486,
+        490
+      ],
+      "alpha": {
+        "minimum": 0,
+        "maximum": 254,
+        "transparent_fraction": 0.48622894287109375,
+        "occupied_fraction": 0.5137710571289062,
+        "partial_fraction": 0.7244949340820312
+      }
+    },
+    {
+      "pose": "listening",
+      "source_bounds": [
+        1024,
+        0,
+        1536,
+        512
+      ],
+      "visible_bounds_in_cell": [
+        28,
+        25,
+        478,
+        490
+      ],
+      "alpha": {
+        "minimum": 0,
+        "maximum": 254,
+        "transparent_fraction": 0.5045928955078125,
+        "occupied_fraction": 0.4954071044921875,
+        "partial_fraction": 0.6946067810058594
+      }
+    },
+    {
+      "pose": "thinking",
+      "source_bounds": [
+        0,
+        512,
+        512,
+        1024
+      ],
+      "visible_bounds_in_cell": [
+        43,
+        7,
+        492,
+        482
+      ],
+      "alpha": {
+        "minimum": 0,
+        "maximum": 254,
+        "transparent_fraction": 0.4988059997558594,
+        "occupied_fraction": 0.5011940002441406,
+        "partial_fraction": 0.63037109375
+      }
+    },
+    {
+      "pose": "happy",
+      "source_bounds": [
+        512,
+        512,
+        1024,
+        1024
+      ],
+      "visible_bounds_in_cell": [
+        26,
+        8,
+        489,
+        480
+      ],
+      "alpha": {
+        "minimum": 0,
+        "maximum": 254,
+        "transparent_fraction": 0.4749794006347656,
+        "occupied_fraction": 0.5250205993652344,
+        "partial_fraction": 0.6899223327636719
+      }
+    },
+    {
+      "pose": "concern",
+      "source_bounds": [
+        1024,
+        512,
+        1536,
+        1024
+      ],
+      "visible_bounds_in_cell": [
+        33,
+        15,
+        486,
+        483
+      ],
+      "alpha": {
+        "minimum": 0,
+        "maximum": 254,
+        "transparent_fraction": 0.5115432739257812,
+        "occupied_fraction": 0.48845672607421875,
+        "partial_fraction": 0.621185302734375
+      }
+    }
+  ],
+  "alpha_threshold_for_bounds": 32,
+  "alpha_at_or_below_encoded_as_zero": 8,
+  "common_visible_union": [
+    23,
+    7,
+    498,
+    490
+  ],
+  "common_crop_bounds": [
+    22,
+    6,
+    499,
+    491
+  ],
+  "normalized_cell_size": [
+    512,
+    512
+  ],
+  "keep_cell_frame": false,
+  "output_size": [
+    128,
+    128
+  ],
+  "padding": 4,
+  "common_scale": 0.24742268041237114,
+  "scaled_art_size": [
+    118,
+    120
+  ],
+  "common_origin": [
+    5,
+    4
+  ],
+  "common_baseline_y": 124,
+  "encoding": {
+    "color": "RGB565",
+    "alpha": "straight alpha8",
+    "pose_count": 6,
+    "raw_flash_bytes": 294912
+  },
+  "c_output": "D:\\比赛项目\\lingxi-main\\firmware\\box_audio_ram\\main\\ui_mascot.c",
+  "source_art_modified": false
+}

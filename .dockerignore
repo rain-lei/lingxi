@@ -8,4 +8,13 @@ __pycache__
 data
 docs
 tests
+tmp
+.firecrawl
+firmware
+output
+*.pptx
+*.docx
+*.pdf
+.asset-cache
+public/animations/archive
 

@@ -1,0 +1,10 @@
+.identity-label { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; line-height: 1.5; color: inherit; text-decoration: none; padding: 5px 9px; border: 1px solid currentColor; border-radius: 999px; opacity: .8; max-width: 100%; overflow-wrap: anywhere; }
+.identity-label::before { content: ''; flex: 0 0 5px; height: 5px; border-radius: 50%; background: currentColor; }
+.identity-label:hover, .identity-label:focus-visible { opacity: 1; }
+.rail-nav .identity-label { margin: 5px 8px; padding: 6px 9px; justify-content: center; }
+.identity-reset { cursor: pointer; }
+.rail-nav .identity-reset { border: 0; background: transparent; font: inherit; font-size: 11px; text-align: left; padding: 8px 12px; }
+@media (max-width: 680px) {
+  .rail-nav .identity-label, .rail-nav .identity-reset { margin: 4px 0; padding: 6px 3px; font-size: 9px; text-align: center; }
+  .rail-nav .identity-label::before { display: none; }
+}

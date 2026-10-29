@@ -12,8 +12,16 @@ RUN addgroup -S lingxi \
 
 COPY --chown=lingxi:lingxi server.py ./server.py
 COPY --chown=lingxi:lingxi device_protocol.py ./device_protocol.py
+COPY --chown=lingxi:lingxi companion_learning.py companion_persona.py conversation_service.py streaming_conversation.py runtime_settings.py task_store.py ./
+COPY --chown=lingxi:lingxi prompts ./prompts
 COPY --chown=lingxi:lingxi providers ./providers
 COPY --chown=lingxi:lingxi public ./public
+COPY --chown=lingxi:lingxi assets.lock.json ./assets.lock.json
+COPY --chown=lingxi:lingxi tools/fetch_assets.py ./tools/fetch_assets.py
+
+# A checkout or git archive contains source and the immutable asset lock.
+# Fetch missing binaries; never ship Git LFS pointer text as images/firmware.
+RUN python tools/fetch_assets.py --scope runtime
 
 USER lingxi
 
