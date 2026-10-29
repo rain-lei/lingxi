@@ -62,6 +62,40 @@ class HttpApiTests(unittest.TestCase):
         self.assertGreater(int(headers["Content-Length"]), 0)
         self.assertEqual(headers["X-Frame-Options"], "DENY")
 
+    def test_static_assets_revalidate_and_updates_invalidate_cache(self) -> None:
+        with tempfile.TemporaryDirectory() as directory, patch('server.PUBLIC_DIR', Path(directory)):
+            asset = Path(directory) / 'motion.png'
+            asset.write_bytes(b'animation' * 1024)
+            status, headers, body = self.request('GET', '/motion.png')
+            self.assertEqual(status, 200)
+            self.assertEqual(len(body), 9216)
+            self.assertIn('must-revalidate', headers['Cache-Control'])
+            for method in ('GET', 'HEAD'):
+                for condition in ({'If-None-Match': headers['ETag']}, {'If-Modified-Since': headers['Last-Modified']},
+                                  {'If-None-Match': '"unrelated", ' + headers['ETag']}):
+                    status, cached_headers, cached_body = self.request(method, '/motion.png', headers=condition)
+                    self.assertEqual(status, 304)
+                    self.assertEqual(cached_body, b'')
+                    self.assertEqual(cached_headers['ETag'], headers['ETag'])
+            # ETag takes precedence over If-Modified-Since.
+            self.assertEqual(self.request('GET', '/motion.png', headers={
+                'If-None-Match': '"old"', 'If-Modified-Since': headers['Last-Modified']})[0], 200)
+            self.assertEqual(self.request('GET', '/motion.png', headers={'If-Modified-Since': 'invalid'})[0], 200)
+            asset.write_bytes(b'new animation')
+            status, updated_headers, updated = self.request('GET', '/motion.png', headers={'If-None-Match': headers['ETag']})
+            self.assertEqual(status, 200)
+            self.assertEqual(updated, b'new animation')
+            self.assertNotEqual(updated_headers['ETag'], headers['ETag'])
+
+    def test_private_api_is_never_cached_and_static_limits_are_independent(self) -> None:
+        for _ in range(600):
+            self.server.rate_limiter.allow('127.0.0.1', 'static', 600)
+        self.assertEqual(self.request('GET', '/identity.js')[0], 429)
+        status, headers, _ = self.request('GET', '/api/tasks?device_id=web-cache-test', headers={'If-None-Match': '*'})
+        self.assertEqual(status, 200)
+        self.assertEqual(headers['Cache-Control'], 'no-store')
+        self.assertNotIn('ETag', headers)
+
     def test_feedback_memory_http_lifecycle_is_visitor_scoped(self) -> None:
         device_id = "web-http-test-01"
         status, _, body = self.request(

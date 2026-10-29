@@ -292,6 +292,7 @@ function handleEvent(event, input) {
     return null;
   }
   if (event.type === "complete") {
+    LingxiIdentity.notify(state.deviceId);
     setStep("remember", "done");
     els.trace.textContent = `任务完成 · ${event.provider || "灵犀"} · ${event.latency_ms || "—"} ms`;
     els.outputState.textContent = "DONE";

@@ -195,7 +195,7 @@ async function loadPetAnimations() {
     let manifest;
     for (const path of ["/animations/v3/manifest.json", "/animations/v2/manifest.json"]) {
       try {
-        const response = await LingxiIdentity.fetch(path, { cache: "no-store", credentials: "same-origin", signal: AbortSignal.timeout(8000) });
+        const response = await LingxiIdentity.fetch(path, { credentials: "same-origin", signal: AbortSignal.timeout(8000) });
         if (!response.ok) continue;
         const candidate = await response.json();
         if (candidate.schema_version !== 1 || candidate.ready === false || candidate.web_ready === false || !Array.isArray(candidate.avatars)) continue;
@@ -391,9 +391,8 @@ function toast(message) {
 }
 function showError(element, message = "") { element.textContent = message; element.hidden = !message; }
 function apiHeaders(extra = {}) {
-  const headers = { ...extra };
-  if (ui.deviceToken.value.trim()) headers["X-Device-Token"] = ui.deviceToken.value.trim();
-  return headers;
+  // The draft pairing code is used only by an explicit switch request.
+  return { ...extra };
 }
 async function responseError(response) {
   let detail = "";
@@ -510,20 +509,23 @@ async function loadSettings() {
 async function saveSettings({ quiet = false } = {}) {
   if (!state.ready) throw new Error("偏好还未载入，请检查服务后刷新页面。");
   const settings = formSettings();
+  const device = state.deviceId;
   if (!settings.voice) throw new Error("请先选择一个服务支持的声音。");
   ui.savePreferences.disabled = true;
   ui.saveStatus.textContent = "正在保存…";
   showError(ui.settingsError);
   try {
-    const response = await postJSON("/api/companion/settings", { device_id: state.deviceId, settings });
+    const response = await postJSON("/api/companion/settings", { device_id: device, settings });
     const data = await response.json();
+    if (device !== state.deviceId) return;
     populateSettings(data.settings || settings);
     if (!quiet) toast("偏好已保存，下次对话就用这个声音。 ");
   } catch (error) {
+    if (device !== state.deviceId) return;
     ui.saveStatus.textContent = "未保存，请重试";
     showError(ui.settingsError, error.message);
     throw error;
-  } finally { ui.savePreferences.disabled = state.busy || !state.ready; }
+  } finally { if (device === state.deviceId) ui.savePreferences.disabled = state.busy || !state.ready; }
 }
 ui.preferencesForm.addEventListener("change", () => {
   markDirty(true);
@@ -535,19 +537,45 @@ ui.preferencesForm.addEventListener("submit", (event) => { event.preventDefault(
 ui.switchDevice.addEventListener("click", async () => {
   if (state.busy || state.recorder) return toast("等这次对话结束后，再切换设备。 ");
   const device = ui.deviceId.value.trim();
+  const token = ui.deviceToken.value.trim();
   if (!validDevice(device)) return showError(ui.settingsError, "设备编号请使用 1–64 位英文字母、数字、短横线、下划线、点或冒号。");
-  try { await getJSON(`/api/companion/settings?device_id=${encodeURIComponent(device)}`); }
-  catch (error) { return showError(ui.settingsError, error.message); }
-  LingxiIdentity.select(device, ui.deviceToken.value.trim());
-  state.deviceId = device;
-  state.ready = false;
-  focusEndsAt = 0;
-  updateFocus();
-  window.dispatchEvent(new CustomEvent("lingxi:device-changing", { detail: { deviceId: device } }));
-  stopPlayback();
-  stopBreathing();
-  await loadSettings();
-  if (state.ready) toast(`已切换到设备 ${device}`);
+  setBusy(true);
+  ui.deviceId.disabled = ui.deviceToken.disabled = true;
+  const label = ui.switchDevice.textContent;
+  ui.switchDevice.textContent = '正在验证…';
+  showError(ui.settingsError);
+  try {
+    const response = await request(`/api/companion/settings?device_id=${encodeURIComponent(device)}`, {
+      timeout: 15000, headers: { 'X-Device-Token': token }
+    });
+    const data = await response.json();
+    const previous = state.deviceId;
+    LingxiIdentity.select(device, token);
+    state.deviceId = device;
+    ++state.loadRevision;
+    state.ready = false;
+    stopPlayback(); stopBreathing();
+    focusEndsAt = 0; updateFocus();
+    if (previous !== device) {
+      ui.messages.replaceChildren();
+      ui.messageInput.value = '';
+      ui.replyTiming.textContent = '';
+      ui.memoryList.replaceChildren();
+      ui.memoryCount.textContent = '正在同步记忆…';
+      showError(ui.chatError);
+    }
+    window.dispatchEvent(new CustomEvent('lingxi:device-changing', { detail: { deviceId: device } }));
+    populateSettings(data.settings);
+    state.ready = true;
+    window.dispatchEvent(new CustomEvent('lingxi:ready', { detail: { deviceId: device } }));
+    await loadExperience();
+    toast(`已切换到设备 ${device}`);
+  } catch (error) { showError(ui.settingsError, error.message); }
+  finally {
+    ui.switchDevice.textContent = label;
+    ui.deviceId.disabled = ui.deviceToken.disabled = false;
+    setBusy(false);
+  }
 });
 
 function applySetup(setup) {
@@ -833,9 +861,14 @@ setInterval(() => { updateFocus(); updateBreathing(); }, 250);
 setInterval(() => { if (!document.hidden && !state.busy && state.ready) loadExperience(); }, 15000);
 async function receiveConversation(response, showTranscript) {
   if (response.headers.get("Content-Type")?.includes("application/vnd.lingxi.voice-stream")) {
-    return receiveStream(response, showTranscript);
+    await receiveStream(response, showTranscript);
+    LingxiIdentity.notify(state.deviceId);
+    window.dispatchEvent(new CustomEvent('lingxi:refresh-learning'));
+    return;
   }
   const { metadata, pcm } = await decodeConversation(response);
+  LingxiIdentity.notify(state.deviceId);
+  window.dispatchEvent(new CustomEvent('lingxi:refresh-learning'));
   if (showTranscript && metadata.transcript) addMessage("user", metadata.transcript);
   const reply = typeof metadata.reply === "string" ? metadata.reply : metadata.reply?.text || metadata.text;
   if (reply) addMessage("assistant", reply);
@@ -1069,5 +1102,10 @@ const currentHour = new Date().getHours();
 document.getElementById("timeGreeting").textContent = currentHour < 5 ? "夜深了" : currentHour < 12 ? "上午好" : currentHour < 18 ? "下午好" : "晚上好";
 document.getElementById("todayDate").textContent = new Intl.DateTimeFormat("zh-CN", { month: "long", day: "numeric", weekday: "long" }).format(new Date());
 navigateCompanion(location.hash.slice(1), { updateHash: false, focus: false });
+if (new URLSearchParams(location.search).get('pair') === '1' || validDevice(queryDevice)) {
+  navigateCompanion('settings', { focus: false });
+  document.getElementById('devicePairing').open = true;
+  document.getElementById('devicePairing').scrollIntoView({ block: 'center' });
+}
 loadPetAnimations();
 initialize();

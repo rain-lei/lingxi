@@ -886,6 +886,7 @@ function handleStreamEvent(event, assistant, appendDelta) {
   }
 
   if (event.type === "complete") {
+    LingxiIdentity.notify(DEVICE_ID);
     app.lastRunEvidence = {
       ...(app.lastRunEvidence || {}),
       interaction_id: event.interaction_id,
@@ -1439,5 +1440,15 @@ setupRecognition();
 loadInitialData();
 window.setInterval(refreshServiceStatus, 30000);
 window.setInterval(() => {
-  if (!app.busy) loadTasks({ notifyDue: true }).catch(() => undefined);
+  if (!app.busy && !document.hidden) loadTasks({ notifyDue: true }).catch(() => undefined);
 }, 15000);
+let taskSyncTimer;
+function refreshSharedTasks() {
+  clearTimeout(taskSyncTimer);
+  taskSyncTimer = setTimeout(() => {
+    if (app.busy) { refreshSharedTasks(); return; }
+    loadTasks({ notifyDue: false }).catch(() => undefined);
+  }, 150);
+}
+window.addEventListener('lingxi:data-changed', refreshSharedTasks);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) refreshSharedTasks(); });

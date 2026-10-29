@@ -25,6 +25,7 @@ from collections import defaultdict, deque
 from contextlib import contextmanager
 from dataclasses import asdict, dataclass
 from datetime import datetime, timedelta, timezone
+from email.utils import formatdate, parsedate_to_datetime
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -1113,7 +1114,7 @@ class LingXiHandler(BaseHTTPRequestHandler):
     def do_HEAD(self) -> None:  # noqa: N802
         """Serve static resource headers for uptime checks and CDNs."""
         parsed = urlparse(self.path)
-        if not self._enforce_rate_limit("read", 240):
+        if not self._enforce_rate_limit('read' if parsed.path.startswith('/api/') else 'static', 240 if parsed.path.startswith('/api/') else 600):
             return
         if parsed.path.startswith("/api/"):
             self.send_response(HTTPStatus.METHOD_NOT_ALLOWED)
@@ -1125,7 +1126,7 @@ class LingXiHandler(BaseHTTPRequestHandler):
 
     def do_GET(self) -> None:  # noqa: N802
         parsed = urlparse(self.path)
-        if not self._enforce_rate_limit("read", 240):
+        if not self._enforce_rate_limit('read' if parsed.path.startswith('/api/') else 'static', 240 if parsed.path.startswith('/api/') else 600):
             return
         device_routes = {'/api/profile', '/api/history', '/api/tasks', '/api/memory/metrics', '/api/memory/items'}
         if parsed.path in device_routes and not self._companion_auth(self._device_id(parsed.query)):
@@ -1394,7 +1395,8 @@ class LingXiHandler(BaseHTTPRequestHandler):
                                  "message": "已在本机保存配置；请发一句话验证模型和音频权限"})
                 return
             if path == "/api/device/conversation":
-                if not self._companion_auth():
+                device_id = validate_device_id(self.headers.get('X-Device-Id', 'lingxi-box-01'))
+                if not self._companion_auth(device_id):
                     return
                 if not self._enforce_rate_limit("hardware-voice", 12):
                     return
@@ -1412,7 +1414,6 @@ class LingXiHandler(BaseHTTPRequestHandler):
                 self._body_consumed = len(pcm)
                 if len(pcm) != length:
                     raise ValueError("录音上传不完整")
-                device_id = validate_device_id(self.headers.get("X-Device-Id", "lingxi-box-01"))
                 # A hardware key may select a tone while its settings-save
                 # request is still queued. Apply only this allowlisted field.
                 hardware_tone = self.headers.get("X-Lingxi-Tone")
@@ -1924,14 +1925,40 @@ class LingXiHandler(BaseHTTPRequestHandler):
             self._send_json({"error": "Not found"}, HTTPStatus.NOT_FOUND)
             return
 
-        content_length = candidate.stat().st_size
+        stat = candidate.stat()
+        content_length = stat.st_size
+        # Revalidate versionless URLs so releases are visible immediately, but
+        # a reload need not transfer several MiB of animation again. Private
+        # API responses retain no-store and never enter this cache path.
+        etag = f'W/"{stat.st_mtime_ns:x}-{content_length:x}"'
+        modified = formatdate(stat.st_mtime, usegmt=True)
+        condition = self.headers.get('If-None-Match')
+        unchanged = False
+        if condition is not None:
+            unchanged = any(tag.strip().removeprefix('W/') in ('*', etag[2:]) for tag in condition.split(','))
+        elif self.headers.get('If-Modified-Since'):
+            try:
+                since = parsedate_to_datetime(self.headers['If-Modified-Since'])
+                unchanged = int(stat.st_mtime) <= since.timestamp()
+            except (TypeError, ValueError, OverflowError):
+                pass
+        if unchanged:
+            self.send_response(HTTPStatus.NOT_MODIFIED)
+            self.send_header('ETag', etag)
+            self.send_header('Last-Modified', modified)
+            self.send_header('Cache-Control', 'public, max-age=0, must-revalidate')
+            self._send_security_headers(include_csp=True)
+            self.end_headers()
+            return
         content_type = mimetypes.guess_type(candidate.name)[0] or "application/octet-stream"
         if content_type.startswith("text/") or content_type in {"application/javascript", "application/json"}:
             content_type += "; charset=utf-8"
         self.send_response(HTTPStatus.OK)
         self.send_header("Content-Type", content_type)
         self.send_header("Content-Length", str(content_length))
-        self.send_header("Cache-Control", "no-store")
+        self.send_header('ETag', etag)
+        self.send_header('Last-Modified', modified)
+        self.send_header('Cache-Control', 'public, max-age=0, must-revalidate')
         self._send_security_headers(include_csp=True)
         self.end_headers()
         if not head_only:

@@ -445,6 +445,11 @@
   window.addEventListener("lingxi:ready", refresh);
   window.addEventListener("lingxi:device-changing", resetDevice);
   window.addEventListener("lingxi:refresh-learning", refresh);
+  let syncTimer;
+  window.addEventListener('lingxi:data-changed', () => {
+    clearTimeout(syncTimer);
+    syncTimer = setTimeout(refresh, 120);
+  });
   window.addEventListener("lingxi:experience", (event) => {
     const focus = event.detail?.focus || event.detail?.experience?.focus;
     const signature = focus ? `${focus.active}:${focus.started_at}:${focus.ends_at}` : "none";

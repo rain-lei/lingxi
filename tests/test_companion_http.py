@@ -332,6 +332,17 @@ class CompanionHttpTests(unittest.TestCase):
         # Web sessions remain publicly usable without borrowing a hardware ID.
         self.assertEqual(self.request('GET', '/api/companion/settings?device_id=web-isolated-test', headers=headers)[0], 200)
 
+    def test_browser_microphone_works_when_physical_devices_require_pairing(self):
+        self.server.companion_token = 'test-token'
+        audio = struct.pack('<h', 300) * 3200
+        headers = {'Host': 'lingxi.example', 'Content-Type': 'audio/pcm', 'Accept': STREAM_MIME}
+        status, _, body = self.request('POST', '/api/device/conversation', raw=audio,
+                                       headers={**headers, 'X-Device-Id': 'web-microphone-test'})
+        self.assertEqual(status, 200)
+        self.unpack_stream(body)
+        self.assertEqual(self.request('POST', '/api/device/conversation', raw=audio,
+                                     headers={**headers, 'X-Device-Id': 'physical-box'})[0], 401)
+
     def test_task_is_shared_between_companion_and_console_with_scoped_updates(self):
         identity = 'web-shared-test'
         status, _, body = self.request('POST', '/api/companion/learning/task/create', {'device_id': identity, 'title': '完成复习'})
