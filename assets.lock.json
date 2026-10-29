@@ -1,0 +1,3831 @@
+{
+  "version": 1,
+  "upstream": {
+    "repository": "twofly653/lingxi",
+    "commit": "77bebed447cc8a0c65c29b4f6a3fda25f3522c68"
+  },
+  "assets": [
+    {
+      "path": "firmware/box_audio_ram/assets/fonts-v3/LXGWWenKai-Regular.ttf",
+      "sha256": "2d73eea94ad808999d90c0000c239a84a33b09d4bc6ab6c5b8bbf1eda8a7fc8b",
+      "size": 25928940,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/assets/fonts-v3/NotoSansSC-VF.ttf",
+      "sha256": "763146584cf0710223441356b4395e279021b0806c196614377a7a0174ae074a",
+      "size": 17773244,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/assets/fonts-v3/NotoSerifSC-VF.ttf",
+      "sha256": "a4aed9985a5916fbf6690456f8732a9fccd517938e353165d4142b4f11a39280",
+      "size": 25129160,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/assets/fonts/ResourceHanRoundedCN-Medium.ttf",
+      "sha256": "b2ec1727fbc04b70255db6cb71be0eca3b7a7167ef11655059c5576cc920143f",
+      "size": 14423652,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/assets/mascot-v2/xiaoxi-3d-concept-v2.png",
+      "sha256": "973bbce9aa791fb56bbb01a652658d6f25dc4dfb530a642da2a06ef3dc697ae0",
+      "size": 2250644,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/assets/mascot-v3/dlut-badge.png",
+      "sha256": "82e37e7c3e675d0d5bb06a917882d64e491ac35f5f2ca74c354a63947cffce70",
+      "size": 22717,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/assets/mascot-v3/dlut-official-emblem-a1.png",
+      "sha256": "2af46eb67323c7d944d3202e9c11dbb038914d53725dce00478563d98afd0da6",
+      "size": 23668,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/assets/mascot-v3/kangaroo-concept.png",
+      "sha256": "1d9dfda9374dbf84dbe82ccb23277e14ea373df53edcc9a869116c7cac2923a9",
+      "size": 2668889,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/assets/tf-v1/cat-poses.png",
+      "sha256": "44ee3ace9d4459d46556a7186a06fccfe1c29caf3abaeb7266d9c704310b53fe",
+      "size": 2367235,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/assets/tf-v1/otter-poses.png",
+      "sha256": "d93dc4b880ed444080a765ac76a30231c217c82fa1e3a9912ed59842463d2085",
+      "size": 2551875,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/assets/tf-v1/sprout-poses.png",
+      "sha256": "0a5d8a7470000aef96b97e910cc1cef79cd7b1deb237484aa2e5926aae163984",
+      "size": 2507947,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/assets/tf-v2/kangaroo-poses-v2-source.png",
+      "sha256": "1999962e2dce00bfece449d7fcc086c60720f98a49e9797322d70982d583a6d4",
+      "size": 2551531,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/assets/tf-v2/sprout-poses-v2.png",
+      "sha256": "e06752e63ad5345a92e8fba5d49fd30f308f17bf74157cfe8ec3e6fbc2b7b84a",
+      "size": 2400111,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/assets/tf-v3/kangaroo-extra-source-v1.png",
+      "sha256": "3aa817ea015b3b39ea102e8097c261e5fd61b5f7763bcdd0b43bb999af151bd4",
+      "size": 1670672,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/assets/tf-v3/kangaroo-extra-source.png",
+      "sha256": "086b503bcd5465e8bbf88b11f34b74b25d0c4875436909549c9654b3b0ca1137",
+      "size": 1573157,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/preview/1.png",
+      "sha256": "5c7d18cb47214f38d70a81bdd9e2b13e84cc6cbf7329927eacc3b518a1ec34dc",
+      "size": 19622,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/preview/2.png",
+      "sha256": "7ca17703e9ecc3b02a89e526a69dc9081eee3794d5ca716ed68b9cf62e7d7e56",
+      "size": 17387,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/preview/3.png",
+      "sha256": "afaefdba6f0f8ff700803793d3e8fc6b7fa7d58d38b4d8491ed57b8896d3e790",
+      "size": 18494,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/preview/idle.png",
+      "sha256": "a7cc02a4bbe9112887be1871739db8f7f84bab2f0351a9d1a651c6b1b8873747",
+      "size": 19609,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/preview/motion-20261020/1.png",
+      "sha256": "30209c2f274d6d8ba867759b3538b1b8561e8fb57338502d3451e90e4239f334",
+      "size": 28939,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/preview/motion-20261020/2.png",
+      "sha256": "6d4657184e1eab45286795be3bc5213323bec458453a0772df8443e2ca067228",
+      "size": 27680,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/preview/motion-20261020/3.png",
+      "sha256": "da539949ac6bc6c708cec31b6bf0419d08e2d9c265a6ddf14ed8f544140738bd",
+      "size": 12670,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/preview/motion-20261020/idle.png",
+      "sha256": "268e51a8939dc0df603fcdfce139581c430e06c6b7b4cc1fd74332273a539a86",
+      "size": 28931,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/preview/motion-20261020/reply-font-styles.png",
+      "sha256": "d48bff090eeff802458364a64a7f03477ff63d7f6023fa268ccbdb829b873fda",
+      "size": 24880,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/preview/motion-20261020/reply-idle.gif",
+      "sha256": "87f42d298274406050f6749b8850e395e2e69a6adc85fef50554a1c14e5eb742",
+      "size": 204909,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/preview/motion-20261020/reply-noto.png",
+      "sha256": "3d0d80c87a873dfeeee07deca3249860a41ba0c263a5d0816cbceaa2e4fe7633",
+      "size": 15229,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/preview/motion-20261020/reply-page-1.png",
+      "sha256": "bf02a54018de834a2050daff1575f2a7a5f0427c72d892c400ed4de3976829d4",
+      "size": 16265,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/preview/motion-20261020/reply-page-2.png",
+      "sha256": "36f27079d196c9360664206934a59ea373dc7656a3aa5dff95e5b7b42b5c90ee",
+      "size": 11556,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/preview/motion-20261020/reply-readable-3x.png",
+      "sha256": "9d72d2d3e3fec89d27b85df764a0e8ae8e2ee54ace19d461a8f3f60df438d159",
+      "size": 23109,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/preview/motion-20261020/reply-readable.png",
+      "sha256": "cff845fa66299765fbc88b850fb0242d48779bfd42556ef7d7e2a2374c52a431",
+      "size": 15146,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/preview/motion-20261020/thinking-0.gif",
+      "sha256": "d9937e22ee88a6367198e177628ed05728d177b260e5b37fb8ec4bc4c5248b66",
+      "size": 1014265,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/preview/motion-20261020/thinking-1.gif",
+      "sha256": "04ff01be540d0ffe489111ef38153609d1d759cb77a129b1fb5dc329db6a2dbc",
+      "size": 1049417,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/preview/motion-20261020/thinking-styles.png",
+      "sha256": "203f4a4f62bdd95843d5e39cb160c964091cf9642e532b26a8f40c54eab7ab19",
+      "size": 47671,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/preview/motion-20261020/xiaoxi-idle.gif",
+      "sha256": "cee5ed9b9d09bd239fcf105c66ba88d05fb80b4bd9dbc3b2697f96282b85a5c5",
+      "size": 1400165,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/preview/motion-20261020/xiaoxi-states.png",
+      "sha256": "8514ce72229e13b4a8e42a735068c7da7873a554f8b66762fc9196ca8fd4ec23",
+      "size": 66917,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/preview/readable-20261020/1.png",
+      "sha256": "94ddc34bbc572e7f2b3c47e9609d8352705f6df844ebaf5b91d53f4b7332acba",
+      "size": 28024,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/preview/readable-20261020/2.png",
+      "sha256": "e83aed95d2bc0b5bfc7f8216a92fd8bfdb0a8d7b88d1703e3352bcc3f2a48b50",
+      "size": 26439,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/preview/readable-20261020/3.png",
+      "sha256": "da539949ac6bc6c708cec31b6bf0419d08e2d9c265a6ddf14ed8f544140738bd",
+      "size": 12670,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/preview/readable-20261020/idle.png",
+      "sha256": "7fbe5273e4cbc34436a844ad4a311c731f88a6026d7314ac359ee33478472fd8",
+      "size": 27966,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/preview/readable-20261020/reply-font-styles.png",
+      "sha256": "d48bff090eeff802458364a64a7f03477ff63d7f6023fa268ccbdb829b873fda",
+      "size": 24880,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/preview/readable-20261020/reply-noto.png",
+      "sha256": "3d0d80c87a873dfeeee07deca3249860a41ba0c263a5d0816cbceaa2e4fe7633",
+      "size": 15229,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/preview/readable-20261020/reply-page-1.png",
+      "sha256": "bf02a54018de834a2050daff1575f2a7a5f0427c72d892c400ed4de3976829d4",
+      "size": 16265,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/preview/readable-20261020/reply-page-2.png",
+      "sha256": "a3f7a7538054a09f1b36700c7741c32713fc4ff0ff6853000bf21754910c0817",
+      "size": 11505,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/preview/readable-20261020/reply-readable-3x.png",
+      "sha256": "9d72d2d3e3fec89d27b85df764a0e8ae8e2ee54ace19d461a8f3f60df438d159",
+      "size": 23109,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/preview/readable-20261020/reply-readable.png",
+      "sha256": "cff845fa66299765fbc88b850fb0242d48779bfd42556ef7d7e2a2374c52a431",
+      "size": 15146,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/preview/readable-20261020/xiaoxi-idle.gif",
+      "sha256": "f442f568ecf34d23df6b3fb7b9acf30201986eebb9045b6f65ccd6c845af7d2c",
+      "size": 1291491,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/preview/readable-20261020/xiaoxi-states.png",
+      "sha256": "656eeb763b8e0ddc77e8335d1e3cdf94d0c58e09b6f30a2a9724cc2599d6db1a",
+      "size": 65646,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/preview/v2/1.png",
+      "sha256": "3edde3b7a0c383f6bd25bc9b3536fd732dcca0d5cfbca259b1b8e3776050e94b",
+      "size": 27578,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/preview/v2/2.png",
+      "sha256": "1d3f6ab8df41b251e907e12ffccc08413ea3fb64c3c8d69075ca4f1772449c44",
+      "size": 25282,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/preview/v2/3.png",
+      "sha256": "6fc2f8e3611bb9a17b252a318af46940ddcb7e114cd510e0a4a2746e05eb8a95",
+      "size": 26315,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/preview/v2/idle.png",
+      "sha256": "02238d692b5e7d5d1edf73f78dec0c2fe992c06f3e23f93bde47683dc87b1efb",
+      "size": 27520,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/preview/v2/xiaoxi-idle.gif",
+      "sha256": "44ee78abff372e95e6e18e29b7e4914f9b3a23c9d20290061f8a151477cc2d32",
+      "size": 1317572,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/preview/v2/xiaoxi-states.png",
+      "sha256": "d26e866354281da90f31675685d4456cee662ec017554dbea83c23b8442e155e",
+      "size": 69841,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/preview/v3/1.png",
+      "sha256": "f69369cac588d803ce224f55b7c5880f0c9a6cd2f141b826854cc71ec09d2176",
+      "size": 27976,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/preview/v3/2.png",
+      "sha256": "4ea373a4da7fca79cb9d9548a7a9c39b852411fef006673a3b79d3b01ec8c32f",
+      "size": 26374,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/preview/v3/3.png",
+      "sha256": "e946b255f9ae969f3ae82ddd83e8d688c69471865100ada79389007f725af07a",
+      "size": 28046,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/preview/v3/idle.png",
+      "sha256": "76604cadef66eddaa4b72096c7970e2e33d07b61863f03910787ce4c93548fb7",
+      "size": 27916,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/preview/v3/xiaoxi-idle.gif",
+      "sha256": "f442f568ecf34d23df6b3fb7b9acf30201986eebb9045b6f65ccd6c845af7d2c",
+      "size": 1291491,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/preview/v3/xiaoxi-states.png",
+      "sha256": "95f8a3abd0ad8c92631c74862e1272e3519269b35d305ab7d322b23fab75a3d6",
+      "size": 70772,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/preview/xiaoxi-idle.gif",
+      "sha256": "c7feddc2396e5724e1ad076fb22bc8f46f0c0a935623bf11829e7114cab600c1",
+      "size": 945777,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/preview/xiaoxi-states.png",
+      "sha256": "47a6e22fbb00a8b93ae371a5c9619026941617c1f8205a587b7adae09e0289cf",
+      "size": 39452,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/releases/20261020-motion/bootloader.bin",
+      "sha256": "3b47d36b0709b5fbbceaa54795054167aaf9dd08c5344edee1fca21160e433e3",
+      "size": 22368,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/releases/20261020-motion/lingxi-motion.bin",
+      "sha256": "165a2bbcc0fbad278baef3358a893f498c92a11af0209f7c242f527ee2b643a8",
+      "size": 3998544,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/releases/20261020-motion/partition-table.bin",
+      "sha256": "477cf6a54a6670d0341eb66be321cabe59b63947648db9702b1551a93c6fc370",
+      "size": 3072,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/releases/20261020-readable/bootloader.bin",
+      "sha256": "3b47d36b0709b5fbbceaa54795054167aaf9dd08c5344edee1fca21160e433e3",
+      "size": 22368,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/releases/20261020-readable/lingxi-readable-dualfont.bin",
+      "sha256": "811beb34b8b627d9aabc9faba58436b9a6aec0846c04eda74dc6e6dd3812677b",
+      "size": 3997280,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/releases/20261020-readable/partition-table.bin",
+      "sha256": "477cf6a54a6670d0341eb66be321cabe59b63947648db9702b1551a93c6fc370",
+      "size": 3072,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/releases/20261020-streaming/bootloader.bin",
+      "sha256": "3b47d36b0709b5fbbceaa54795054167aaf9dd08c5344edee1fca21160e433e3",
+      "size": 22368,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/releases/20261020-streaming/lingxi-kangaroo-streaming.bin",
+      "sha256": "ccae1e5a2af16f5fe7adc8c6134150884e9c31188ba84a449f4ccbba293d3bef",
+      "size": 2089264,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/releases/20261020-streaming/partition-table.bin",
+      "sha256": "477cf6a54a6670d0341eb66be321cabe59b63947648db9702b1551a93c6fc370",
+      "size": 3072,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/releases/20261020/bootloader.bin",
+      "sha256": "3b47d36b0709b5fbbceaa54795054167aaf9dd08c5344edee1fca21160e433e3",
+      "size": 22368,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/releases/20261020/lingxi-kangaroo-voice.bin",
+      "sha256": "5d5ef252c346cd5cb04979dff218abe6dbbc6d72dc01a25e5060e62a1630820b",
+      "size": 2085984,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/releases/20261020/partition-table.bin",
+      "sha256": "477cf6a54a6670d0341eb66be321cabe59b63947648db9702b1551a93c6fc370",
+      "size": 3072,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/releases/20261021-tf-animation/lingxi-tf-animation.bin",
+      "sha256": "cb48d94016a09189d547fa3167a88ebd0e4f07ad542746287d20cd12b83f28a5",
+      "size": 4102080,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/releases/20261023-showcase-v3/lingxi-tf-animation-initial-diagnostic.bin",
+      "sha256": "1463ec965455dd7bae4ce3d1ae10877848556fbb72b6faff083ee4051bd08ee1",
+      "size": 3207408,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/releases/20261023-showcase-v3/lingxi-tf-animation.bin",
+      "sha256": "770a74622855d1aeb7b9dae2626d24c73f244f3c264061d5e73b0356b1d15769",
+      "size": 3250880,
+      "runtime": false
+    },
+    {
+      "path": "firmware/box_audio_ram/releases/20261023-tf-download/lingxi-tf-animation.bin",
+      "sha256": "2b4d949d2842de8e00d989d37e7a7af9ad1528124959ca6d6468da07d4befd6a",
+      "size": 4102160,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/archive/20261021-v1/lingxi-animations-v1.lxaf",
+      "sha256": "c83c1e21dabcb82d91ea1cf3caf5b745d792d84bfa52858973ebc63924c6e66f",
+      "size": 44237824,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/archive/20261021-v1/lingxi-tf-animations-v1.zip",
+      "sha256": "f99765ac3f71dee5057f7242870a2d0446ee2d9d72c855f67a7f2c46771dcf5b",
+      "size": 28497673,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v1/lingxi-animations-v1.lxaf",
+      "sha256": "27d89a627abfe94385cf8790969717d8492a45695bc3df623ff3de71f2653a83",
+      "size": 52793205,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v1/lingxi-tf-animations-v1.zip",
+      "sha256": "f99765ac3f71dee5057f7242870a2d0446ee2d9d72c855f67a7f2c46771dcf5b",
+      "size": 28497673,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v1/previews/cat-celebrate.gif",
+      "sha256": "0347914a4fd93b2f048f4b632e0c74c874cde8b0a74a6fe0c3a064938c5f000e",
+      "size": 447021,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v1/previews/cat-comfort.gif",
+      "sha256": "29e04386bb795a6e54304eb143015ea376596d039e281f80c26912f685d0c462",
+      "size": 643303,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v1/previews/cat-idle.gif",
+      "sha256": "eee7c6ad06ecd82081723646abda5904c098248bfbd2482f964f1d938e393a21",
+      "size": 620327,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v1/previews/cat-listening.gif",
+      "sha256": "141f1c618bd161ff7f9857747e1f0733001dd0f51cd1900b95af0981359d547d",
+      "size": 427143,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v1/previews/cat-speaking.gif",
+      "sha256": "97dcb94d04527e99d1e40c0fe320815ec6a0d9e421392645b53df70674f04b23",
+      "size": 437444,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v1/previews/cat-thinking.gif",
+      "sha256": "f63273f1e5adf51d5d25fce2c19804be3ca939e8856874ff9b90f8c6eb02a120",
+      "size": 632521,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v1/previews/contact-sheet.png",
+      "sha256": "386a086c8d33a8cacedb194f7b41ec08ec10a1dd9ab264e87ec76010c69602c7",
+      "size": 446294,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v1/previews/kangaroo-celebrate.gif",
+      "sha256": "aa5791c748e6aa6c044f491b30737480c53225ca26d98835d2ed96170f46749f",
+      "size": 444137,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v1/previews/kangaroo-comfort.gif",
+      "sha256": "0bea39bc6e5108d77860754c579773ce88510db58d3798c82183b44e9205ef00",
+      "size": 605621,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v1/previews/kangaroo-idle.gif",
+      "sha256": "f9a601ad7c3fe5a1316b6c4b210a1a53281bb8c9cc9bbe12611a835e38a492ad",
+      "size": 621140,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v1/previews/kangaroo-listening.gif",
+      "sha256": "6e42cf87a0b340c0d4b7d38965feb4525d38d34a55e1b9018b6a5c8ecca3ad7b",
+      "size": 423134,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v1/previews/kangaroo-speaking.gif",
+      "sha256": "e8aea780b2ab64b3f34c36b8b03b5a858e5eb29a44025db1f8b93f319fa2d9ca",
+      "size": 430514,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v1/previews/kangaroo-thinking.gif",
+      "sha256": "e0401100c83f3a7287e3c09562d56ca6f96bd4493a8c0d233359f791064eba9f",
+      "size": 605932,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v1/previews/otter-celebrate.gif",
+      "sha256": "83dd64a6be101c9fcdeba64dfb2c96037a7897e6ada009eaf9bce5277b9c7ad0",
+      "size": 478871,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v1/previews/otter-comfort.gif",
+      "sha256": "df5336e5ea476e317aae86aaf504acffdcf6310522c022cc2fc7a529474df15e",
+      "size": 682931,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v1/previews/otter-idle.gif",
+      "sha256": "fc71c5652eb086c243ce3266739e19b73fbd30172f54bf99db0c3d0495885045",
+      "size": 671054,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v1/previews/otter-listening.gif",
+      "sha256": "04376b82c637fc03d1680624420fd4b0556461c2deace2b4a6245ad5c2370bad",
+      "size": 461642,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v1/previews/otter-speaking.gif",
+      "sha256": "ddd35194b65317cacd8fde791f0833b5936bfbfc79db7dbc66b68f457a49b9bd",
+      "size": 468843,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v1/previews/otter-thinking.gif",
+      "sha256": "4675397062edb061092c1c613f62c172034cc3ea3fb46352e7cf021045e7cba0",
+      "size": 692166,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v1/previews/robot-celebrate.gif",
+      "sha256": "77b838cc53e894b1c2f9528bda3fa0559f8bf667283a8b106e6519f2a8c72a4a",
+      "size": 443894,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v1/previews/robot-comfort.gif",
+      "sha256": "0f984a0410fb42e5b696b4eb1d8c83dea16a3099b2753a165b2c87da413198d6",
+      "size": 617419,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v1/previews/robot-idle.gif",
+      "sha256": "160140c997776559acf396057283a9d8e2d56f6e6396724d237eac309fda3d99",
+      "size": 647350,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v1/previews/robot-listening.gif",
+      "sha256": "a3600144d8d7d09ed5863989687d917a6f1ccda8c8f99a624015e4549df6d5ea",
+      "size": 419801,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v1/previews/robot-speaking.gif",
+      "sha256": "ab8f4abafe1d637634939e5690101bb548fbc5e035199a01089dea933e39971d",
+      "size": 427835,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v1/previews/robot-thinking.gif",
+      "sha256": "a7433116010815eb35da26a9e2c828bf5f81f3921a05ed39907ef06de122ecf5",
+      "size": 637141,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v1/previews/sprout-celebrate.gif",
+      "sha256": "5618d4e393114404f77a6416fb1f6ff146aacf5fcd0a5992ab333cc5a6fecfa9",
+      "size": 493326,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v1/previews/sprout-comfort.gif",
+      "sha256": "cc270c37cf9ffd1b702702efa3a0bf1f04e4e6aaf0c3a743710baf8da7f72474",
+      "size": 695816,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v1/previews/sprout-idle.gif",
+      "sha256": "549997202f8b5b1017ffec8ea0ae588b946a6d0d15caf42cc880a174d9c199f3",
+      "size": 690355,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v1/previews/sprout-listening.gif",
+      "sha256": "99318fc053e1cb180cda4a1bb718ed3c6d7fb1198fd6fecd25ea8c523cb190fb",
+      "size": 453706,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v1/previews/sprout-speaking.gif",
+      "sha256": "23d4dd3996365509811b485ea6a32e92b09d4a85587eed8b53a60553c7a2295d",
+      "size": 481189,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v1/previews/sprout-thinking.gif",
+      "sha256": "b7ab9fd13e188ebdf887a0639f1c4c3dbf04da8fe43b40ca712f264b6ae6a814",
+      "size": 688063,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/lingxi-animations-v2.lxaf",
+      "sha256": "5cf9b17f1affd729b8a246c732876d02aea52f4801840fb83e28c5a10118f06c",
+      "size": 60457984,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/lingxi-hd-animations-v2.zip",
+      "sha256": "1dc0ed79b70cafc9a64d791d1eaa1460eb1ec6ed176502eba00511a1f3f25cf2",
+      "size": 440981720,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/lingxi-tf-animations-v2.zip",
+      "sha256": "11e7a8ed366c41795ee0e52d8474dc1f3f44d9ae383f137f4687d4f0eff986d6",
+      "size": 24011800,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/cat-celebrate-motion.png",
+      "sha256": "68b9bdebf0e6b99bde95f4b6bbec9442b442fef58b081e304bca7fabe0a796c7",
+      "size": 11535123,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/cat-celebrate-poster.png",
+      "sha256": "b7e125da3f6a1ec157521621b017001a0bcb8d1e4a085e9fe0fc860853b6e9fb",
+      "size": 222446,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/cat-celebrate.gif",
+      "sha256": "595b3257d0f239e96249f81a94fd28cdda1e24e10753f3f4a547f40ec24aa7f9",
+      "size": 279229,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/cat-comfort-motion.png",
+      "sha256": "c3edf810a668a6e0480952130ed548ac37c2cc8f4162968061ec63f960e95633",
+      "size": 16866773,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/cat-comfort-poster.png",
+      "sha256": "0a6b08b9f7870fd62b6b47868b3a9413b2d20820b12bee91f68a60bc645175ad",
+      "size": 216865,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/cat-comfort.gif",
+      "sha256": "e9a2e645c1538ed490915fdb63bd8e4e5b9ffbfe89c76bbdff4b395a2236c7b5",
+      "size": 357938,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/cat-idle-motion.png",
+      "sha256": "09a0e7d9f5126c73ebc31185b1270e5a33f44f24541eabbb78c23b32bf514960",
+      "size": 16548358,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/cat-idle-poster.png",
+      "sha256": "74cdd2e4317a6dda0f7f2e6b3015116125a20cb0837b76ebf336765952a61483",
+      "size": 213200,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/cat-idle.gif",
+      "sha256": "5f492bada56f55a1d5394ead295dec86c1ec6e55eafd8c9cb079ca3cd847e2f5",
+      "size": 347658,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/cat-listening-motion.png",
+      "sha256": "f5d9058172aa046319962e0d23fdfbecadc94649f55e35dd5f742b238f05a241",
+      "size": 12652448,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/cat-listening-poster.png",
+      "sha256": "fab39beac1c2e39e58fdf3c0d6d92286621d4e993df47c043d18832fb77aa47e",
+      "size": 216423,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/cat-listening.gif",
+      "sha256": "fe8d3f7219ad1d1ee267633f0fdd51f97d6cfb80c8d748ea9c256bfe58276e30",
+      "size": 271679,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/cat-speaking-motion.png",
+      "sha256": "ddf7928866f66a8b33695562f6d65da3aa42243a6818abf7bf3dd2b5e919b965",
+      "size": 12928058,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/cat-speaking-poster.png",
+      "sha256": "9e06ace6431d03bd39722f724ff80b7260012e121af3bba35b2e01a4ddbeb331",
+      "size": 222970,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/cat-speaking.gif",
+      "sha256": "b9839ce7cb76f7af77d32061e59b6a19830ab383c3cf5381394f6ab4f0bc8fad",
+      "size": 277127,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/cat-thinking-motion.png",
+      "sha256": "32a6518e2c384b0fdc94dfc26d8647e153a195106cbf27b3e4c27dc3cc6480e7",
+      "size": 14530946,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/cat-thinking-poster.png",
+      "sha256": "20a915ef05bbe3c6cea4c888eeb5db4f14da6c339197fd0d976b8b62532da6c1",
+      "size": 212812,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/cat-thinking.gif",
+      "sha256": "b0e50a0c57f76ffe14e41a6b2e5382e2b4560ee3052c807cbebc159c5c01fca7",
+      "size": 305032,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/contact-sheet.png",
+      "sha256": "165fb0be67f752069fcc3ab98eb2ccfae124b35f24fd8bea65ff175ff6eae817",
+      "size": 997713,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/kangaroo-celebrate-motion.png",
+      "sha256": "ff39121d85b17ba18192bee0b643deab0e236b693d49e652d8648853f1e6b40c",
+      "size": 11387240,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/kangaroo-celebrate-poster.png",
+      "sha256": "edfb04671b5969fcc14f92edb1e96325048343be53facc25c4420abdc8adea8c",
+      "size": 214571,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/kangaroo-celebrate.gif",
+      "sha256": "10bab1ff979318da6a1adbf83826ad099cb334521658d200b639a66d990770d3",
+      "size": 261233,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/kangaroo-comfort-motion.png",
+      "sha256": "70986cc11bb5f331df205919bdd65f34779e86e64607e575b312279dbf2132e7",
+      "size": 14727655,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/kangaroo-comfort-poster.png",
+      "sha256": "7076d91f9e4e3078f7a6682d503aa1059781b349d358e1d8e4174f608a5cd96d",
+      "size": 200414,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/kangaroo-comfort.gif",
+      "sha256": "fd9e01bcd4b0da8e51f69ab87078a59fb6561fecd16cb840c53ea802a4f5419e",
+      "size": 324235,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/kangaroo-idle-motion.png",
+      "sha256": "37e9f6a29759528b09b1996effb8c1e39ddf8831b32d1bfa1d7dffd38e7b3bc8",
+      "size": 15962279,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/kangaroo-idle-poster.png",
+      "sha256": "8ef0f8c0653d113996692e7883857e6bd150f40564b9e1bdb671dfa8c6bdbf2c",
+      "size": 206913,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/kangaroo-idle.gif",
+      "sha256": "c50ffb999587f6b1d3d79df39a70dab595d8bccdea328e56768f171656cc585d",
+      "size": 337068,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/kangaroo-listening-motion.png",
+      "sha256": "745d398c133f378d147216809f6dbf48dcc0451380528d9f27238d67c4be050f",
+      "size": 11452093,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/kangaroo-listening-poster.png",
+      "sha256": "fecd9f5b988b0d2b352c605b81a500e1ccc69e7127ad87488de82bfac2262e53",
+      "size": 203776,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/kangaroo-listening.gif",
+      "sha256": "8c9ed778d9888b18ca83eed735c7351177d37ab37d7645be7b7dfbfbbc3bd8f9",
+      "size": 248088,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/kangaroo-speaking-motion.png",
+      "sha256": "d50057168ef8a3dedaca05659b4e9fcc82437368c52c34df7043ab1682a00e5d",
+      "size": 12521661,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/kangaroo-speaking-poster.png",
+      "sha256": "3b4f30253f4481d2dbde5f001c8780713cc2753914fcfa4d87dbb45e9d6e013c",
+      "size": 214579,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/kangaroo-speaking.gif",
+      "sha256": "d4eb700dde3d36267f9a4fe3dab4d44175c85dc7ba97ac43deaf4be038338ff5",
+      "size": 260825,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/kangaroo-thinking-motion.png",
+      "sha256": "b88faa9c80808a97daf74739ee6798869dc21b6975decd24db4a982daef02c14",
+      "size": 13865319,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/kangaroo-thinking-poster.png",
+      "sha256": "53f59e167d5261b3d0e1142bf5c10d866b981e330b5a65b561daca12b0a22489",
+      "size": 205305,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/kangaroo-thinking.gif",
+      "sha256": "b9720918526913aff251c495672c5a3c99cb5cc9c797e20543be0020726e30b4",
+      "size": 291725,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/otter-celebrate-motion.png",
+      "sha256": "36e76ad5abccb78156cc7ec71381f98280d7bb0dc59e5c61144f123405ca8c91",
+      "size": 12897724,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/otter-celebrate-poster.png",
+      "sha256": "442acca86df1491145b4be0e911794e1fca6a1d007572a59ea2bed6823a479dc",
+      "size": 246839,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/otter-celebrate.gif",
+      "sha256": "7c4ba91bc469f259a4e359427cde188ee91e65cc6064130e11c666d87fd384f1",
+      "size": 293094,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/otter-comfort-motion.png",
+      "sha256": "3f4814952271998f8e7a94463e9b0f50f3c2c1f63d61e61d64a8028b02185417",
+      "size": 18357931,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/otter-comfort-poster.png",
+      "sha256": "6ed3552c6895056dd0df460b8f56633ae38b7c59792a777e628fbb6bde69e10c",
+      "size": 235838,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/otter-comfort.gif",
+      "sha256": "0bfd90e5a49fddc231f592cf8fb63467d2e931e119b23d40b1316791bae9afae",
+      "size": 383386,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/otter-idle-motion.png",
+      "sha256": "c010201546b1a555d6247eacde4aa0749f7b371362559f4b87cec030a2b793e7",
+      "size": 18346589,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/otter-idle-poster.png",
+      "sha256": "c978afbde9550db7fb0a0ca711670d4e240e527569bea25eeddb38d4da19be16",
+      "size": 235186,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/otter-idle.gif",
+      "sha256": "a126405b0eafd34b66f6e99ac7c4dc1e5972aeb8f058268d8db859c0882d84a2",
+      "size": 371819,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/otter-listening-motion.png",
+      "sha256": "01742294d6cfe92d201be031d9c3a3ddb09c646a52f21d1044308c0b1e3b4684",
+      "size": 14340186,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/otter-listening-poster.png",
+      "sha256": "0acb8afa1f75f56a5b2e5ded1bcc6eb951e2b8bfeacab7bb7900ccc00b27dbe2",
+      "size": 244492,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/otter-listening.gif",
+      "sha256": "fecdedaafec53d010b72fe5874c4037ec3c69e5c897d389a4a71aa62f3d59abc",
+      "size": 293521,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/otter-speaking-motion.png",
+      "sha256": "6183293b6634f319e7ee48bff78360811a1b327a4fb0711d578f7ddb7ee84dcb",
+      "size": 14387399,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/otter-speaking-poster.png",
+      "sha256": "b6708240e646b550546a848a314a71bbbaa2c5292173e0b6748956f832cf29d8",
+      "size": 246986,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/otter-speaking.gif",
+      "sha256": "2c96cc5cf23f9fb7809b23937716eed8d948ea26f514bf0ebd1757bc874a2199",
+      "size": 292831,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/otter-thinking-motion.png",
+      "sha256": "660ebd8a5922656134effef9f5fb301645d6f025f52e7e05ad56e6b58872bf42",
+      "size": 16480453,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/otter-thinking-poster.png",
+      "sha256": "96ed6f7cf8808e1527c779b136ad62c0d100e6bf9e9f176efe83888b1e2ea109",
+      "size": 240322,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/otter-thinking.gif",
+      "sha256": "aca99a6caef15c722bcacd4e2fb6adfd0d2cd0f1af8e248fe8691d7ec9c2d6df",
+      "size": 333617,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/robot-celebrate-motion.png",
+      "sha256": "ff651155440deba8d57ae70d02458016d20735bf41fa6e23bf6ce7627556f8ad",
+      "size": 10866299,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/robot-celebrate-poster.png",
+      "sha256": "2fc47c1f3a8c7a9712a54ab51000bb6d26ca53d303f58d68b4b4fb33baf4fe30",
+      "size": 207609,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/robot-celebrate.gif",
+      "sha256": "f7c06534999ed72ed9e947c66a060119277f838580a52a02d5a34362bbc98a41",
+      "size": 265827,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/robot-comfort-motion.png",
+      "sha256": "84fc291616548bb9dc219381d0d6e78f47d1a3f95a6132b2c610553bad7522f8",
+      "size": 15595156,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/robot-comfort-poster.png",
+      "sha256": "0022ceb9cfb4b0106f710d6e730bad5d0168de72fbb2f1ae47d17cff54e43057",
+      "size": 199276,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/robot-comfort.gif",
+      "sha256": "f77d6defddec986dfc7bea158dfcad0b31ef821f7e2d5ca70fa9717f2ed47ad4",
+      "size": 336991,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/robot-idle-motion.png",
+      "sha256": "18eb1183586ded47299ac78990d0b00c39c2f1477cc7d50060c0dc7f07907bc8",
+      "size": 16478666,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/robot-idle-poster.png",
+      "sha256": "aa62aade8c70ab47a5993ae0ab8067bae5ad679a567c6db5504f8851f6f0f3ab",
+      "size": 210090,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/robot-idle.gif",
+      "sha256": "af62179de14f604aaec5fa6435e45ae5f0e918023b3a491499eba1424fc6c568",
+      "size": 354103,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/robot-listening-motion.png",
+      "sha256": "3c9758bd149785daea0dcb7c0b0c49f0194a58ae76abb8b03e11578941fa92dc",
+      "size": 12074165,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/robot-listening-poster.png",
+      "sha256": "e29c69795e23d9052514878d5544b9fd49a03644aafd16e35e589204c7db3bfa",
+      "size": 205018,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/robot-listening.gif",
+      "sha256": "0efbfb1e988cb539a1a4ed0ea54f8c2b4bc0eda3bb3b4891e69fda87325b9722",
+      "size": 261143,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/robot-speaking-motion.png",
+      "sha256": "458d65b1f132c4beded018c028455d3a5a9b48d5580d2689b0754b9cf5ec5e71",
+      "size": 12172209,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/robot-speaking-poster.png",
+      "sha256": "b0d5b8038093f72d0b3b4d3756e092a769667579ede642bb568dce4b35208bea",
+      "size": 207812,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/robot-speaking.gif",
+      "sha256": "0cff558e36e32ee9e1df4571feed7b394aedad1dd35dc9daed568bfb7ec83409",
+      "size": 261707,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/robot-thinking-motion.png",
+      "sha256": "2cfcc0645dffe6d622176dd848f6cd77e75ea9c9e2259e167c97974471918e1a",
+      "size": 14152695,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/robot-thinking-poster.png",
+      "sha256": "d3866fd429cff95ce9f46c804dd594c7f69e688209db9284388886b59d04d46a",
+      "size": 206069,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/robot-thinking.gif",
+      "sha256": "90e02689a1296e08129c9a4e086bdf3b47c82283e25c76d298936153362c1664",
+      "size": 304218,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/sprout-celebrate-motion.png",
+      "sha256": "4e7454ab53ded5d7c79887528ddc753084690a2ed6e84de6353d7649e892e1c4",
+      "size": 12577114,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/sprout-celebrate-poster.png",
+      "sha256": "857937efb77e87c2fd303822245a2607dac5a3088de4ec472846a81b37414c40",
+      "size": 239836,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/sprout-celebrate.gif",
+      "sha256": "0d1637815260a8390498ed9863d11febc3308b56a1ed5074fc17b3bb49956196",
+      "size": 309556,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/sprout-comfort-motion.png",
+      "sha256": "7c75fdd1b5735bc7be706d04f3ec8bc78ab6cc9fa04962d152d93928db62ab0b",
+      "size": 17924198,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/sprout-comfort-poster.png",
+      "sha256": "af6b8a8142da97b5d2aa1d00156259a56ae14a277b1f43df07121179c43acbef",
+      "size": 230045,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/sprout-comfort.gif",
+      "sha256": "c7b5ec5860789bc94beadd851038358ef5e7dd117b019b184c08efff0300ca09",
+      "size": 401120,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/sprout-idle-motion.png",
+      "sha256": "1447abe51fd3db98eb832b306221ef782d6015d3263c8c856558bf121c2d48c6",
+      "size": 18290086,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/sprout-idle-poster.png",
+      "sha256": "d5cf21290ec110d07415d4a81c481fa6a5afb2e5179d72b4961234c361f8c4da",
+      "size": 233949,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/sprout-idle.gif",
+      "sha256": "c11aa838de272f9eaf1aa74dbd2dadb6f121b69d5915390d515478553705d488",
+      "size": 402056,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/sprout-listening-motion.png",
+      "sha256": "dafcb1720861ee2d40d6671f68aea73ca719484d39558636fd8a64b44ed1aecc",
+      "size": 13456845,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/sprout-listening-poster.png",
+      "sha256": "f5eb6c650cde1237f97942ec95765fbbb6ba55806301127b99c89c07f790c44e",
+      "size": 228768,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/sprout-listening.gif",
+      "sha256": "bc37e8bc93be918c092488a399f751fd8297300378cd012571032c407e523482",
+      "size": 297729,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/sprout-speaking-motion.png",
+      "sha256": "3f072c213f0c7eb967d92b168f6a2def98cb0eff79242517cec28ca7101ea73e",
+      "size": 14044754,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/sprout-speaking-poster.png",
+      "sha256": "17a8195726fd69c4459b65993cae05f7f9548b22c46dcb5bf630b88e7727bd40",
+      "size": 239694,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/sprout-speaking.gif",
+      "sha256": "c711f0a2e53b0389229bd584b67700398a9bc71366560edef1a0211a2fe1d503",
+      "size": 306816,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/sprout-thinking-motion.png",
+      "sha256": "36540826549de1c576feebc89d7eb0aacdb2b37111740191aba7eeb41b27c56a",
+      "size": 15904995,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/sprout-thinking-poster.png",
+      "sha256": "7415cea58676add51cb7f4d86c1919355f11a4ecba853ff8fb7b77c3464d83be",
+      "size": 231996,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v2/previews/sprout-thinking.gif",
+      "sha256": "5c97992e2856529ddf0b8c7d3ab1e5b3a329d3998484a254902f13e1295efbd1",
+      "size": 351187,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/lingxi-animations-v3.lxaf",
+      "sha256": "27d89a627abfe94385cf8790969717d8492a45695bc3df623ff3de71f2653a83",
+      "size": 52793205,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/lingxi-tf-animations-v3.zip",
+      "sha256": "2506137d47816515e4855c487a5878dc7867232fe40bb2821996f537704919eb",
+      "size": 2743532,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/cat-celebrate-all-characters-r4-motion.png",
+      "sha256": "746c1e39d4d1b788af1ed036bbb7ea8e48271c4dae232bee4feb19955010d27b",
+      "size": 11594628,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/cat-celebrate-all-characters-r4-poster.png",
+      "sha256": "87573fa788e68dddde481a935570d3d2d4d0f00a90a7d707e153e685a945fcef",
+      "size": 222579,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/cat-celebrate-all-characters-r4.gif",
+      "sha256": "3e645bc6a091874d2b879475d19301bb0908341a897ce49e8f07fb5564491295",
+      "size": 360020,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/cat-celebrate-local-joints-r3-motion.png",
+      "sha256": "cdbda475a3e19ec42621536707a74fb6392dd48a3f0043da6236d27bb9ffe410",
+      "size": 8506404,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/cat-celebrate-local-joints-r3-poster.png",
+      "sha256": "87573fa788e68dddde481a935570d3d2d4d0f00a90a7d707e153e685a945fcef",
+      "size": 222579,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/cat-celebrate-local-joints-r3.gif",
+      "sha256": "acaaead8c844b31f1a63c06ce9a46ac95d9ef4a6a5ffb10e7160cfeaea040466",
+      "size": 358570,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/cat-celebrate.gif",
+      "sha256": "94a8065a376f25820a08f3b21084dbca0cb8bbc0dc5eb190314c6efb1daa3f51",
+      "size": 376985,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/cat-comfort-all-characters-r4-motion.png",
+      "sha256": "a24559fc9202c93b85939f1d915709469a6da89d0f04137dbc67addafbccca4c",
+      "size": 3023068,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/cat-comfort-all-characters-r4-poster.png",
+      "sha256": "0bc8776f22e79c8663ce526621ab09ba5fd27d862431a6d97fe7fd80c1184f80",
+      "size": 216621,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/cat-comfort-all-characters-r4.gif",
+      "sha256": "1f6882ce96b29309d30278305465f3b3171911a255c07441ef60212f2d721139",
+      "size": 463388,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/cat-comfort-local-joints-r3-motion.png",
+      "sha256": "ca53c515dae8e92c92ba3b4aa461268f539b25e4d6af231243de61a5d8ce4f9a",
+      "size": 2428557,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/cat-comfort-local-joints-r3-poster.png",
+      "sha256": "0bc8776f22e79c8663ce526621ab09ba5fd27d862431a6d97fe7fd80c1184f80",
+      "size": 216621,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/cat-comfort-local-joints-r3.gif",
+      "sha256": "c9b6c0d2b63fc548e4518d1ca74adf80d96431f4ea6804dd21f8659f35ba9cb1",
+      "size": 463235,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/cat-comfort.gif",
+      "sha256": "c9ef11124daf60eced583f0ef95f5c4e3b81c85dd939476be5287951dc2d4821",
+      "size": 461922,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/cat-focus-all-characters-r4-motion.png",
+      "sha256": "9141d6518fc5a9d3fb1c031b76fea9427173ef002d8fff9e52d482b2907bb4a7",
+      "size": 5052566,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/cat-focus-all-characters-r4-poster.png",
+      "sha256": "ad644e2ea2a41923091f20c19dc352b7a233780d9b840e37e6273bc66744f426",
+      "size": 212538,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/cat-focus-all-characters-r4.gif",
+      "sha256": "bff5e364d470cb91136bb45be0ac9ad58bb777be42136556b27b46be8dc7ebeb",
+      "size": 449747,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/cat-focus-local-joints-r3-motion.png",
+      "sha256": "e52ce6c1b3b90cb8aecbbd6412f9d310840c50744d0a5c7cef2d7ed4e4d28d7e",
+      "size": 6166046,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/cat-focus-local-joints-r3-poster.png",
+      "sha256": "ad644e2ea2a41923091f20c19dc352b7a233780d9b840e37e6273bc66744f426",
+      "size": 212538,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/cat-focus-local-joints-r3.gif",
+      "sha256": "143d2c0645a07fba13db2f73fb05669dbddb14f4349cee21f4dbeef8b6c99e8c",
+      "size": 449030,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/cat-focus-motion.png",
+      "sha256": "092912ce6763fa47b7298b3d9e8758fb114c99877aa1b5c7028d7b23b7e7020b",
+      "size": 12405923,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/cat-focus-poster.png",
+      "sha256": "f9213d1443acbe38e8eedbce2fc13906d492f39aff98819b3b92f8fb28094eaa",
+      "size": 212628,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/cat-focus.gif",
+      "sha256": "5aa51442720badcc04dd821cff7b14c3e1237c37e69e82b99f8e20a2e4216612",
+      "size": 449597,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/cat-greeting-all-characters-r4-motion.png",
+      "sha256": "f6d85d4681ebb23e2d0c6362652d1d04c3c866f9995ad74f5b3143685ef9899a",
+      "size": 5826331,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/cat-greeting-all-characters-r4-poster.png",
+      "sha256": "87573fa788e68dddde481a935570d3d2d4d0f00a90a7d707e153e685a945fcef",
+      "size": 222579,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/cat-greeting-all-characters-r4.gif",
+      "sha256": "afa52e35a1244037f99c46bfc4e7bf24b6af8614a9a067c0624186721ec20d6d",
+      "size": 360295,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/cat-greeting-local-joints-r3-motion.png",
+      "sha256": "8f7a5d03a9135a7fd92cabd6144867017be691ea1f551f169713124662a8beaf",
+      "size": 1433618,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/cat-greeting-local-joints-r3-poster.png",
+      "sha256": "87573fa788e68dddde481a935570d3d2d4d0f00a90a7d707e153e685a945fcef",
+      "size": 222579,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/cat-greeting-local-joints-r3.gif",
+      "sha256": "83bc84ff02b44e2204dd83bbe31c70ed1ec151d00c36fb88b86d47d5dd50d798",
+      "size": 350737,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/cat-greeting-motion.png",
+      "sha256": "af567e7fc1297cb76bfd3319e17fb8d428e7f64f8a1e141b15d322b50aa3a865",
+      "size": 10353263,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/cat-greeting-poster.png",
+      "sha256": "9218da8c41c481e21c148508f44a241b1a992fd61bb09c0c65b7b477fc3ca30f",
+      "size": 222637,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/cat-greeting.gif",
+      "sha256": "3200bf39356755b376617654b6514d1a1fe9fc4bffd8ea541b753d4bd4d4e61e",
+      "size": 375430,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/cat-idle-all-characters-r4-motion.png",
+      "sha256": "1890f0b8d8fda7ecee9ba567c67f684e5ad1104106431fbe0fe06496fab425ad",
+      "size": 2152221,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/cat-idle-all-characters-r4-poster.png",
+      "sha256": "2c367d3cb3e80fb14695a56677dabb068f57a02dd3f265239ae1259e857f829d",
+      "size": 212855,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/cat-idle-all-characters-r4.gif",
+      "sha256": "d4383443dc07590c7b59d6809dcb725196d84eb463c328514b808ef2a685967e",
+      "size": 443230,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/cat-idle-local-joints-r3-motion.png",
+      "sha256": "d5bbf0d164b6fbc493f6d95a9719ccf2c69c7929bf798b97e39da82ab3ac96f7",
+      "size": 8206009,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/cat-idle-local-joints-r3-poster.png",
+      "sha256": "2c367d3cb3e80fb14695a56677dabb068f57a02dd3f265239ae1259e857f829d",
+      "size": 212855,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/cat-idle-local-joints-r3.gif",
+      "sha256": "14bdde79b78e78d1fa25100aec0cc0730a7d50f425f6a986dfdc93342a3a0f17",
+      "size": 443753,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/cat-idle.gif",
+      "sha256": "2d7262576b30fae10def34b9970fa313a7f53443661f86fbf2a73c1d7846e528",
+      "size": 442513,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/cat-listening-all-characters-r4-motion.png",
+      "sha256": "eeb337fe3f6e21f1d32371ee0ea625438846b8444cff5d2097a4970ae294d01a",
+      "size": 9575080,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/cat-listening-all-characters-r4-poster.png",
+      "sha256": "629ed84eee63b5360682407754a1807a9ff4ce4944e911fee5603be8d14182b4",
+      "size": 216295,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/cat-listening-all-characters-r4.gif",
+      "sha256": "96830408480c5b2fe17da9438dc99cd5f8501e9442fd4329bf8523474ed840b4",
+      "size": 363985,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/cat-listening-local-joints-r3-motion.png",
+      "sha256": "659816c457cac1f9b3f6cac8f88bdb1c041fcc882cda05fc7de0fd2dd243db71",
+      "size": 6417601,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/cat-listening-local-joints-r3-poster.png",
+      "sha256": "629ed84eee63b5360682407754a1807a9ff4ce4944e911fee5603be8d14182b4",
+      "size": 216295,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/cat-listening-local-joints-r3.gif",
+      "sha256": "c2f616a5ac51fdfc5737e5a1d405348a30bde86958f0cb1743361ec2e645f995",
+      "size": 363460,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/cat-listening.gif",
+      "sha256": "e95a17d31ab9cec248836069c671da27bad56a14c9aa91fde0906856aa68ee00",
+      "size": 365685,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/cat-sleepy-all-characters-r4-motion.png",
+      "sha256": "dac533ab43c5576e8376b6a9aa09b1b7866db5ecaafa520ada2ca42ceb926fe8",
+      "size": 9587182,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/cat-sleepy-all-characters-r4-poster.png",
+      "sha256": "643283ef0ebab57c75820bb49f84354d166f8619721a1a379090736a468c5fad",
+      "size": 207647,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/cat-sleepy-all-characters-r4.gif",
+      "sha256": "df739fd39dda10fce65bfd1461ba3c522d01e47cf1bd088223cc591f910688ed",
+      "size": 438112,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/cat-sleepy-local-joints-r3-motion.png",
+      "sha256": "73debc6674b6e6fdf89948f32056e82bb1c238bc55ce0b744a7423993e1cf6f4",
+      "size": 5924246,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/cat-sleepy-local-joints-r3-poster.png",
+      "sha256": "643283ef0ebab57c75820bb49f84354d166f8619721a1a379090736a468c5fad",
+      "size": 207647,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/cat-sleepy-local-joints-r3.gif",
+      "sha256": "62787b7683a4a84e34e095f2106f5f3e2d6da15d3efd796a856d2d2ca180ed8d",
+      "size": 436510,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/cat-sleepy-motion.png",
+      "sha256": "e0cb5f7b0fb881eeb665c5909727edfa09026ab8b7726a06f2707233741b95ef",
+      "size": 12093663,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/cat-sleepy-poster.png",
+      "sha256": "ef709904602c1411dc04ada6ded76acfb821fa83a7064aa1aa7f06bf1e6a0423",
+      "size": 207658,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/cat-sleepy.gif",
+      "sha256": "1fd0985f69294595a81f8810233eb45861583cc51984dee9be28eb5ff485d07d",
+      "size": 435644,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/cat-speaking-all-characters-r4-motion.png",
+      "sha256": "efe8d87f9984e6512471ab26497c628200d74703a841bd723b094f4f1717b9e0",
+      "size": 7889121,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/cat-speaking-all-characters-r4-poster.png",
+      "sha256": "87573fa788e68dddde481a935570d3d2d4d0f00a90a7d707e153e685a945fcef",
+      "size": 222579,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/cat-speaking-all-characters-r4.gif",
+      "sha256": "3ad0ec042e80a52722cd7bdfdd9a053be83e6c2bb8266fd5cfd0b5fa3cb26835",
+      "size": 375795,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/cat-speaking-local-joints-r3-motion.png",
+      "sha256": "9a2ea67ae6c329bde6fd6d6a74de75eb42e7c327b2d6ed5a76c671a3f8967f6b",
+      "size": 2647225,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/cat-speaking-local-joints-r3-poster.png",
+      "sha256": "87573fa788e68dddde481a935570d3d2d4d0f00a90a7d707e153e685a945fcef",
+      "size": 222579,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/cat-speaking-local-joints-r3.gif",
+      "sha256": "ca2614f20b32d7cda5f0793a2d94496eb2e469d67d192d6803f9e1c75b4d946c",
+      "size": 374327,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/cat-speaking.gif",
+      "sha256": "45bba1c0230eb73a8b2fead45df82491f555042f463dec2682037b077c691cb3",
+      "size": 375744,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/cat-stretch-all-characters-r4-motion.png",
+      "sha256": "0a13cd8d2ffff313979e8f78dd58acd0ca44734d055888d5213806f76ca71c8f",
+      "size": 5393250,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/cat-stretch-all-characters-r4-poster.png",
+      "sha256": "87573fa788e68dddde481a935570d3d2d4d0f00a90a7d707e153e685a945fcef",
+      "size": 222579,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/cat-stretch-all-characters-r4.gif",
+      "sha256": "270f1a7ed8e3aad666dbf05ac469398e5c25a9767d6034122f9858c10c488241",
+      "size": 337593,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/cat-stretch-local-joints-r3-motion.png",
+      "sha256": "631140aad101b14489cf6033b3852741c173e1855df2a3caa6d20b0480e792aa",
+      "size": 6335344,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/cat-stretch-local-joints-r3-poster.png",
+      "sha256": "87573fa788e68dddde481a935570d3d2d4d0f00a90a7d707e153e685a945fcef",
+      "size": 222579,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/cat-stretch-local-joints-r3.gif",
+      "sha256": "13b1d9262aa4f41bc21387db6ae8995c6aa95a8cea4f5c6b3da75ea4a2077408",
+      "size": 335857,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/cat-stretch-motion.png",
+      "sha256": "812da40b303f6bde15b3c94210690999dad7b2317d5f718745d9d3b856837eb1",
+      "size": 9848921,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/cat-stretch-poster.png",
+      "sha256": "9218da8c41c481e21c148508f44a241b1a992fd61bb09c0c65b7b477fc3ca30f",
+      "size": 222637,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/cat-stretch.gif",
+      "sha256": "765872f333d1af54deb4d5b0158e9f505632d7212186b979397bf6aa4a2d1319",
+      "size": 375798,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/cat-thinking-all-characters-r4-motion.png",
+      "sha256": "af5e6cd5bf1530e704cceb84d54edbabc59da4769b59ccf76f4687adc7916800",
+      "size": 5753294,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/cat-thinking-all-characters-r4-poster.png",
+      "sha256": "ad644e2ea2a41923091f20c19dc352b7a233780d9b840e37e6273bc66744f426",
+      "size": 212538,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/cat-thinking-all-characters-r4.gif",
+      "sha256": "310de1335127ed0bb2772b7bd31022a97c23ea2c06c768784952ec9dd220f139",
+      "size": 449252,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/cat-thinking-local-joints-r3-motion.png",
+      "sha256": "f3f2e2605550af28a803d88adecac5ed169c2bff5ad6fae397b7688915d8f966",
+      "size": 7012140,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/cat-thinking-local-joints-r3-poster.png",
+      "sha256": "ad644e2ea2a41923091f20c19dc352b7a233780d9b840e37e6273bc66744f426",
+      "size": 212538,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/cat-thinking-local-joints-r3.gif",
+      "sha256": "a9bbf60009625ae24af26d8c2e60782e42c1fd10bdf886d37030d8c2906c1dd8",
+      "size": 448226,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/cat-thinking.gif",
+      "sha256": "37fd5c38ab6724481110cf999f08aa398b7cd0a870994d71de5287ecd8922965",
+      "size": 451049,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-celebrate-all-characters-r4-motion.png",
+      "sha256": "c6f7acb939d18ae16b6e40a2389a56e8004d81a9b4535b52208d3a0704d670d3",
+      "size": 6842187,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-celebrate-all-characters-r4-poster.png",
+      "sha256": "7e867be9600114d02906755e43f1163935d0442dce53f5f9444fd885151399ee",
+      "size": 214784,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-celebrate-all-characters-r4.gif",
+      "sha256": "ba0dfaede724658aa33171800c49ba0d4218b021afda3aa2c10f2ae8071a085b",
+      "size": 333934,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-celebrate-badge-center-r2-motion.png",
+      "sha256": "c859e410987c817e7c362d955bb9b28f6737f372f8c0faa31bad0005ca919aaa",
+      "size": 11396192,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-celebrate-badge-center-r2-poster.png",
+      "sha256": "5e42fa35db6e20a19762913d5ff597a92dac7e56ef4c515d1001e1c26668a6ca",
+      "size": 214776,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-celebrate-badge-center-r2.gif",
+      "sha256": "b554f11637e9c4f1a153c3ccef80ce73aa9eca3d3058bc031e3541c4cce1f579",
+      "size": 351068,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-celebrate-local-joints-r3-motion.png",
+      "sha256": "0ca7641c5f3a783971b82b27bd180cc86e87ab83832cff1d0efe6dedbabcf9af",
+      "size": 6608900,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-celebrate-local-joints-r3-poster.png",
+      "sha256": "7e867be9600114d02906755e43f1163935d0442dce53f5f9444fd885151399ee",
+      "size": 214784,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-celebrate-local-joints-r3.gif",
+      "sha256": "98b4f9ef2bee2a8f199d978df0af6ff5d9ae5c9bf8baa1bff4c154f39b8d45b0",
+      "size": 333356,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-celebrate.gif",
+      "sha256": "10757b0da7ec964277e06442386cd30e7f6cab1a2b6586fc4a1bfbe083c4fea5",
+      "size": 349902,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-comfort-all-characters-r4-motion.png",
+      "sha256": "bf37a0fe8171d5fb79c349eb851a84b43398a5ecd2ace3ecc0bb3d8552578e56",
+      "size": 4304585,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-comfort-all-characters-r4-poster.png",
+      "sha256": "3df2531388f6a4adfcc505c4877498bb912cc790eb91e078f899dc48917809bc",
+      "size": 199710,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-comfort-all-characters-r4.gif",
+      "sha256": "cda5b3c04d18c034e4a4413738958924d479a575e5f0391ec082c300451b3939",
+      "size": 409714,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-comfort-badge-center-r2-motion.png",
+      "sha256": "81023234ef01b46bd5a00063cc100d3a63354df7903a7552fa7b7c00c528403f",
+      "size": 14697456,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-comfort-badge-center-r2-poster.png",
+      "sha256": "f78b34c2b3a916c75f50413e0780b1bc27bce794fc68f6c0c14bfba341e7a39c",
+      "size": 200042,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-comfort-badge-center-r2.gif",
+      "sha256": "37bf448d2ab7b6752ed399bf53946a9248eb060ef360190e09b34189ca184baa",
+      "size": 409239,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-comfort-local-joints-r3-motion.png",
+      "sha256": "9c49ceedc1fe9e3b8f10fa714946744b52b5785e476b80bc2fc54774637f3b43",
+      "size": 4309646,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-comfort-local-joints-r3-poster.png",
+      "sha256": "3df2531388f6a4adfcc505c4877498bb912cc790eb91e078f899dc48917809bc",
+      "size": 199710,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-comfort-local-joints-r3.gif",
+      "sha256": "f623dfb7bf368712ba6fc5e62ccdc46b22be61a876a95597ba0d89aa2256a02d",
+      "size": 409542,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-comfort.gif",
+      "sha256": "f3ff891f6870ae2830e7cc02083106464ec9eb4ecfc0a210f42d4dd9807ca3b0",
+      "size": 408719,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-focus-all-characters-r4-motion.png",
+      "sha256": "425c8db6d223c56df8ff207e644443052c8b7625e8f0dc063cc387d81c9d222e",
+      "size": 4681302,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-focus-all-characters-r4-poster.png",
+      "sha256": "dc3a89cadea4f4bd0da091d0745e87021f8e3daa72bb338f61b47e01667dcb9d",
+      "size": 202778,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-focus-all-characters-r4.gif",
+      "sha256": "481234641ef0b8b82e733c5ff724419bde2c609afe71f43169e198751b7fad7d",
+      "size": 424241,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-focus-badge-center-r2-motion.png",
+      "sha256": "1bb07c6704ea91ba3e9c4ab6cc7d55bf6f75adf563c85ca9fb36ebc5ffd4b299",
+      "size": 11410716,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-focus-badge-center-r2-poster.png",
+      "sha256": "bae7588ffacbab5d37a36ac91f65d016a8e87639700e098bc3ef79aaf1573b60",
+      "size": 202474,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-focus-badge-center-r2.gif",
+      "sha256": "18b7e0c0226013d66aa9d762620f73c19fab2ce21e6c01d07785ffe53b807d38",
+      "size": 425396,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-focus-local-joints-r3-motion.png",
+      "sha256": "425c8db6d223c56df8ff207e644443052c8b7625e8f0dc063cc387d81c9d222e",
+      "size": 4681302,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-focus-local-joints-r3-poster.png",
+      "sha256": "dc3a89cadea4f4bd0da091d0745e87021f8e3daa72bb338f61b47e01667dcb9d",
+      "size": 202778,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-focus-local-joints-r3.gif",
+      "sha256": "481234641ef0b8b82e733c5ff724419bde2c609afe71f43169e198751b7fad7d",
+      "size": 424241,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-focus-motion.png",
+      "sha256": "75f7db73374e8740ac52697740305f65cdb455b857d0d61146ff939f0a7a8ae4",
+      "size": 11416835,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-focus-poster.png",
+      "sha256": "563ce0c90f4550531f0c6c4d3cda68221e65322ba77a34bbc2e473d83b8c2916",
+      "size": 202696,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-focus.gif",
+      "sha256": "004f4feb8f3d63454a78fc04bc7c1b82b5aa972500e083fd919fa08197d597bd",
+      "size": 424507,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-greeting-all-characters-r4-motion.png",
+      "sha256": "8d88b68f181bdab112099df9d4923a13029df2c93797e795706cc0732f2b07cf",
+      "size": 1634456,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-greeting-all-characters-r4-poster.png",
+      "sha256": "60e41b5a3e7a91b676642b429eb2a2afbb8db3dd01001bedd37ef5dbf44d0f63",
+      "size": 216766,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-greeting-all-characters-r4.gif",
+      "sha256": "3e144a9c70ad28ef4affc6bc31056f35ef313235fe7d622393fa146ffaf747ab",
+      "size": 349984,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-greeting-badge-center-r2-motion.png",
+      "sha256": "2a1a73b664cc63db3f6ce0c556c12919278dcf8143ece06da83de9b164a00086",
+      "size": 10139439,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-greeting-badge-center-r2-poster.png",
+      "sha256": "533fe04aa776b432164c215f12d96f4d1cbb973b4bfa9827ffd2edb48234b221",
+      "size": 216439,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-greeting-badge-center-r2.gif",
+      "sha256": "b612e4189416efc3755a77401a043ad5f0e2c57948614dc1ebfb697260813506",
+      "size": 364500,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-greeting-local-joints-r3-motion.png",
+      "sha256": "22c02ff12c4c5f9c10de5cb59d7e7b201a9d30f85bed1ff0425c357b29fcbec1",
+      "size": 1541028,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-greeting-local-joints-r3-poster.png",
+      "sha256": "60e41b5a3e7a91b676642b429eb2a2afbb8db3dd01001bedd37ef5dbf44d0f63",
+      "size": 216766,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-greeting-local-joints-r3.gif",
+      "sha256": "71bf354c731aab13cf85a3465044e9f453e57a310155efb53f6e8fd0ed2d9354",
+      "size": 350191,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-greeting-motion.png",
+      "sha256": "d7edf10d6548f09ff6103ed7f15cf6dfdbef149cbeb763a4f95b9e626d32ea22",
+      "size": 10128336,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-greeting-poster.png",
+      "sha256": "24aa29bb4bbea91d4c8cfae8dd10bb6c65d0d24698538b2e0c3e82fb2af2d7c9",
+      "size": 216318,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-greeting.gif",
+      "sha256": "ac42bef93d7c730c0493a8d0ff98bb17ea608d297088ba104f5020202e73a974",
+      "size": 363206,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-idle-all-characters-r4-motion.png",
+      "sha256": "2dcd8f2fadf6b4bae402f25b955d5cf43df4431f28cbb912bc98718f9737809b",
+      "size": 6463855,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-idle-all-characters-r4-poster.png",
+      "sha256": "fcc52da49dcf159755e8a847df0bda86417cfc4b9145d43a3f2dba3f65d6f9e4",
+      "size": 207346,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-idle-all-characters-r4.gif",
+      "sha256": "db864abd10ba1199d10c1b1de39a9f4ba3b11850850001d88960d039a9ad9a55",
+      "size": 425685,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-idle-badge-center-r2-motion.png",
+      "sha256": "70c9b5fcb4881069e778c77cc848b0461aa982b17b48f20c3b04aaa1d8187524",
+      "size": 15965067,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-idle-badge-center-r2-poster.png",
+      "sha256": "92cde1f3e27f0d4bf128a8a50b9cd91f805a154b340912749fab7dfa4995e9f6",
+      "size": 206827,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-idle-badge-center-r2.gif",
+      "sha256": "2d663deeb2a6bb89d186629640ffb2407bd5856dbfe61c362e473e2720b5e4f4",
+      "size": 424845,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-idle-local-joints-r3-motion.png",
+      "sha256": "2dcd8f2fadf6b4bae402f25b955d5cf43df4431f28cbb912bc98718f9737809b",
+      "size": 6463855,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-idle-local-joints-r3-poster.png",
+      "sha256": "fcc52da49dcf159755e8a847df0bda86417cfc4b9145d43a3f2dba3f65d6f9e4",
+      "size": 207346,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-idle-local-joints-r3.gif",
+      "sha256": "db864abd10ba1199d10c1b1de39a9f4ba3b11850850001d88960d039a9ad9a55",
+      "size": 425685,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-idle.gif",
+      "sha256": "65526f0c03ef41a825dccaf846b35b671ebf3ea5c6dcf8488e686af2b9c058d6",
+      "size": 424975,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-listening-all-characters-r4-motion.png",
+      "sha256": "61a21b38f2f94dc48468e0f639c5529b129420ab2988c2ffb7dc347d298d144b",
+      "size": 5330611,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-listening-all-characters-r4-poster.png",
+      "sha256": "d3b10a3e24d1a7eb5bb158a03c24dbd7b13a9398bf34f3ad584ef5a2908c6e15",
+      "size": 204175,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-listening-all-characters-r4.gif",
+      "sha256": "54e61db96fa9eae043d35a869c3e6e1539bc0fb0664bdf457ec2417ecf941a41",
+      "size": 335706,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-listening-badge-center-r2-motion.png",
+      "sha256": "fc90defb5c77544e40f9ca436bf25b6e458d2eff33bdd8b3e83d2486b8c51cde",
+      "size": 11472929,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-listening-badge-center-r2-poster.png",
+      "sha256": "02fcf314bbc317f3f6a0592f71133c6978278dd153f71ab7337ca2aea11d44b8",
+      "size": 204067,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-listening-badge-center-r2.gif",
+      "sha256": "e8cef0f62a57b0bc8b43a4ba2b4f665f121584bc0ab3921e333b7ca95935df02",
+      "size": 337469,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-listening-local-joints-r3-motion.png",
+      "sha256": "9933a10a1ffce5cb8055b6beefc883813fd4b0982e2f44a8967c14dc9026d708",
+      "size": 5330565,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-listening-local-joints-r3-poster.png",
+      "sha256": "d3b10a3e24d1a7eb5bb158a03c24dbd7b13a9398bf34f3ad584ef5a2908c6e15",
+      "size": 204175,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-listening-local-joints-r3.gif",
+      "sha256": "25256a3771671f8e8f1e57a59b5af9a8d9446dd9c1bc911139792be52e9e9833",
+      "size": 335679,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-listening.gif",
+      "sha256": "1d950ddb2bf46cc710fa8d7a213d79b6a612dfdb271b0fdc1939ccb3742569a5",
+      "size": 336087,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-sleepy-all-characters-r4-motion.png",
+      "sha256": "fe8146a4552ed88ac428bb50b9d1ad6b2d322b278ccaebdea4c694b398843867",
+      "size": 4556444,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-sleepy-all-characters-r4-poster.png",
+      "sha256": "130390633253d26c2f640c24aa122f5ce93ad9374ca17c39aef359bb1f64283b",
+      "size": 196569,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-sleepy-all-characters-r4.gif",
+      "sha256": "636c4be6bf6c00923b176f681e1908587e0664142862d4bc01f516a41491858f",
+      "size": 418870,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-sleepy-badge-center-r2-motion.png",
+      "sha256": "99769c55856572a073d7f103fd7b66e58dd7bf9724d8bcf863b9914e3e0f6a1d",
+      "size": 11460671,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-sleepy-badge-center-r2-poster.png",
+      "sha256": "c37a1bb5ff2e809d2fd71a1afd9bfceb1b5a85583bf8e2d6f78566f1edbdcf9a",
+      "size": 196578,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-sleepy-badge-center-r2.gif",
+      "sha256": "15663969ca2fb8ce2c9b1c8305340df6f53d7d332dc29877cf0732149eee96e4",
+      "size": 418571,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-sleepy-local-joints-r3-motion.png",
+      "sha256": "fe8146a4552ed88ac428bb50b9d1ad6b2d322b278ccaebdea4c694b398843867",
+      "size": 4556444,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-sleepy-local-joints-r3-poster.png",
+      "sha256": "130390633253d26c2f640c24aa122f5ce93ad9374ca17c39aef359bb1f64283b",
+      "size": 196569,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-sleepy-local-joints-r3.gif",
+      "sha256": "636c4be6bf6c00923b176f681e1908587e0664142862d4bc01f516a41491858f",
+      "size": 418870,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-sleepy-motion.png",
+      "sha256": "d01b4d01f90c05fcd671e20964e69d4bb6c0095b220418c44486ba1f16818ee4",
+      "size": 11491932,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-sleepy-poster.png",
+      "sha256": "6f26699b6367778c15408a076d583f27a2e9a9c7d4447752fca753634c87808d",
+      "size": 196943,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-sleepy.gif",
+      "sha256": "465e8874fde7570d37f7240d79cf72212ad52789fa67128db9fb520fa3ee8117",
+      "size": 418182,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-speaking-all-characters-r4-motion.png",
+      "sha256": "92c2c905025dfb91e82abc39af0d4a0e7795a8a45c2dd27acb31c2977202e83f",
+      "size": 3408002,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-speaking-all-characters-r4-poster.png",
+      "sha256": "7e867be9600114d02906755e43f1163935d0442dce53f5f9444fd885151399ee",
+      "size": 214784,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-speaking-all-characters-r4.gif",
+      "sha256": "aaf52bb3a018d30a94f2b8dadfc54c0a875a8b0d7487a7aebdae419c1e2d6db6",
+      "size": 347628,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-speaking-badge-center-r2-motion.png",
+      "sha256": "3899ffab5670b233cfa96430aee94ce02f3148eebb04e3b379c1ae461da0fc95",
+      "size": 12532837,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-speaking-badge-center-r2-poster.png",
+      "sha256": "bd3958a8539b8eec8beaa73e002e71bb4959a2f7a1cde77abdf801e8273d81e3",
+      "size": 214774,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-speaking-badge-center-r2.gif",
+      "sha256": "1cf1e9ce840100f359117419ded77990fbf28d6f8c433f293e1d20e3f849828b",
+      "size": 348301,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-speaking-local-joints-r3-motion.png",
+      "sha256": "078f8eb82f8a17b6a3937df4358f73237c086874a6f5ae6a2447d65f8cbc6c00",
+      "size": 3264456,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-speaking-local-joints-r3-poster.png",
+      "sha256": "7e867be9600114d02906755e43f1163935d0442dce53f5f9444fd885151399ee",
+      "size": 214784,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-speaking-local-joints-r3.gif",
+      "sha256": "a61320c4794aee618a5e5293cfee9f2a0d2afd4c4024631087382497b14078fd",
+      "size": 347872,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-speaking.gif",
+      "sha256": "619acdb1376fcf8ed79e80ecd64cecfa26e9282f12b31493800fd588de1023bf",
+      "size": 346879,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-stretch-all-characters-r4-motion.png",
+      "sha256": "1181f6caee2b1057acc67110fdf6e991dcb0bae116b1b7df975b127de1b6aae6",
+      "size": 5418009,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-stretch-all-characters-r4-poster.png",
+      "sha256": "83e4a7cbf02885bc8eea390c29336bc115b384e0996cc7a7483650e93e542075",
+      "size": 224698,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-stretch-all-characters-r4.gif",
+      "sha256": "425958d30bfcb7f206cb23d8b448fd36815d9dfc3f5a5448acb6d0321d3bfb80",
+      "size": 339199,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-stretch-badge-center-r2-motion.png",
+      "sha256": "1ad7c403527d6786d2e972332817440119e4582c317224c5fd19e7b0f33184f0",
+      "size": 9851093,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-stretch-badge-center-r2-poster.png",
+      "sha256": "18a9a9778170bb96c89c10451d3cf6cb093d257c209269b087244a621441c9b1",
+      "size": 224293,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-stretch-badge-center-r2.gif",
+      "sha256": "d7a2d1dfa28592ba21f69c701f0d37d3aa2e35ac36046fb45606cbd17a17cc30",
+      "size": 376442,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-stretch-local-joints-r3-motion.png",
+      "sha256": "90908b7762cc50572f7f035197b8619eb01a7a269c38a77dbd71d42ad5a57cd3",
+      "size": 5447482,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-stretch-local-joints-r3-poster.png",
+      "sha256": "83e4a7cbf02885bc8eea390c29336bc115b384e0996cc7a7483650e93e542075",
+      "size": 224698,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-stretch-local-joints-r3.gif",
+      "sha256": "65fce80895a3c1a7255bbf4661a70abe61e4eae29825fba7fcacfea2abc2f1dd",
+      "size": 339963,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-stretch-motion.png",
+      "sha256": "e6b11500d519376fbe347eea44220ab9d4c7937fd4f3b79aa12a1b4a548fae40",
+      "size": 9849494,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-stretch-poster.png",
+      "sha256": "230eca925f46c77ab85150923d90733efde8d444b827a817f0917e16054b0c95",
+      "size": 224304,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-stretch.gif",
+      "sha256": "024cc19b42a4b14931547dc8cd6d888a6a9e0d32d28ffe04db03d162ab248fb3",
+      "size": 376500,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-thinking-all-characters-r4-motion.png",
+      "sha256": "ccd271dc15fcea80b17776c45e669d958ce4bba2fe3ad341ab13714b72aed36b",
+      "size": 7782148,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-thinking-all-characters-r4-poster.png",
+      "sha256": "25b5fe5b055529e7d9523fe1f31b425469af931602ef68a88acf6ac04360887c",
+      "size": 205234,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-thinking-all-characters-r4.gif",
+      "sha256": "5b61718eaf7a3765914fd5bcef02a361783869477a92bfded927ae8bbe03dfd1",
+      "size": 418812,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-thinking-badge-center-r2-motion.png",
+      "sha256": "d4c4ac26381415864cf26b59ecfb58c5896e8ac0704d3239e3c8e4a3ade86f8a",
+      "size": 13861182,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-thinking-badge-center-r2-poster.png",
+      "sha256": "89e304ef763de2cd99da557a981b6b93cb336f666d9e481b111fcb97785904a1",
+      "size": 205275,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-thinking-badge-center-r2.gif",
+      "sha256": "42611f88fa13f04fd7beb2038eebe77d74bf0cad1dbf736239578f544420f909",
+      "size": 421259,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-thinking-local-joints-r3-motion.png",
+      "sha256": "60bbb5c012dc904bb832affc3dfcf3debb33924d384d53fb8bbfe982978af55d",
+      "size": 7774025,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-thinking-local-joints-r3-poster.png",
+      "sha256": "25b5fe5b055529e7d9523fe1f31b425469af931602ef68a88acf6ac04360887c",
+      "size": 205234,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-thinking-local-joints-r3.gif",
+      "sha256": "11fb4fe46e3ee40d7e586dc13b906417e443e56855a946e676222e0143bc0399",
+      "size": 418794,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/kangaroo-thinking.gif",
+      "sha256": "9edfb285e1c35c33e73f3b8fa84c3cb26f6096fbe2daaf9f81c52910d67f9ad8",
+      "size": 421897,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/otter-celebrate-all-characters-r4-motion.png",
+      "sha256": "2094a7cc8ddaacedb070414aaefb3f7ba111762a6d91630b4984a71c3ce4ee0e",
+      "size": 5976103,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/otter-celebrate-all-characters-r4-poster.png",
+      "sha256": "46b3f648cd4dc7c8b1e9cb04a6a6e4aa1e86c5c0ea57d982f70325f2e8bee900",
+      "size": 246807,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/otter-celebrate-all-characters-r4.gif",
+      "sha256": "09726aa3378374f656123b249cc6e94e6c23a0fe2b06645c2e778b070c15bea8",
+      "size": 390916,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/otter-celebrate-local-joints-r3-motion.png",
+      "sha256": "14bf821c14b95abadc9d408d9055b3754db0190f7d85fd3132ddede6b12c6015",
+      "size": 8547853,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/otter-celebrate-local-joints-r3-poster.png",
+      "sha256": "46b3f648cd4dc7c8b1e9cb04a6a6e4aa1e86c5c0ea57d982f70325f2e8bee900",
+      "size": 246807,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/otter-celebrate-local-joints-r3.gif",
+      "sha256": "31c419ed288340db71434648594bcef50da17d15d10620f0da47dc4b62b87683",
+      "size": 380175,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/otter-celebrate.gif",
+      "sha256": "eeeec35521547ad54b76759ca5d00bf29a02de09fdadd026d80860e098fa7482",
+      "size": 397722,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/otter-comfort-all-characters-r4-motion.png",
+      "sha256": "8a6d4e10d78de423d27af399116989e90c3256f7725b5802b72b3b7151756946",
+      "size": 3388496,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/otter-comfort-all-characters-r4-poster.png",
+      "sha256": "fb3f68e932ee08d2714eb25f5acf604e77a993fd804a3383198b8f6651ad70f4",
+      "size": 236602,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/otter-comfort-all-characters-r4.gif",
+      "sha256": "c2a82b63427c92ff021604f01beb8e684b5959f2dff8f2303b17711a04e16ca4",
+      "size": 483670,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/otter-comfort-local-joints-r3-motion.png",
+      "sha256": "fb304dd797cd6902b54ab9a64cf64d26989ab92fe65f54c855adaf8453141338",
+      "size": 3033630,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/otter-comfort-local-joints-r3-poster.png",
+      "sha256": "fb3f68e932ee08d2714eb25f5acf604e77a993fd804a3383198b8f6651ad70f4",
+      "size": 236602,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/otter-comfort-local-joints-r3.gif",
+      "sha256": "9043eddab9e890fe44dc77fc1b68d241a09bfa372905c47ca310bcce75374e2c",
+      "size": 483530,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/otter-comfort.gif",
+      "sha256": "bf007beb23ddfc2161743aa147e9e0d90f06d57962df2205e63d9ed80e7d7559",
+      "size": 481654,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/otter-focus-all-characters-r4-motion.png",
+      "sha256": "af8bda97736d3330b3513e831a50e7c45a7099dfed6e3df967d43fd609f67b52",
+      "size": 1557216,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/otter-focus-all-characters-r4-poster.png",
+      "sha256": "51ffdc4133ea683b3411290cf820e12f74d57f2f113808b045640c8ebf53ceda",
+      "size": 240354,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/otter-focus-all-characters-r4.gif",
+      "sha256": "8f5e6c862cded17f96549b42ff3146555e8746e9c15f47649af739afb3b72a75",
+      "size": 480633,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/otter-focus-local-joints-r3-motion.png",
+      "sha256": "7a43f43a96e34df071c238a945e745b15e6cad97fafc0cdf83f0661ec35e3e7c",
+      "size": 6834257,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/otter-focus-local-joints-r3-poster.png",
+      "sha256": "51ffdc4133ea683b3411290cf820e12f74d57f2f113808b045640c8ebf53ceda",
+      "size": 240354,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/otter-focus-local-joints-r3.gif",
+      "sha256": "59d0b140e0bf98118d85602158c4a054f2db9239c583cf7b4a138bb988e3b938",
+      "size": 480716,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/otter-focus-motion.png",
+      "sha256": "b4d09a188aa573a78f7739f46838a3bf7126a77b32f1c0601eb1ea09fe79e32a",
+      "size": 14072701,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/otter-focus-poster.png",
+      "sha256": "303a7cd3f2a2e714303816aa56c336ee1db8efc6c0e78db68ea51d2a2d38145f",
+      "size": 240093,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/otter-focus.gif",
+      "sha256": "c08fa45f40ff8f348035879bbdb2365b933e8b3cf0133645cb550a47ea4541b5",
+      "size": 481156,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/otter-greeting-all-characters-r4-motion.png",
+      "sha256": "8c84ba4bf32c0893a70aca294f5d2b1ad6c383940f1b4e3e3730da122c2f7e7c",
+      "size": 1924869,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/otter-greeting-all-characters-r4-poster.png",
+      "sha256": "46b3f648cd4dc7c8b1e9cb04a6a6e4aa1e86c5c0ea57d982f70325f2e8bee900",
+      "size": 246807,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/otter-greeting-all-characters-r4.gif",
+      "sha256": "a5c85131b2449a6c76ff68cefe5c1d5d747c922fa62d35208819f1a126b0dd1d",
+      "size": 391076,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/otter-greeting-local-joints-r3-motion.png",
+      "sha256": "9cd6d346553c2db8f57fc9954fac048a99e7fc163026327e2f3a3bfdf45f82b3",
+      "size": 1637565,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/otter-greeting-local-joints-r3-poster.png",
+      "sha256": "46b3f648cd4dc7c8b1e9cb04a6a6e4aa1e86c5c0ea57d982f70325f2e8bee900",
+      "size": 246807,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/otter-greeting-local-joints-r3.gif",
+      "sha256": "c59f04cf11c550b60748852168de160c70ed015b9d2646f3ef1a05fb5cc11f9a",
+      "size": 379987,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/otter-greeting-motion.png",
+      "sha256": "48664b7d565545ac75c4c2d21e63f4b43904074c92654060883ff059ecd8f0c7",
+      "size": 11534548,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/otter-greeting-poster.png",
+      "sha256": "e16d7ea120076d2bb8e094a404bc367da89f432d58a4294a9b535ab055216e51",
+      "size": 246711,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/otter-greeting.gif",
+      "sha256": "56c663f12f691ab5c75ac5a03c023fc4ff77dd6c813b11039ed92e23178601c2",
+      "size": 395696,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/otter-idle-all-characters-r4-motion.png",
+      "sha256": "354049297165042d28a9d46f3a48619cacf7a6b719a9a1f4ee7f359534e09d58",
+      "size": 1306965,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/otter-idle-all-characters-r4-poster.png",
+      "sha256": "21043b945fb170a13a9f44be031fbdff32d2e33fb7c4e030cdf7b1c8762dc848",
+      "size": 235635,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/otter-idle-all-characters-r4.gif",
+      "sha256": "f880aa4ffb81758e8ff98fb741bc0e0fe180059f390e6419311a45426b6c246a",
+      "size": 455076,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/otter-idle-local-joints-r3-motion.png",
+      "sha256": "ebad5c84df9ad3f7472b47149ed4c6ac9bd8f50ad162e9d557e1af4c19c648f9",
+      "size": 8858854,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/otter-idle-local-joints-r3-poster.png",
+      "sha256": "21043b945fb170a13a9f44be031fbdff32d2e33fb7c4e030cdf7b1c8762dc848",
+      "size": 235635,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/otter-idle-local-joints-r3.gif",
+      "sha256": "13dc4e7ca926031d1e3c1122f1c0025bd77e7d30a88f8a5307614c7b8311b534",
+      "size": 472742,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/otter-idle.gif",
+      "sha256": "62615fcca2101fc5eb56d0932138405a647118ce50f613e007105d3aa47ffaf7",
+      "size": 472173,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/otter-listening-all-characters-r4-motion.png",
+      "sha256": "25f1a34a134e9bc84c553848580c0e2d4fdf1e5cc3bc32dd92430099775a84e3",
+      "size": 1244324,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/otter-listening-all-characters-r4-poster.png",
+      "sha256": "9d1f760194b36d2a2f15ce487e38d48076c110732feca430411800f9935098bc",
+      "size": 244527,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/otter-listening-all-characters-r4.gif",
+      "sha256": "70b98432bf0de2594ff7cf996fa0e5f5e3252d6cc01bae15f47f937373edfc28",
+      "size": 392238,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/otter-listening-local-joints-r3-motion.png",
+      "sha256": "fe31c3b46c6b31590195328ef0f11e8b43b253afe278937372df82d331c55a8f",
+      "size": 7204574,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/otter-listening-local-joints-r3-poster.png",
+      "sha256": "9d1f760194b36d2a2f15ce487e38d48076c110732feca430411800f9935098bc",
+      "size": 244527,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/otter-listening-local-joints-r3.gif",
+      "sha256": "a82f9fce0aa1b22d0ba5c2401e0927f691511378b512751a03c8d8881a029afe",
+      "size": 393027,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/otter-listening.gif",
+      "sha256": "6453811c7c50da1b35a3d983fcb72421eef9b4197e01c00a9e661d4ce1b3f797",
+      "size": 394813,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/otter-sleepy-all-characters-r4-motion.png",
+      "sha256": "1c59e66d0584ff3672fe6c3f81b8a0cf69d596cfb7a19369a20f7000636f0c19",
+      "size": 241265,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/otter-sleepy-all-characters-r4-poster.png",
+      "sha256": "1c59e66d0584ff3672fe6c3f81b8a0cf69d596cfb7a19369a20f7000636f0c19",
+      "size": 241265,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/otter-sleepy-all-characters-r4.gif",
+      "sha256": "b6f931e0f56089c84d485b00a7e9232ff3797c0ee02b2513e3df823f09e04677",
+      "size": 8147,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/otter-sleepy-local-joints-r3-motion.png",
+      "sha256": "b8e1576f647241fa7193ab307838c886bdf7063dce5e2973bcb1966f6ac3e15c",
+      "size": 6971797,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/otter-sleepy-local-joints-r3-poster.png",
+      "sha256": "1c59e66d0584ff3672fe6c3f81b8a0cf69d596cfb7a19369a20f7000636f0c19",
+      "size": 241265,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/otter-sleepy-local-joints-r3.gif",
+      "sha256": "820ce2a9dc3e63a259293e6683aa5296cdee7d28475f491adf781bb190225e5d",
+      "size": 480335,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/otter-sleepy-motion.png",
+      "sha256": "8908c90dca0ebd25d64eb2496f8699d53e0355fc3c3fc52d347369ba1c1762d1",
+      "size": 14120866,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/otter-sleepy-poster.png",
+      "sha256": "f55a64dd9aec25d1edfe081c492e251cdfc6bf7e386af0701774b88e24e14bae",
+      "size": 241010,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/otter-sleepy.gif",
+      "sha256": "040e99ac3b1f01ce1c357614bc782ca0931d64610ce25d37e9f2826876808837",
+      "size": 479743,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/otter-speaking-all-characters-r4-motion.png",
+      "sha256": "9149d09f07fe57625e49eef684c02520d1a82274913abbb977e24fbcf7f36667",
+      "size": 3481802,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/otter-speaking-all-characters-r4-poster.png",
+      "sha256": "46b3f648cd4dc7c8b1e9cb04a6a6e4aa1e86c5c0ea57d982f70325f2e8bee900",
+      "size": 246807,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/otter-speaking-all-characters-r4.gif",
+      "sha256": "042ff2312586293af971cd3b5023bcca2fd06784c791c5db93121d51a8737eb4",
+      "size": 395920,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/otter-speaking-local-joints-r3-motion.png",
+      "sha256": "ed8cd98bfd4467c359660166414f373e55356a89dab14b637bda61240660b940",
+      "size": 2886370,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/otter-speaking-local-joints-r3-poster.png",
+      "sha256": "46b3f648cd4dc7c8b1e9cb04a6a6e4aa1e86c5c0ea57d982f70325f2e8bee900",
+      "size": 246807,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/otter-speaking-local-joints-r3.gif",
+      "sha256": "afe176f8a0ce1c6f69590c2ebecbd88112e96903e301e244db56edad613abdf2",
+      "size": 394545,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/otter-speaking.gif",
+      "sha256": "7371351f157a5d2744afa572da5680166e5e1fa725721be71597282369047586",
+      "size": 395031,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/otter-stretch-all-characters-r4-motion.png",
+      "sha256": "3e9ecce6dfe2b32518b7b7385120adbc2fc5535f8f3294920a47dee9d09041c5",
+      "size": 920641,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/otter-stretch-all-characters-r4-poster.png",
+      "sha256": "46b3f648cd4dc7c8b1e9cb04a6a6e4aa1e86c5c0ea57d982f70325f2e8bee900",
+      "size": 246807,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/otter-stretch-all-characters-r4.gif",
+      "sha256": "57ba2cc18bac9acb6cbe9567b31ef7740baceeeaecd4dc56ff317c5d0f8f573d",
+      "size": 229211,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/otter-stretch-local-joints-r3-motion.png",
+      "sha256": "6d7c1969bc2ad15fd5679c4d2f8dd99e88c5982052cb7cdb08969a27201497be",
+      "size": 6309552,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/otter-stretch-local-joints-r3-poster.png",
+      "sha256": "46b3f648cd4dc7c8b1e9cb04a6a6e4aa1e86c5c0ea57d982f70325f2e8bee900",
+      "size": 246807,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/otter-stretch-local-joints-r3.gif",
+      "sha256": "32f82cb1d652eaa8015bcc93496f63758c079ff9abece01da8856df5073de2cb",
+      "size": 352759,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/otter-stretch-motion.png",
+      "sha256": "037de22c445db1eb80d2d0c5e56ca4dfca67cd7fff6b26a7bd1b9fc7da074626",
+      "size": 10960835,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/otter-stretch-poster.png",
+      "sha256": "e16d7ea120076d2bb8e094a404bc367da89f432d58a4294a9b535ab055216e51",
+      "size": 246711,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/otter-stretch.gif",
+      "sha256": "afe1454ac4d6bac74dc28904327d267228b22048443cdb0c1f900ef58b460d57",
+      "size": 396830,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/otter-thinking-all-characters-r4-motion.png",
+      "sha256": "f923c067cd8d4592ea8c5a0c8b0078318889b3932fe2c6af54b9c741d69bf61e",
+      "size": 1808663,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/otter-thinking-all-characters-r4-poster.png",
+      "sha256": "51ffdc4133ea683b3411290cf820e12f74d57f2f113808b045640c8ebf53ceda",
+      "size": 240354,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/otter-thinking-all-characters-r4.gif",
+      "sha256": "c8db160beac0a18e212ea31acd0fbb2910ecbf8f714f570addaafba09595baf2",
+      "size": 480501,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/otter-thinking-local-joints-r3-motion.png",
+      "sha256": "247e14a3fc58fc64bd008ea413708e5692e8db62b33b855ac82d7fc908fcfc73",
+      "size": 7742352,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/otter-thinking-local-joints-r3-poster.png",
+      "sha256": "51ffdc4133ea683b3411290cf820e12f74d57f2f113808b045640c8ebf53ceda",
+      "size": 240354,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/otter-thinking-local-joints-r3.gif",
+      "sha256": "eaf4f46d83cb54c2cf37cebde7e513cb96152b1d4855e0a4cb73fcefed3d1a79",
+      "size": 481184,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/otter-thinking.gif",
+      "sha256": "d2209754aede602f35a0223d51859809b8a7d894c5abab21fbdb309fac55280b",
+      "size": 482941,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/robot-celebrate-all-characters-r4-motion.png",
+      "sha256": "33f05f69a488129a249b54c2c1b9a23d3fd0a3e55a24aa74df2a7707e1e61753",
+      "size": 3603895,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/robot-celebrate-all-characters-r4-poster.png",
+      "sha256": "68f2e82e650ea61f6678e51ce84e8cd61da778601aee4c0bdd5403140b64010e",
+      "size": 207624,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/robot-celebrate-all-characters-r4.gif",
+      "sha256": "69d74974d7be00424cf476434c5895d60f1e7a41b8acd8dc4c4a68448bf70af7",
+      "size": 346057,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/robot-celebrate-local-joints-r3-motion.png",
+      "sha256": "0471c256132256110154b22d97c018b8c614f9964832e3f59b14941fbbfad7a4",
+      "size": 8118762,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/robot-celebrate-local-joints-r3-poster.png",
+      "sha256": "68f2e82e650ea61f6678e51ce84e8cd61da778601aee4c0bdd5403140b64010e",
+      "size": 207624,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/robot-celebrate-local-joints-r3.gif",
+      "sha256": "af5ee8f9e300d17541ff64893796857b0077b430ad1851529d9829a4af7797a1",
+      "size": 345412,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/robot-celebrate.gif",
+      "sha256": "b28d0b65a6bbcebcd55d1df504bdcfa26fc67f2707473bf8eb7efb57320b074a",
+      "size": 358885,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/robot-comfort-all-characters-r4-motion.png",
+      "sha256": "a595ce88ea01e90de617331d1bde66156bd78a1b5908d817462b9c8f7d4ccd03",
+      "size": 1760961,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/robot-comfort-all-characters-r4-poster.png",
+      "sha256": "6b7b70fc62f487724e81b25f68374a2b059422efd5bbfba4345f6786690151c5",
+      "size": 199644,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/robot-comfort-all-characters-r4.gif",
+      "sha256": "970080fa55feb040b390b9fc21ec20742372f6376749ac0d6abc402fadf27c67",
+      "size": 429638,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/robot-comfort-local-joints-r3-motion.png",
+      "sha256": "e5898e9a05f58b958847536a4032e325a81ba1d5a7807095836c4a6610aaf992",
+      "size": 1631448,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/robot-comfort-local-joints-r3-poster.png",
+      "sha256": "6b7b70fc62f487724e81b25f68374a2b059422efd5bbfba4345f6786690151c5",
+      "size": 199644,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/robot-comfort-local-joints-r3.gif",
+      "sha256": "7aa5de818b5d580cb09ff9fd522e27f69f5e368b28d9282ac7dbbb3cef2a22e7",
+      "size": 430393,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/robot-comfort.gif",
+      "sha256": "93097a8855571a2caa76491fca14127b5e6abeef89094ee6399bcc0be9c2a30e",
+      "size": 429207,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/robot-focus-all-characters-r4-motion.png",
+      "sha256": "4e770c97e1eb1c74f8516e22a50293ea8cc717aa472c2f7b0dcf736ada2e4ff9",
+      "size": 1697421,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/robot-focus-all-characters-r4-poster.png",
+      "sha256": "a2fc93697b8faf1b8bc096459854822b233cd6312c4fb80f6b9011bc0ee850c6",
+      "size": 206043,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/robot-focus-all-characters-r4.gif",
+      "sha256": "84ccf9c61e7a8dbc4f8f93a7573b644462497103fb3f00f0b07fdaf5a4062a34",
+      "size": 437180,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/robot-focus-local-joints-r3-motion.png",
+      "sha256": "05b19aad3087e088972785dd7876450a2e0c197b25d550abd70caf518db550d6",
+      "size": 9170560,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/robot-focus-local-joints-r3-poster.png",
+      "sha256": "a2fc93697b8faf1b8bc096459854822b233cd6312c4fb80f6b9011bc0ee850c6",
+      "size": 206043,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/robot-focus-local-joints-r3.gif",
+      "sha256": "a24fdce0a5eb03b790c3bdf9808722a5325f9cdc66574769ced36bdf09f2a159",
+      "size": 438277,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/robot-focus-motion.png",
+      "sha256": "31153fcb564a9a5d097aa61687026e8f0fa3fb810a89a541b71132b6bca43da8",
+      "size": 12069398,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/robot-focus-poster.png",
+      "sha256": "bc7b584a94ad226c3e6074f53579a7b7ebd24f7abf8abffa92b1116600f96188",
+      "size": 205816,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/robot-focus.gif",
+      "sha256": "d489418183c468b0510b666ce87947c6811cc558ccd632539049714d0facdd9d",
+      "size": 440331,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/robot-greeting-all-characters-r4-motion.png",
+      "sha256": "b920faf24a5a9a2263b5eba33390b337132ee83f9f7d51209fb2e9c3c23fc5f0",
+      "size": 2979772,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/robot-greeting-all-characters-r4-poster.png",
+      "sha256": "68f2e82e650ea61f6678e51ce84e8cd61da778601aee4c0bdd5403140b64010e",
+      "size": 207624,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/robot-greeting-all-characters-r4.gif",
+      "sha256": "09f14007ae2b1524265040dc917455faa1a6a773b36af8fb79f5d74b7c4f4415",
+      "size": 346092,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/robot-greeting-local-joints-r3-motion.png",
+      "sha256": "a01a9ddfbfb6e5bebf76861a05da10165464958e7b3d90aa456a4bcc37f37adf",
+      "size": 884140,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/robot-greeting-local-joints-r3-poster.png",
+      "sha256": "68f2e82e650ea61f6678e51ce84e8cd61da778601aee4c0bdd5403140b64010e",
+      "size": 207624,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/robot-greeting-local-joints-r3.gif",
+      "sha256": "418601a59d0247cb59d9a0600380508b3e1581081c2192046ac0897f5be4070b",
+      "size": 338433,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/robot-greeting-motion.png",
+      "sha256": "a5ca99f3d71819e2bbd87528f0a9dc8f8c05ec5fd77501ad4a06c55e1f663eab",
+      "size": 9763678,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/robot-greeting-poster.png",
+      "sha256": "651c59ef268916fa2429baefa0124af986ec6102ce8123f5492782297eaaebd1",
+      "size": 207221,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/robot-greeting.gif",
+      "sha256": "18f68892c3488878e217010362877533ae0d38f61ec8c7a44066e26bfa6396cc",
+      "size": 356162,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/robot-idle-all-characters-r4-motion.png",
+      "sha256": "7b563820482a85a99e724f17051887300a3309d5bbe345a493fe16be9f986e9c",
+      "size": 2729599,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/robot-idle-all-characters-r4-poster.png",
+      "sha256": "374e3d7183c43904b036aa99b98bd9b8e29b94bbbf95c071dd25f39d0567ca58",
+      "size": 210623,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/robot-idle-all-characters-r4.gif",
+      "sha256": "5b117cf905fa1871a885326a175348c3038eaff2f2eea6c0c7d5b6276fe841db",
+      "size": 451289,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/robot-idle-local-joints-r3-motion.png",
+      "sha256": "18443f9fe8a2db2b6da2638f907c29e0f518663785a3cc2312b2dde088ca9f5a",
+      "size": 11882399,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/robot-idle-local-joints-r3-poster.png",
+      "sha256": "374e3d7183c43904b036aa99b98bd9b8e29b94bbbf95c071dd25f39d0567ca58",
+      "size": 210623,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/robot-idle-local-joints-r3.gif",
+      "sha256": "c866414417dd6782a94ae7682f648c6e0c3b70a1114cf43df320a0b1bc44cb12",
+      "size": 450348,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/robot-idle.gif",
+      "sha256": "5d47d3319aebada20fcf49f77e09b61957359fc12c049ada4a8825b7de4c9480",
+      "size": 449180,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/robot-listening-all-characters-r4-motion.png",
+      "sha256": "bcf41f9e5f65683315c784d242c1e9ff58566c32390bd28e2d7e02583bbfc86d",
+      "size": 3456061,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/robot-listening-all-characters-r4-poster.png",
+      "sha256": "7eb121df7c2d9e39f5ad8fac4660137d08e4678cca955b951bb96b6d99cbddf0",
+      "size": 205033,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/robot-listening-all-characters-r4.gif",
+      "sha256": "2c6a240840f3de4fc4387196af12a2ddf9f1177b590c4a8b858fd64880a127cc",
+      "size": 353978,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/robot-listening-local-joints-r3-motion.png",
+      "sha256": "0ed3343dbf58122baf815ccb15bb902ed4ceedbec66886d90b4f647ef217f54e",
+      "size": 8916095,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/robot-listening-local-joints-r3-poster.png",
+      "sha256": "7eb121df7c2d9e39f5ad8fac4660137d08e4678cca955b951bb96b6d99cbddf0",
+      "size": 205033,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/robot-listening-local-joints-r3.gif",
+      "sha256": "454f59551c684b39810864be5bf4291daaa5bea256d181c1465865c7d67d001e",
+      "size": 356379,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/robot-listening.gif",
+      "sha256": "bb4cd098eae54863a27cf63c2edad91eb51abb0947eb629fe0bec8cf1cae87c2",
+      "size": 356748,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/robot-sleepy-all-characters-r4-motion.png",
+      "sha256": "cc7191f93d165fa9f67b8d4a6aa1637896716dd96e7836ffedcbb6f56bfbcf86",
+      "size": 1866985,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/robot-sleepy-all-characters-r4-poster.png",
+      "sha256": "806aae3cfc2e451d1a42027e08cb72ec487cacc3f6f8b1c77923834a9545a383",
+      "size": 202664,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/robot-sleepy-all-characters-r4.gif",
+      "sha256": "02a9eba1be0c873ad4df7c54501a95d8034b0f370e4466c10eab6933a41ad472",
+      "size": 438248,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/robot-sleepy-local-joints-r3-motion.png",
+      "sha256": "9237bada380845df35b33bf7553aed3402f60d4e20c81a200095c659760cd018",
+      "size": 8585325,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/robot-sleepy-local-joints-r3-poster.png",
+      "sha256": "806aae3cfc2e451d1a42027e08cb72ec487cacc3f6f8b1c77923834a9545a383",
+      "size": 202664,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/robot-sleepy-local-joints-r3.gif",
+      "sha256": "2a7b829944d6bcad01dbbd8aa0c6e0b596a678bdad324b0cf79c1ef650b6f8c9",
+      "size": 438365,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/robot-sleepy-motion.png",
+      "sha256": "51f49b25362ba549a48029a1d0829b193b06076b5d6cc5df2120044605a53acd",
+      "size": 11906528,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/robot-sleepy-poster.png",
+      "sha256": "d512e2d181c8ff19ecf8951bc924910112d4adc32d86fae72ee027ab321c54a2",
+      "size": 202412,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/robot-sleepy.gif",
+      "sha256": "3563b9b3d223cc98a94a4ccad0c663f7e8eaa5224df2b741d436a5adbf29aec7",
+      "size": 437931,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/robot-speaking-all-characters-r4-motion.png",
+      "sha256": "4223c202d6e6261d4898a940cfb43182d8f803c9a4568734e391dd5eb4707b28",
+      "size": 4390480,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/robot-speaking-all-characters-r4-poster.png",
+      "sha256": "68f2e82e650ea61f6678e51ce84e8cd61da778601aee4c0bdd5403140b64010e",
+      "size": 207624,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/robot-speaking-all-characters-r4.gif",
+      "sha256": "db9eb4567f4e74679618ee582ddae9cec6e1d0573c1de179fc3f7aea25c7bd9a",
+      "size": 360252,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/robot-speaking-local-joints-r3-motion.png",
+      "sha256": "3ceffb7f770c7260951f6df1597c7a70f35f7fdc5e0966fbe0d30ac4cbeb16f6",
+      "size": 1681526,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/robot-speaking-local-joints-r3-poster.png",
+      "sha256": "68f2e82e650ea61f6678e51ce84e8cd61da778601aee4c0bdd5403140b64010e",
+      "size": 207624,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/robot-speaking-local-joints-r3.gif",
+      "sha256": "32c714cde7018d705d86c1b2ef87d62db918766c4d6c745f9e8d8e6138deb2b5",
+      "size": 358999,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/robot-speaking.gif",
+      "sha256": "226d17baac6c71de1656a329136fa1a04339c3b73de47bd857904793f705fa2c",
+      "size": 356656,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/robot-stretch-all-characters-r4-motion.png",
+      "sha256": "b3f75fbc50a5a7e431b84448432a773518340ede7a019693363814ff28db400a",
+      "size": 2779159,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/robot-stretch-all-characters-r4-poster.png",
+      "sha256": "68f2e82e650ea61f6678e51ce84e8cd61da778601aee4c0bdd5403140b64010e",
+      "size": 207624,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/robot-stretch-all-characters-r4.gif",
+      "sha256": "affd8c2d7bf6a0af814c5bff77c11c0f66fe2c52a0ca4ad8cfa2166c50f8c872",
+      "size": 324163,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/robot-stretch-local-joints-r3-motion.png",
+      "sha256": "60a46432065a986d40c8e25cb9b2fca2f5db12320ef294c2cbb89ea7cdcc1d8b",
+      "size": 5951133,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/robot-stretch-local-joints-r3-poster.png",
+      "sha256": "68f2e82e650ea61f6678e51ce84e8cd61da778601aee4c0bdd5403140b64010e",
+      "size": 207624,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/robot-stretch-local-joints-r3.gif",
+      "sha256": "1ae107f3246a8711e4a35b0e8a447828af40036dc9b16b97021b3480ca342e8c",
+      "size": 320671,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/robot-stretch-motion.png",
+      "sha256": "d4608b828cf0599c6bf6d680f21f1304b8d554ea256389aed09d34dad669658a",
+      "size": 9462437,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/robot-stretch-poster.png",
+      "sha256": "651c59ef268916fa2429baefa0124af986ec6102ce8123f5492782297eaaebd1",
+      "size": 207221,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/robot-stretch.gif",
+      "sha256": "969f020479b14388ed3e2ea44fc8118b0ab5d35a669db81574f553cc60e01711",
+      "size": 357333,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/robot-thinking-all-characters-r4-motion.png",
+      "sha256": "4d92f056b5f2fddb66fad62a1f461add2ea26a4ca87b586eb89bd3c8fac8ccea",
+      "size": 1974079,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/robot-thinking-all-characters-r4-poster.png",
+      "sha256": "a2fc93697b8faf1b8bc096459854822b233cd6312c4fb80f6b9011bc0ee850c6",
+      "size": 206043,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/robot-thinking-all-characters-r4.gif",
+      "sha256": "8b81a37c89aaeb1f631803141da608a31a9cd414952747bf99cbe7c09163ce97",
+      "size": 437552,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/robot-thinking-local-joints-r3-motion.png",
+      "sha256": "3092022e9c90df97421e17af21483b2bf617ff764308a154364819893e900fa0",
+      "size": 10422654,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/robot-thinking-local-joints-r3-poster.png",
+      "sha256": "a2fc93697b8faf1b8bc096459854822b233cd6312c4fb80f6b9011bc0ee850c6",
+      "size": 206043,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/robot-thinking-local-joints-r3.gif",
+      "sha256": "deca68f12c96d820cf86b88fc9cde6b67c4485f7efa0601d7afff346d9879760",
+      "size": 439256,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/robot-thinking.gif",
+      "sha256": "4d04bbd2af22510ee68ec318abc0a48d960a0e01a89b78c120f8e1d720284e9d",
+      "size": 442484,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-celebrate-all-characters-r4-motion.png",
+      "sha256": "85ad9b70feb063c1a28cae422bff45b9c8503abfbafaf58873d60a83df66fafb",
+      "size": 10436322,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-celebrate-all-characters-r4-poster.png",
+      "sha256": "f88296cc70ee316252897003546dbb32f719f6e2cbf4fde1f78d0f2840b8fc92",
+      "size": 239803,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-celebrate-all-characters-r4.gif",
+      "sha256": "0df7097f667433d53bb818583e8c7bf8c540c05531e64f580d7c584ed9fe3bf0",
+      "size": 416647,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-celebrate-local-joints-r3-motion.png",
+      "sha256": "be5e3528f34037a83e4ba1dd2f29cbfc60c8bc7ad77d7647e73e6ab4152acd86",
+      "size": 7996267,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-celebrate-local-joints-r3-poster.png",
+      "sha256": "f88296cc70ee316252897003546dbb32f719f6e2cbf4fde1f78d0f2840b8fc92",
+      "size": 239803,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-celebrate-local-joints-r3.gif",
+      "sha256": "5b49092fced6e56a166aa7a373f7bf8e2559134e99da4629754ea5746aec699d",
+      "size": 397653,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-celebrate.gif",
+      "sha256": "e948312d352027363eb423e11d02dddc6831de5bc87fce0192f6bd840fea0c60",
+      "size": 416899,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-comfort-all-characters-r4-motion.png",
+      "sha256": "f3f065f280d5250a53d42c9ebb0437f75addf4ee7097d44e382db02a5cf99ede",
+      "size": 2712129,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-comfort-all-characters-r4-poster.png",
+      "sha256": "8a13b76487c7f1e753aa6ff48e6cf888a11bf4ee805ef448ee84bef211302804",
+      "size": 230829,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-comfort-all-characters-r4.gif",
+      "sha256": "254f40e830b4648d561d1295f7de1c6a0658edee92e523766e28d7b8ba8a0ea6",
+      "size": 505773,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-comfort-local-joints-r3-motion.png",
+      "sha256": "64cacaf18ef7fa0838952f6d15b2a7b9a7242a042366d9646766d2b5cf78411f",
+      "size": 2399809,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-comfort-local-joints-r3-poster.png",
+      "sha256": "8a13b76487c7f1e753aa6ff48e6cf888a11bf4ee805ef448ee84bef211302804",
+      "size": 230829,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-comfort-local-joints-r3.gif",
+      "sha256": "5530329738101a2b838f4460bd8e9f58f8bb64489b665b30714bcaf0b2c52d42",
+      "size": 506052,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-comfort.gif",
+      "sha256": "f574b94fbe7434081b0eac1842de956da25867fd7fbbdcf713847888b7b8035e",
+      "size": 504555,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-focus-all-characters-r4-motion.png",
+      "sha256": "0a1041f8bd16c1ed67874d6e82bf7577fce54f75c40d29b58d41de7dcd00ff49",
+      "size": 990016,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-focus-all-characters-r4-poster.png",
+      "sha256": "feaa22bcdad5d54b8ad86d7858afebc9db3904141ce36375dacd7c4bed061240",
+      "size": 232040,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-focus-all-characters-r4.gif",
+      "sha256": "5ac9af2fe96cfeb59423a675a9f54ef7ab3875142ed555c4a97ba3f17e20e0c3",
+      "size": 479373,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-focus-local-joints-r3-motion.png",
+      "sha256": "091662bb48feeea0763239910b41773cd35a8320363a265849b18aa18022915b",
+      "size": 7609757,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-focus-local-joints-r3-poster.png",
+      "sha256": "feaa22bcdad5d54b8ad86d7858afebc9db3904141ce36375dacd7c4bed061240",
+      "size": 232040,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-focus-local-joints-r3.gif",
+      "sha256": "2469fc648f34a3d824b6f36a520ef8099adb0bcc93c523210e4e9c2be4c4c520",
+      "size": 504013,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-focus-motion.png",
+      "sha256": "5eabe18c1dc8c6de29d2b919f9fae7801730a6a844849149a7fff615d8d29aaf",
+      "size": 13570264,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-focus-poster.png",
+      "sha256": "90609dbe2cc4d589384440ed80c317be473e2af1d96b11982381cbc435c5d8e3",
+      "size": 231559,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-focus.gif",
+      "sha256": "bd7067237ed601578793e92ce2716761f4f57788046ebf1447a7f76e13ceccba",
+      "size": 504760,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-greeting-all-characters-r4-motion.png",
+      "sha256": "26d7fd79691fb62b7eccf348beaffe0d6f830b3440bcc067e02be5a9ca1dd40b",
+      "size": 1405079,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-greeting-all-characters-r4-poster.png",
+      "sha256": "f88296cc70ee316252897003546dbb32f719f6e2cbf4fde1f78d0f2840b8fc92",
+      "size": 239803,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-greeting-all-characters-r4.gif",
+      "sha256": "9a7c1507cd98c29eb84149029dbdd0c8ca2d5d58158554277fe4f63324bc7d8d",
+      "size": 407299,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-greeting-local-joints-r3-motion.png",
+      "sha256": "dcfbe9381be300cdf152fc3163bf7d0c78f14d563e841bcaa7a008017925dcee",
+      "size": 1370268,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-greeting-local-joints-r3-poster.png",
+      "sha256": "f88296cc70ee316252897003546dbb32f719f6e2cbf4fde1f78d0f2840b8fc92",
+      "size": 239803,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-greeting-local-joints-r3.gif",
+      "sha256": "3e71359a4046876286f61a83765963317136e2c5a659c66995c20797e3bb612b",
+      "size": 397288,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-greeting-motion.png",
+      "sha256": "ced699ef34e1d1a5c273bc08e224d934f6e109b197838b40dcf36298609bedd2",
+      "size": 11249201,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-greeting-poster.png",
+      "sha256": "fc6c455c2af949106e18235769e83b1e5ab9f8610f4cda6ffb02f3f98971b303",
+      "size": 239317,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-greeting.gif",
+      "sha256": "b5f97fda3c96449e1835b284e67bd3c6377483bbf5329bed9f8ebeb99b8da38b",
+      "size": 415551,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-idle-all-characters-r4-motion.png",
+      "sha256": "cecf42947f56406640d52cc9ab766aae85933b6cff56701f573ef26114194ec3",
+      "size": 2071443,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-idle-all-characters-r4-poster.png",
+      "sha256": "d42057b70d875d5090275fc028e77ea8aa850e865f38a2f186415b1233cc6661",
+      "size": 234293,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-idle-all-characters-r4.gif",
+      "sha256": "aee41b3334ae84784e4367dcd171ee55ca1d0091e9953d4c241fc2acdb8194dc",
+      "size": 508955,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-idle-local-joints-r3-motion.png",
+      "sha256": "bedb1b64392bf0d7297f769c5739fb5362442778fe50191cbe14f121ab328f4c",
+      "size": 10227223,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-idle-local-joints-r3-poster.png",
+      "sha256": "d42057b70d875d5090275fc028e77ea8aa850e865f38a2f186415b1233cc6661",
+      "size": 234293,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-idle-local-joints-r3.gif",
+      "sha256": "57942fda8dfaa57f8d1feaa1becfe3ed20c6596fbad454318c6fa64346f452a4",
+      "size": 508433,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-idle.gif",
+      "sha256": "2d368f39747b156cd82d099650deb37d790b52fe7eb41a9c5d286f25232e63f8",
+      "size": 507596,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-listening-all-characters-r4-motion.png",
+      "sha256": "4d26244ca1fcb6c1e010759da9705759b68a1a0e33ed6c7c709993b3b80bc9a3",
+      "size": 7380449,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-listening-all-characters-r4-poster.png",
+      "sha256": "818da9f6f1c0e991bccd255ca2b0e0bc607c59a7673a1c4f32621fa2f4eea065",
+      "size": 228811,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-listening-all-characters-r4.gif",
+      "sha256": "770f3f9583c3621f084642edfe39ea450a67603d467fba34261a37f1bc10103b",
+      "size": 400968,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-listening-local-joints-r3-motion.png",
+      "sha256": "d63c63cb9fbe1d188550bc6c51072c061abd703931e47662caddb7aac66d0eda",
+      "size": 7830351,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-listening-local-joints-r3-poster.png",
+      "sha256": "818da9f6f1c0e991bccd255ca2b0e0bc607c59a7673a1c4f32621fa2f4eea065",
+      "size": 228811,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-listening-local-joints-r3.gif",
+      "sha256": "bafcbf2cce2d9001459c8c2b2662b941babfca8037e1f8edcb45f9175caa0e3b",
+      "size": 401336,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-listening.gif",
+      "sha256": "b6ff956f12268f5ccb258fcac846507fc8a50a3110b0d66711c866eda410f21f",
+      "size": 401115,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-sleepy-all-characters-r4-motion.png",
+      "sha256": "1535faa9550b7b93148fd82dc6a7e0ed465df196b694950ea788733131a15615",
+      "size": 1342514,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-sleepy-all-characters-r4-poster.png",
+      "sha256": "ce2a2cc7a8ee02f62b1a0f61bb6457cceb5f5395ef797d3f297cfaf38f8ed171",
+      "size": 231199,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-sleepy-all-characters-r4.gif",
+      "sha256": "cc49cf93b0406ca7036c3adb140154b24c0b10b2dab8e8d1bee4c360341a0a82",
+      "size": 471621,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-sleepy-local-joints-r3-motion.png",
+      "sha256": "8b4390aeed2b366a00efdfb59814eb55ff7e24efde2fd9893e8bb59d3f1af752",
+      "size": 7549527,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-sleepy-local-joints-r3-poster.png",
+      "sha256": "ce2a2cc7a8ee02f62b1a0f61bb6457cceb5f5395ef797d3f297cfaf38f8ed171",
+      "size": 231199,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-sleepy-local-joints-r3.gif",
+      "sha256": "a66b6153272b0f6cc26eb66dd659ff617dabc884bc5bdabf08f2f2d2ac6448c8",
+      "size": 504379,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-sleepy-motion.png",
+      "sha256": "88d7009a7f2b75bf7d932d0f9d7af32b5e3ef1eb9f7686b4cb88dce7b51f1d17",
+      "size": 13576889,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-sleepy-poster.png",
+      "sha256": "1a8f765d16473241f34723939d0a4becf0f6333d25aa9fcee864de87f3410334",
+      "size": 231119,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-sleepy.gif",
+      "sha256": "3de6d08bd8af3441c1e4f71bd3c5defdc252746a991ba5bf8afc465cd0b5a220",
+      "size": 506122,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-speaking-all-characters-r4-motion.png",
+      "sha256": "5b9acd20f21a0c579429c22f59a94eea211871666e212ecc767dfa23e8436ced",
+      "size": 2263320,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-speaking-all-characters-r4-poster.png",
+      "sha256": "f88296cc70ee316252897003546dbb32f719f6e2cbf4fde1f78d0f2840b8fc92",
+      "size": 239803,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-speaking-all-characters-r4.gif",
+      "sha256": "c2a8f5b373210e517205242978895099a236aab9592457a8e89fdaf6e9e94768",
+      "size": 415562,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-speaking-local-joints-r3-motion.png",
+      "sha256": "afe5a0b04ed8087e9dbff338a5207deaefd4f8eda53e8d9f362325deb35d7a19",
+      "size": 2941146,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-speaking-local-joints-r3-poster.png",
+      "sha256": "f88296cc70ee316252897003546dbb32f719f6e2cbf4fde1f78d0f2840b8fc92",
+      "size": 239803,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-speaking-local-joints-r3.gif",
+      "sha256": "a403ce0819e61c51945f882770029e28085365ef4f1af1aed1e9dceee58b2e08",
+      "size": 415362,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-speaking.gif",
+      "sha256": "db2933a71bcc3fd1075c33ae6efb8bfeec30752ef86c734e332899fbb9726b92",
+      "size": 414841,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-stretch-all-characters-r4-motion.png",
+      "sha256": "7ddf174e208061c00aa5baf4a60abecdc4092a4661de33eb01494097953c9a89",
+      "size": 5216645,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-stretch-all-characters-r4-poster.png",
+      "sha256": "f88296cc70ee316252897003546dbb32f719f6e2cbf4fde1f78d0f2840b8fc92",
+      "size": 239803,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-stretch-all-characters-r4.gif",
+      "sha256": "1fc276439d27229becea6d27561353d572d0ec90a1be0edd0c196db968bf10e4",
+      "size": 381263,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-stretch-local-joints-r3-motion.png",
+      "sha256": "ee15ad79312248ad9a465816fcb1bb1913d14ec0a16c169190406c6d7840f691",
+      "size": 5946080,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-stretch-local-joints-r3-poster.png",
+      "sha256": "f88296cc70ee316252897003546dbb32f719f6e2cbf4fde1f78d0f2840b8fc92",
+      "size": 239803,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-stretch-local-joints-r3.gif",
+      "sha256": "eb1d4e4674c287473e8c9de0cec2605746d6db42ea66b903d4b9d3aafab146b4",
+      "size": 371823,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-stretch-motion.png",
+      "sha256": "691f201e8ff332b61c9f445bd24eaaa684b1d656da2faed6e167880a67c310c6",
+      "size": 10694537,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-stretch-poster.png",
+      "sha256": "fc6c455c2af949106e18235769e83b1e5ab9f8610f4cda6ffb02f3f98971b303",
+      "size": 239317,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-stretch.gif",
+      "sha256": "866426094b41b91cbc26b8ddc7c885c4a2e050fe579de70d391e90d9f8d993d9",
+      "size": 415007,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-thinking-all-characters-r4-motion.png",
+      "sha256": "3f1ca3af488b5fc8f7603d3f2aa98b464168230a1b67a44227c2cad641afbd34",
+      "size": 8339303,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-thinking-all-characters-r4-poster.png",
+      "sha256": "feaa22bcdad5d54b8ad86d7858afebc9db3904141ce36375dacd7c4bed061240",
+      "size": 232040,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-thinking-all-characters-r4.gif",
+      "sha256": "a29ade31789b748e552a4ad468f3df406431d370cecc8b6cec53c6f2f0b6dc05",
+      "size": 505160,
+      "runtime": true
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-thinking-local-joints-r3-motion.png",
+      "sha256": "9fca3354c37ae25a86bc8a5cfd5ed141848a8b25b1ac2cdf63a0f179295a7429",
+      "size": 8651392,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-thinking-local-joints-r3-poster.png",
+      "sha256": "feaa22bcdad5d54b8ad86d7858afebc9db3904141ce36375dacd7c4bed061240",
+      "size": 232040,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-thinking-local-joints-r3.gif",
+      "sha256": "7013a9a07ad9cecd3669142fa2cbbd15b52c338d00edec5ef5f13530496fa7f5",
+      "size": 502986,
+      "runtime": false
+    },
+    {
+      "path": "public/animations/v3/previews/sprout-thinking.gif",
+      "sha256": "1b3d3f08f27560567b8171dc343f302c9abdab11213f29854d813b3723016c2e",
+      "size": 506742,
+      "runtime": false
+    },
+    {
+      "path": "public/assets/companion-cat.png",
+      "sha256": "f3de5204af973e1887d1268e5fc0e4b28ceda472e9ec2b6124b41d625c24be88",
+      "size": 1686991,
+      "runtime": true
+    },
+    {
+      "path": "public/assets/companion-otter.png",
+      "sha256": "eb1ec1f92c6f7a5514ac9f6f81618718e999e57e721837eba60d98d15fc6d79e",
+      "size": 2082325,
+      "runtime": true
+    },
+    {
+      "path": "public/assets/companion-sprout.png",
+      "sha256": "bd83092a52479a3e81a9b1309a3cf783e43990d029a504e97b15ebe52d56af38",
+      "size": 2096548,
+      "runtime": true
+    },
+    {
+      "path": "public/assets/mascot-kangaroo-preview.png",
+      "sha256": "d02c1c15dc785add9afdb8fa01ee8793777f00cec9a7eed21f72555652cd6499",
+      "size": 640047,
+      "runtime": true
+    },
+    {
+      "path": "public/assets/mascot-robot-preview.png",
+      "sha256": "a0e6286e41bde9781d78e536c976a15ecc894fb34db0fc7b2462dde71fde9b54",
+      "size": 625656,
+      "runtime": true
+    },
+    {
+      "path": "public/downloads/lingxi-tf-animation-v1.bin",
+      "sha256": "770a74622855d1aeb7b9dae2626d24c73f244f3c264061d5e73b0356b1d15769",
+      "size": 3250880,
+      "runtime": true
+    },
+    {
+      "path": "public/downloads/lingxi-tf-firmware-v1.zip",
+      "sha256": "e6790656d7b981a866d77b4e0e85371d3b998fe4653b2d418c026683ba43095a",
+      "size": 1656286,
+      "runtime": true
+    },
+    {
+      "path": "public/fonts/v1/font-styles.png",
+      "sha256": "247c7847655c88b02ddbe2f8f36b112383a9d94c2dfe839f5e84c6078ee9e030",
+      "size": 33400,
+      "runtime": true
+    },
+    {
+      "path": "public/fonts/v1/lingxi-tf-fonts-v1.zip",
+      "sha256": "65fca7db57f5c67b17900237b6ff592a8eb79fcd063b2d1a4b47de4e34a55270",
+      "size": 1951221,
+      "runtime": true
+    }
+  ]
+}

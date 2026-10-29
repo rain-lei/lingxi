@@ -1,0 +1,17 @@
+[
+  {
+    "file": "bootloader.bin",
+    "bytes": 22368,
+    "sha256": "3B47D36B0709B5FBBCEAA54795054167AAF9DD08C5344EDEE1FCA21160E433E3"
+  },
+  {
+    "file": "lingxi-readable-dualfont.bin",
+    "bytes": 3997280,
+    "sha256": "811BEB34B8B627D9AABC9FABA58436B9A6AEC0846C04EDA74DC6E6DD3812677B"
+  },
+  {
+    "file": "partition-table.bin",
+    "bytes": 3072,
+    "sha256": "477CF6A54A6670D0341EB66BE321CABE59B63947648DB9702B1551A93C6FC370"
+  }
+]

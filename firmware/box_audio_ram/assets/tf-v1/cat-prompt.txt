@@ -1,0 +1,13 @@
+Use case: stylized-concept. Asset type: production game sprite atlas for an ESP32 companion.
+Input image 1 is the character identity reference. Generate a new six-pose atlas of that exact same single character, no other character.
+Canvas: landscape 1536x1024, exact 3 columns x 2 rows of equal 512x512 cells. Actual transparent RGBA background, no drawn checkerboard, no backdrop, no floor, no text, no labels, no borders, no shadows extending out of cells.
+Keep every pose completely within its own cell with at least 35px transparent padding; same full-body scale, camera angle and ground baseline across all six. Fine premium 3D plush fur, soft studio lighting from upper left, big glossy eyes, rounded collectible toy styling, preserve identity and colors from reference.
+Reading order:
+top-left idle: relaxed seated, eyes open, closed soft smile;
+top-middle blink: SAME seated pose, eyelids naturally fully closed, soft smile;
+top-right listening: seated leaning forward a little, one paw cupped beside ear, attentive eyes;
+bottom-left thinking: seated, one paw lightly under chin, eyes glance upward;
+bottom-middle happy/speaking: seated, open smiling mouth clearly visible, one paw lifted in friendly small wave;
+bottom-right comfort: seated, gentle head inclination, both little paws reaching softly forward, caring calm expression, closed mouth.
+All six must be visibly different actual poses, not six duplicates. Maintain consistent head size and foot position; no clipped ears or tail. No clothing/logo changes.
+Character: the reference cream-white furry kitten Naipao, lavender scarf, large warm brown eyes, pink paw pads and fluffy curled tail. Preserve its exact scarf and cream fur.

@@ -1,0 +1,17 @@
+[
+  {
+    "bytes": 22368,
+    "file": "bootloader.bin",
+    "sha256": "3B47D36B0709B5FBBCEAA54795054167AAF9DD08C5344EDEE1FCA21160E433E3"
+  },
+  {
+    "bytes": 2089264,
+    "file": "lingxi-kangaroo-streaming.bin",
+    "sha256": "CCAE1E5A2AF16F5FE7ADC8C6134150884E9C31188BA84A449F4CCBBA293D3BEF"
+  },
+  {
+    "bytes": 3072,
+    "file": "partition-table.bin",
+    "sha256": "477CF6A54A6670D0341EB66BE321CABE59B63947648DB9702B1551A93C6FC370"
+  }
+]

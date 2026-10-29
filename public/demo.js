@@ -1,5 +1,3 @@
-const DEMO_DEVICE_KEY = "lingxi-browser-device-id";
-
 const els = {
   badge: document.querySelector("#demoServerBadge"),
   form: document.querySelector("#demoForm"),
@@ -30,7 +28,7 @@ const els = {
 const state = {
   busy: false,
   image: null,
-  deviceId: getDeviceId(),
+  deviceId: LingxiIdentity.get(),
   outputText: "",
   task: null,
   controller: null,
@@ -41,16 +39,6 @@ const taskStatusLabels = { pending: "待确认", confirmed: "已确认", complet
 const samplePrompt = "下周三18:30主楼302有未来实验室公开讲座，请整理成任务卡，并提前一小时提醒我报名。";
 const DEMO_INTERACTION_TIMEOUT_MS = 45_000;
 
-function getDeviceId() {
-  let existing = null;
-  try { existing = window.localStorage.getItem(DEMO_DEVICE_KEY); } catch (error) {}
-  if (/^web-[A-Za-z0-9-]{8,60}$/.test(existing || "")) return existing;
-  const random = window.crypto?.randomUUID ? window.crypto.randomUUID() : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
-  const id = `web-${random}`;
-  try { window.localStorage.setItem(DEMO_DEVICE_KEY, id); } catch (error) {}
-  return id;
-}
-
 function showToast(message) {
   els.toast.textContent = message;
   els.toast.classList.add("show");
@@ -59,7 +47,7 @@ function showToast(message) {
 }
 
 async function fetchJson(url, options) {
-  const response = await fetch(url, options);
+  const response = await LingxiIdentity.fetch(url, options);
   const payload = await response.json();
   if (!response.ok) throw new Error(payload.error || `请求失败：${response.status}`);
   return payload;
@@ -219,7 +207,7 @@ async function runInteraction() {
   const controller = beginRequest();
   setBusy(true);
   try {
-    const response = await fetch("/api/interactions", {
+    const response = await LingxiIdentity.fetch("/api/interactions", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ device_id: state.deviceId, text: requestText, mode: "assistant", offline: false, ...(state.image ? { image_data_url: state.image.dataUrl } : {}) }),

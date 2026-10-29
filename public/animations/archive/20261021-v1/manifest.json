@@ -1,0 +1,356 @@
+{
+  "schema_version": 1,
+  "pack_id": "lingxi-tf-animations-v1",
+  "created_at": "2026-10-21T11:43:23+00:00",
+  "frame_size": {
+    "width": 128,
+    "height": 128
+  },
+  "fps": 12,
+  "frame_ms": 83,
+  "pixel_format": "RGB565LE+alpha8 interleaved",
+  "hardware_verified": false,
+  "download": {
+    "url": "/animations/v1/lingxi-animations-v1.lxaf",
+    "filename": "lingxi-animations-v1.lxaf",
+    "size_bytes": 44237824,
+    "sha256": "c83c1e21dabcb82d91ea1cf3caf5b745d792d84bfa52858973ebc63924c6e66f"
+  },
+  "archive": {
+    "url": "/animations/v1/lingxi-tf-animations-v1.zip",
+    "filename": "lingxi-tf-animations-v1.zip",
+    "size_bytes": 28497673,
+    "sha256": "f99765ac3f71dee5057f7242870a2d0446ee2d9d72c855f67a7f2c46771dcf5b"
+  },
+  "avatars": [
+    {
+      "id": "kangaroo",
+      "avatar_id": 0,
+      "name": "蓝蓝",
+      "clips": [
+        {
+          "id": "idle",
+          "label": "待机眨眼",
+          "preview_url": "/animations/v1/previews/kangaroo-idle.gif",
+          "frame_count": 36,
+          "frame_ms": 83,
+          "duration_ms": 2988,
+          "loop": true
+        },
+        {
+          "id": "listening",
+          "label": "认真倾听",
+          "preview_url": "/animations/v1/previews/kangaroo-listening.gif",
+          "frame_count": 24,
+          "frame_ms": 83,
+          "duration_ms": 1992,
+          "loop": true
+        },
+        {
+          "id": "thinking",
+          "label": "想一想",
+          "preview_url": "/animations/v1/previews/kangaroo-thinking.gif",
+          "frame_count": 36,
+          "frame_ms": 83,
+          "duration_ms": 2988,
+          "loop": true
+        },
+        {
+          "id": "speaking",
+          "label": "开口回应",
+          "preview_url": "/animations/v1/previews/kangaroo-speaking.gif",
+          "frame_count": 24,
+          "frame_ms": 83,
+          "duration_ms": 1992,
+          "loop": true
+        },
+        {
+          "id": "comfort",
+          "label": "温柔安慰",
+          "preview_url": "/animations/v1/previews/kangaroo-comfort.gif",
+          "frame_count": 36,
+          "frame_ms": 83,
+          "duration_ms": 2988,
+          "loop": true
+        },
+        {
+          "id": "celebrate",
+          "label": "完成庆祝",
+          "preview_url": "/animations/v1/previews/kangaroo-celebrate.gif",
+          "frame_count": 24,
+          "frame_ms": 83,
+          "duration_ms": 1992,
+          "loop": false
+        }
+      ]
+    },
+    {
+      "id": "robot",
+      "avatar_id": 1,
+      "name": "小犀",
+      "clips": [
+        {
+          "id": "idle",
+          "label": "待机眨眼",
+          "preview_url": "/animations/v1/previews/robot-idle.gif",
+          "frame_count": 36,
+          "frame_ms": 83,
+          "duration_ms": 2988,
+          "loop": true
+        },
+        {
+          "id": "listening",
+          "label": "认真倾听",
+          "preview_url": "/animations/v1/previews/robot-listening.gif",
+          "frame_count": 24,
+          "frame_ms": 83,
+          "duration_ms": 1992,
+          "loop": true
+        },
+        {
+          "id": "thinking",
+          "label": "想一想",
+          "preview_url": "/animations/v1/previews/robot-thinking.gif",
+          "frame_count": 36,
+          "frame_ms": 83,
+          "duration_ms": 2988,
+          "loop": true
+        },
+        {
+          "id": "speaking",
+          "label": "开口回应",
+          "preview_url": "/animations/v1/previews/robot-speaking.gif",
+          "frame_count": 24,
+          "frame_ms": 83,
+          "duration_ms": 1992,
+          "loop": true
+        },
+        {
+          "id": "comfort",
+          "label": "温柔安慰",
+          "preview_url": "/animations/v1/previews/robot-comfort.gif",
+          "frame_count": 36,
+          "frame_ms": 83,
+          "duration_ms": 2988,
+          "loop": true
+        },
+        {
+          "id": "celebrate",
+          "label": "完成庆祝",
+          "preview_url": "/animations/v1/previews/robot-celebrate.gif",
+          "frame_count": 24,
+          "frame_ms": 83,
+          "duration_ms": 1992,
+          "loop": false
+        }
+      ]
+    },
+    {
+      "id": "cat",
+      "avatar_id": 2,
+      "name": "奶泡",
+      "clips": [
+        {
+          "id": "idle",
+          "label": "待机眨眼",
+          "preview_url": "/animations/v1/previews/cat-idle.gif",
+          "frame_count": 36,
+          "frame_ms": 83,
+          "duration_ms": 2988,
+          "loop": true
+        },
+        {
+          "id": "listening",
+          "label": "认真倾听",
+          "preview_url": "/animations/v1/previews/cat-listening.gif",
+          "frame_count": 24,
+          "frame_ms": 83,
+          "duration_ms": 1992,
+          "loop": true
+        },
+        {
+          "id": "thinking",
+          "label": "想一想",
+          "preview_url": "/animations/v1/previews/cat-thinking.gif",
+          "frame_count": 36,
+          "frame_ms": 83,
+          "duration_ms": 2988,
+          "loop": true
+        },
+        {
+          "id": "speaking",
+          "label": "开口回应",
+          "preview_url": "/animations/v1/previews/cat-speaking.gif",
+          "frame_count": 24,
+          "frame_ms": 83,
+          "duration_ms": 1992,
+          "loop": true
+        },
+        {
+          "id": "comfort",
+          "label": "温柔安慰",
+          "preview_url": "/animations/v1/previews/cat-comfort.gif",
+          "frame_count": 36,
+          "frame_ms": 83,
+          "duration_ms": 2988,
+          "loop": true
+        },
+        {
+          "id": "celebrate",
+          "label": "完成庆祝",
+          "preview_url": "/animations/v1/previews/cat-celebrate.gif",
+          "frame_count": 24,
+          "frame_ms": 83,
+          "duration_ms": 1992,
+          "loop": false
+        }
+      ]
+    },
+    {
+      "id": "otter",
+      "avatar_id": 3,
+      "name": "团团",
+      "clips": [
+        {
+          "id": "idle",
+          "label": "待机眨眼",
+          "preview_url": "/animations/v1/previews/otter-idle.gif",
+          "frame_count": 36,
+          "frame_ms": 83,
+          "duration_ms": 2988,
+          "loop": true
+        },
+        {
+          "id": "listening",
+          "label": "认真倾听",
+          "preview_url": "/animations/v1/previews/otter-listening.gif",
+          "frame_count": 24,
+          "frame_ms": 83,
+          "duration_ms": 1992,
+          "loop": true
+        },
+        {
+          "id": "thinking",
+          "label": "想一想",
+          "preview_url": "/animations/v1/previews/otter-thinking.gif",
+          "frame_count": 36,
+          "frame_ms": 83,
+          "duration_ms": 2988,
+          "loop": true
+        },
+        {
+          "id": "speaking",
+          "label": "开口回应",
+          "preview_url": "/animations/v1/previews/otter-speaking.gif",
+          "frame_count": 24,
+          "frame_ms": 83,
+          "duration_ms": 1992,
+          "loop": true
+        },
+        {
+          "id": "comfort",
+          "label": "温柔安慰",
+          "preview_url": "/animations/v1/previews/otter-comfort.gif",
+          "frame_count": 36,
+          "frame_ms": 83,
+          "duration_ms": 2988,
+          "loop": true
+        },
+        {
+          "id": "celebrate",
+          "label": "完成庆祝",
+          "preview_url": "/animations/v1/previews/otter-celebrate.gif",
+          "frame_count": 24,
+          "frame_ms": 83,
+          "duration_ms": 1992,
+          "loop": false
+        }
+      ]
+    },
+    {
+      "id": "sprout",
+      "avatar_id": 4,
+      "name": "芽芽",
+      "clips": [
+        {
+          "id": "idle",
+          "label": "待机眨眼",
+          "preview_url": "/animations/v1/previews/sprout-idle.gif",
+          "frame_count": 36,
+          "frame_ms": 83,
+          "duration_ms": 2988,
+          "loop": true
+        },
+        {
+          "id": "listening",
+          "label": "认真倾听",
+          "preview_url": "/animations/v1/previews/sprout-listening.gif",
+          "frame_count": 24,
+          "frame_ms": 83,
+          "duration_ms": 1992,
+          "loop": true
+        },
+        {
+          "id": "thinking",
+          "label": "想一想",
+          "preview_url": "/animations/v1/previews/sprout-thinking.gif",
+          "frame_count": 36,
+          "frame_ms": 83,
+          "duration_ms": 2988,
+          "loop": true
+        },
+        {
+          "id": "speaking",
+          "label": "开口回应",
+          "preview_url": "/animations/v1/previews/sprout-speaking.gif",
+          "frame_count": 24,
+          "frame_ms": 83,
+          "duration_ms": 1992,
+          "loop": true
+        },
+        {
+          "id": "comfort",
+          "label": "温柔安慰",
+          "preview_url": "/animations/v1/previews/sprout-comfort.gif",
+          "frame_count": 36,
+          "frame_ms": 83,
+          "duration_ms": 2988,
+          "loop": true
+        },
+        {
+          "id": "celebrate",
+          "label": "完成庆祝",
+          "preview_url": "/animations/v1/previews/sprout-celebrate.gif",
+          "frame_count": 24,
+          "frame_ms": 83,
+          "duration_ms": 1992,
+          "loop": false
+        }
+      ]
+    }
+  ],
+  "firmware": {
+    "ready": true,
+    "url": "/downloads/lingxi-tf-firmware-v1.zip",
+    "filename": "lingxi-tf-firmware-v1.zip",
+    "size_bytes": 2051650,
+    "sha256": "f464c3db88f740b7c3d3db5f8ce9322f7d9726c0b19597b6c138ec50280141c7",
+    "binary_url": "/downloads/lingxi-tf-animation-v1.bin",
+    "binary_size_bytes": 4102080,
+    "binary_sha256": "cb48d94016a09189d547fa3167a88ebd0e4f07ad542746287d20cd12b83f28a5",
+    "flash_offset": "0x10000",
+    "app_partition_bytes": 4128768,
+    "compiled": true,
+    "hardware_verified": false
+  },
+  "notes": [
+    "预渲染3D风格二维动画；不是真实3D引擎。",
+    "speaking为实际开口/闭口表情与小挥手循环，不承诺音素口型同步。",
+    "庆祝clip为一次动作，其他状态循环。",
+    "预览逐帧来自同一LXAF像素，不使用替代示意动画。"
+  ],
+  "install": {
+    "copy_instructions": "解压完整 TF 动画包，将其中 lingxi 文件夹复制到卡根目录，最终路径为 lingxi/animations-v1.lxaf。其余预览文件可留在电脑。已有同名资源先备份。",
+    "wifi_instructions": "更新配套固件、断电插入 FAT32 TF 卡后，电脑运行 start_animations.cmd。手机连接 LingXi-922C，打开 http://192.168.4.1/，点击“从电脑安装动画”。板子通过已配置的 Wi-Fi 向电脑接收素材，手机提示无互联网正常；显示校验完成后再使用，下载过程中保持板子供电和电脑服务在线。"
+  }
+}

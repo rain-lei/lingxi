@@ -1,0 +1,18 @@
+{
+  "firmware": "lingxi-tf-animation.bin",
+  "bytes": 4102080,
+  "sha256": "cb48d94016a09189d547fa3167a88ebd0e4f07ad542746287d20cd12b83f28a5",
+  "esp_idf": "5.4.4",
+  "target": "esp32s3",
+  "board": "ATK-DNESP32S3B V1.1",
+  "app_offset": "0x10000",
+  "app_partition_bytes": 4128768,
+  "remaining_partition_bytes": 26688,
+  "fatfs_long_filename_heap": true,
+  "max_long_filename": 64,
+  "flash_performed": false,
+  "real_tf_card_verified": false,
+  "resource_file": "animations-v1.lxaf",
+  "resource_bytes": 44237824,
+  "resource_sha256": "c83c1e21dabcb82d91ea1cf3caf5b745d792d84bfa52858973ebc63924c6e66f"
+}

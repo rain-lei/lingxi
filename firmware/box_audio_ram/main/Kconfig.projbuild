@@ -1,0 +1,39 @@
+menu "LingXi Network"
+
+    config LINGXI_NETWORK_ENABLE
+        bool "Enable Wi-Fi, setup portal and LingXi service"
+        default y
+        help
+            Start a local Wi-Fi setup portal and connect to the LingXi service.
+
+    if LINGXI_NETWORK_ENABLE
+        config LINGXI_WIFI_SSID
+            string "Wi-Fi SSID (2.4 GHz)"
+            default ""
+
+        config LINGXI_WIFI_PASSWORD
+            string "Wi-Fi password"
+            default ""
+
+        config LINGXI_SERVER_URL
+            string "LingXi service base URL"
+            default "http://192.168.1.100:8787"
+            help
+                Use the computer's Wi-Fi IPv4 address for local debugging,
+                for example http://192.168.1.100:8787. Do not use localhost.
+
+        config LINGXI_CONVERSATION_ENABLE
+            bool "Enable microphone conversations with the LingXi service"
+            default y
+
+        config LINGXI_DEVICE_TOKEN
+            string "Optional device bearer token"
+            default ""
+            help
+                Only use a dedicated device token, never a provider API key.
+
+        config LINGXI_SETUP_PASSWORD
+            string "Local setup Wi-Fi password (8-63 characters)"
+            default "lingxi2026"
+    endif
+endmenu

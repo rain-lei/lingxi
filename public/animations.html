@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#f6f7fa" />
+  <meta name="description" content="灵犀动画工坊：看看小伙伴的新表情，把一份生动装进口袋。" />
+  <title>灵犀 · 动画工坊</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/animation-library.css" />
+  <script defer src="/animation-library.js"></script>
+</head>
+<body>
+  <svg class="svg-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
+    <symbol id="download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v4h16v-4" /></symbol>
+    <symbol id="arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6" /></symbol>
+    <symbol id="back" viewBox="0 0 24 24"><path d="M19 12H5m6-6-6 6 6 6" /></symbol>
+    <symbol id="card" viewBox="0 0 24 24"><path d="M7 2h13v20H4V5l3-3ZM8 6v4m4-4v4m4-4v4M8 16h8" /></symbol>
+    <symbol id="spark" viewBox="0 0 24 24"><path d="m12 2 2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5L12 2Z" /></symbol>
+    <symbol id="refresh" viewBox="0 0 24 24"><path d="M20 8a8 8 0 1 0 0 8M20 3v5h-5" /></symbol>
+    <symbol id="play" viewBox="0 0 24 24"><path d="m9 5 11 7-11 7V5Z" /></symbol>
+    <symbol id="pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14" /></symbol>
+    <symbol id="touch" viewBox="0 0 24 24"><path d="M9 11V4a2 2 0 0 1 4 0v7m0-2a2 2 0 0 1 4 0v3m0-1a2 2 0 0 1 4 0v5a6 6 0 0 1-6 6h-2a5 5 0 0 1-4-2L3 12a2 2 0 0 1 3-2l3 3" /></symbol>
+    <symbol id="check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6" /></symbol>
+  </defs></svg>
+  <a class="skip-link" href="#workshop">跳到动画预览</a>
+  <header class="topbar"><a class="brand" href="/companion"><span class="brand-mark">灵</span><span>灵犀<small>LINGXI · LITTLE COMPANIONS</small></span></a><nav aria-label="页面导航"><a class="back-link" href="/companion"><svg><use href="#back" /></svg>回到陪伴空间</a><a class="header-download" href="#downloads">带它回去 <svg><use href="#download" /></svg></a></nav></header>
+  <main>
+    <section class="intro"><div><p class="eyebrow"><span>✦</span> THE LITTLE MOTION ATELIER</p><h1>小小动作，<span>满满生命力。</span></h1><p class="lead">会眨眼，会认真听，也会为你的小进步开心。<br />来，和你的小伙伴打个招呼。</p></div><div class="edition"><span class="edition-dot"></span><span id="previewStatus">正在取来小伙伴</span></div></section>
+    <div class="page-error" id="pageError" role="alert" hidden><div><strong>暂时没有取到素材</strong><p id="pageErrorText"></p></div><button type="button" id="retryLoad"><svg><use href="#refresh" /></svg>重新读取</button></div>
+    <section class="workshop" id="workshop" aria-label="动画预览与动作选择">
+      <div class="showcase">
+        <div class="showcase-heading"><div class="live-label"><span></span><span id="stageLabel">伙伴观察室</span></div><div class="view-switch" role="group" aria-label="预览清晰度"><button type="button" id="viewHD" aria-pressed="true">高清观赏</button><button type="button" id="viewBoard" aria-pressed="false"><svg><use href="#card" /></svg>板端实际</button></div></div>
+        <div class="preview-stage" id="previewStage" data-avatar="kangaroo" data-view="hd">
+          <div class="stage-grain"></div><div class="stage-halo"></div><div class="stage-ring"></div><span class="stage-spark spark-one">✦</span><span class="stage-spark spark-two">✧</span><span class="stage-spark spark-three">+</span>
+          <div class="speech-bubble" id="petSpeech" aria-live="polite">你来啦，我一直都在。</div>
+          <div class="pet-ground"></div>
+          <button class="pet-touch" type="button" id="petTouch" aria-label="摸摸蓝蓝，播放庆祝动作"><img id="previewImage" src="/assets/mascot-kangaroo-preview.png" alt="蓝蓝的高清静态形象" /><img id="staticBadge" class="pet-badge" src="/assets/dlut-badge.svg" alt="大连理工大学校标" /><canvas id="pausedFrame" hidden aria-hidden="true"></canvas></button>
+          <div class="touch-ripple" id="touchRipple" aria-hidden="true"></div>
+          <div class="stage-note"><span class="preview-kind" id="previewKind">高清静态形象</span><button id="pausePreview" class="pause-control" type="button" aria-pressed="false" disabled><svg><use href="#pause" /></svg><span>暂停</span></button></div>
+          <span class="touch-hint" id="touchHint"><svg><use href="#touch" /></svg>点点它，看看小回应</span>
+        </div>
+        <div class="character-caption"><div><span class="character-number" id="characterNumber">NO. 01</span><h2 id="selectedAvatar">蓝蓝</h2><span class="character-role" id="characterRole">你的大工小伙伴</span></div><p id="clipDescription">你想说话时，我就在这里。</p></div>
+        <div class="avatar-picker" id="avatarPicker" role="group" aria-label="选择伙伴"><p class="loading-copy">正在取来小伙伴们…</p></div>
+        <p class="resolution-note" id="resolutionNote">高清观赏保留材质细节；板端实际可查看设备尺寸下的效果。</p>
+      </div>
+      <aside class="control-column">
+        <section class="motion-card" aria-labelledby="motionTitle"><div class="section-topline"><div><p class="eyebrow">A LITTLE PERSONALITY</p><h2 id="motionTitle">每种心情，都有小动作</h2></div><span class="motion-count" id="motionCount">10</span></div><div class="state-picker" id="statePicker" role="group" aria-label="选择动画状态"></div><div class="motion-caption"><span class="selected-motion" id="selectedClip">待机眨眼</span><span id="clipTiming">—</span></div><button type="button" class="sequence-button" id="playSequence" aria-pressed="false" disabled><svg><use href="#play" /></svg><span>看看它的一天</span><small>动作连播</small></button><p class="sequence-note" id="sequenceNote">按顺序看看伙伴的一天，随时可以停下。</p></section>
+        <section class="download-card" id="downloads" aria-labelledby="downloadTitle"><div class="download-heading"><span class="download-icon"><svg><use href="#download" /></svg></span><div><p class="eyebrow">TAKE A LITTLE JOY HOME</p><h2 id="downloadTitle">把这份生动，装进口袋</h2></div></div><div class="download-summary"><span id="packageStatus">正在核对文件</span><span id="avatarCount">—</span></div><a class="button primary download-link is-disabled" id="archiveDownload" aria-disabled="true"><svg><use href="#download" /></svg><span>下载 TF 动画包</span><small id="archiveSize">整理中</small></a><div class="secondary-downloads"><a class="download-link is-disabled" id="packDownload" aria-disabled="true">板端资源 LXAF <span>↗</span></a><a class="download-link is-disabled" id="firmwareDownload" aria-disabled="true">配套固件 <span>↗</span></a><a class="download-link web-archive-download is-disabled" id="webArchiveDownload" aria-disabled="true" hidden><span>高清离线预览 <small id="webArchiveSize"></small></span><span>↗</span></a></div><p class="format-notice" id="formatNotice" hidden></p><p id="downloadNote" class="download-note">下载入口将在真实文件核对后开放。</p><div class="card-facts"><span><svg><use href="#card" /></svg><span id="packageSize">—</span></span><span id="frameSize">—</span></div><p class="hardware-status" id="hardwareStatus">配套固件需首次更新；你的 TF 卡尚待实际验证。</p><a class="steps-link" href="#installSteps">第一次怎么安装？ <svg><use href="#arrow" /></svg></a></section>
+      </aside>
+    </section>
+    <section class="detail-strip" aria-label="观看提示"><article><span>01</span><div><h3>靠近一点，看清小细节</h3><p>高清观赏呈现绒毛、眼睛和柔和的立体光影。</p></div></article><article><span>02</span><div><h3>给动作一点呼吸感</h3><p>短短的停顿、抬头和轻摆，让陪伴有自己的节奏。</p></div></article><article><span>03</span><div><h3>安静地，陪在你身边</h3><p>轻点角色有小回应，也可以暂停，留下喜欢的表情。</p></div></article></section>
+    <section class="font-section" id="fontStyles" aria-labelledby="fontTitle"><div class="font-heading"><div><p class="eyebrow">A DIFFERENT VOICE, A DIFFERENT HAND</p><h2 id="fontTitle">语气不同，字也有自己的性格。</h2><p>温柔用圆体，平静用宋体，元气用手写，简洁用黑体。<br />以下为字形示例；实际对话会使用你保存的语气。</p></div><div class="font-download"><a class="button primary download-link is-disabled" id="fontArchiveDownload" aria-disabled="true"><svg><use href="#download" /></svg><span>下载四语气字体包</span><small id="fontArchiveSize">核对中</small></a><span id="fontPackageStatus">正在核对字体文件</span></div></div><div class="font-swatches"><article class="font-swatch" data-font-tone="warm"><span>01 · 温柔安慰</span><h3>柔和圆体</h3><p>有我陪着你，<br />慢慢来也很好。</p><small>柔软、圆润，认真接住情绪</small></article><article class="font-swatch" data-font-tone="calm"><span>02 · 平静舒缓</span><h3>平静宋体</h3><p>留一点从容，<br />听见自己的步调。</p><small>安静、书卷，适合慢慢交流</small></article><article class="font-swatch" data-font-tone="cheerful"><span>03 · 活泼元气</span><h3>灵动手写</h3><p>每一点小进步，<br />都值得庆祝呀！</p><small>轻快、自然，把小开心留下</small></article><article class="font-swatch" data-font-tone="direct"><span>04 · 清晰简洁</span><h3>清晰黑体</h3><p>先做眼前一件。<br />完成，再走下一步。</p><small>利落、清楚，重点一眼看见</small></article></div><div class="font-install-note"><svg><use href="#card" /></svg><p>字体是独立安装包。解压后把 <strong>lingxi</strong> 文件夹复制到 TF 卡根目录，最终路径：<code id="fontCardPath">lingxi/fonts-v1.lxff</code>。需要已支持 TF 字体的新固件；卡仍在板子内时，可用新版设备配网页提供的字体下载入口安装。四套网页字体留在电脑，板子只读取 LXFF 位图字体资源。</p></div><a class="font-settings-link" href="/companion#settings">回到「我的偏好」，试试不同语气 ↗</a></section>
+    <section class="install-section" id="installSteps" aria-labelledby="installTitle"><div class="install-title"><p class="eyebrow">WHEN YOU ARE READY</p><h2 id="installTitle">准备好了，再把它带回去。</h2><p>先更新配套固件，TF 卡使用 FAT32。16 GB 卡足够动画与四语气字体。V3 的 LXAF 2 资源需要新版固件。</p></div><div class="install-options"><details><summary><span class="route-icon"><svg><use href="#card" /></svg></span><span><strong>通过读卡器复制</strong><small>把 lingxi 文件夹放到卡根目录</small></span><span class="details-plus">+</span></summary><div class="install-body"><p id="copyInstructions">完整包解压后，将 lingxi 文件夹复制到 TF 卡根目录，最终路径为 lingxi/animations-v1.lxaf。已有同名文件请先备份。</p><p>断电插卡，再重新启动。GIF 和高清预览留在电脑即可。</p></div></details><details><summary><span class="route-icon"><svg><use href="#download" /></svg></span><span><strong>卡留在板子里，联网接收</strong><small>在设备页面点击“从电脑安装动画”</small></span><span class="details-plus">+</span></summary><div class="install-body"><p id="wifiInstructions">电脑运行 start_animations.cmd；手机连接 LingXi-922C，打开 http://192.168.4.1/，点击“从电脑安装动画”，等待校验完成。</p><p id="wifiStatus">板子使用已经配置的 Wi-Fi 从电脑取文件。下载时保持供电和电脑服务运行，手机提示无互联网正常。</p></div></details><details><summary><span class="route-icon"><svg><use href="#check" /></svg></span><span><strong>固件与当前播放范围</strong><small id="firmwareStatus">正在核对配套固件</small></span><span class="details-plus">+</span></summary><div class="install-body"><p>V3 动画使用 LXAF 2 格式，旧版 LXAF 1 固件无法识别。请先安装本页明确兼容 LXAF 2 的新版固件，再复制或联网安装动画与字体。</p><p>V3 含 5 位伙伴、每位 10 种动作，板端素材目标为 20 fps。实际播放会受屏幕刷新和语音任务影响；角色大动作、录音、思考与回应等业务触发以所装固件为准。</p><p>不会自动格式化 TF 卡，也不会在这个网页直接写入板子。</p></div></details></div></section>
+    <section class="release-details"><div><span class="local-dot"></span><p>稍后再来，双击 <strong>start_animations.cmd</strong> 就能重新打开。</p><span id="updatedAt">—</span></div><details><summary>资源版本与 SHA-256 校验值</summary><dl id="integrityList"></dl></details></section>
+    <footer><span>灵犀 LINGXI <i>✦</i> 小小的陪伴，也值得认真制作。</span><a href="/companion#characters">去伙伴图鉴，选一位合拍的 ↗</a></footer>
+  </main>
+  <div class="sr-only" id="interactionStatus" role="status" aria-live="polite"></div>
+</body>
+</html>

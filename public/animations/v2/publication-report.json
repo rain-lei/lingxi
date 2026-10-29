@@ -1,0 +1,23 @@
+{
+  "resource": {
+    "url": "/animations/v2/lingxi-animations-v2.lxaf",
+    "filename": "animations-v1.lxaf",
+    "size_bytes": 60457984,
+    "sha256": "5cf9b17f1affd729b8a246c732876d02aea52f4801840fb83e28c5a10118f06c"
+  },
+  "archive": {
+    "url": "/animations/v2/lingxi-tf-animations-v2.zip",
+    "filename": "lingxi-tf-animations-v2.zip",
+    "size_bytes": 24011800,
+    "sha256": "11e7a8ed366c41795ee0e52d8474dc1f3f44d9ae383f137f4687d4f0eff986d6"
+  },
+  "web_archive": {
+    "url": "/animations/v2/lingxi-hd-animations-v2.zip",
+    "filename": "lingxi-hd-animations-v2.zip",
+    "size_bytes": 440981720,
+    "sha256": "1dc0ed79b70cafc9a64d791d1eaa1460eb1ec6ed176502eba00511a1f3f25cf2"
+  },
+  "compatibility_url": "/animations/v1/lingxi-animations-v1.lxaf",
+  "firmware_unchanged": "2b4d949d2842de8e00d989d37e7a7af9ad1528124959ca6d6468da07d4befd6a",
+  "hardware_verified": false
+}

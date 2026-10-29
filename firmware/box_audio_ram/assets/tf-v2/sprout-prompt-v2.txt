@@ -1,0 +1,16 @@
+Use case: identity-preserve.
+Asset type: production transparent 3D plush character sprite atlas for the LingXi companion project.
+
+Edit target / identity reference: the attached existing sprout-poses.png sheet. Preserve this exact character: mint-green fluffy baby dragon, huge glossy olive-green eyes with the same white catchlights and shape, tiny cream muzzle, soft rosy cheeks, cream segmented belly and cream toes, small cream inner wings, rounded soft frills, exactly two fresh green leaves growing from one stem on top, and a curled fluffy mint tail with cream underside. Preserve its adorable proportions, fine short plush fibers, premium 3D toy lighting and gentle expression. No accessories or outfit additions.
+
+Primary correction: the existing sheet cuts off the tail and some leaf tips at cell boundaries. Reframe every pose smaller and fully inside its own cell. Return one EXACT 1536 x 1024 RGBA transparent image, 3 equal columns x 2 equal rows, with six independent 512 x 512 cells. No visible grid lines or panels. Every character, INCLUDING every leaf tip, wing tip, ear tip, tail tip, and all fur, MUST stay inside x=44..468 and y=44..468 in its own 512 cell. Leave at least 40 pixels of completely transparent empty space on all four edges of every cell. Each entire character bounding box must be at most 424 x 424 pixels. Show the ENTIRE naturally rounded curled tail: never a straight vertical cut, never extending into the next cell. Do not fill the cells with an oversized closeup. Match camera, lens, character scale, seated body position and foot baseline y=466 across all six cells.
+
+Pose order, left to right, top row then bottom row:
+1. IDLE: seated calmly, both paws down, eyes open, little closed-mouth smile.
+2. BLINK: identical to pose 1 in head location, ears, leaves, paws, wings, tail, body and foot positions; ONLY close the eyes into relaxed smiling eyelids. Absolutely do not reposition or resize the head.
+3. LISTENING: same seated body, eyes open, one small paw held near its ear, attentive friendly expression.
+4. THINKING: same seated body, one paw lightly near chin, eyes looking slightly up, curious rather than worried.
+5. HAPPY SPEAKING / SMALL WAVE: same seated body, eyes open and lively, mouth gently open showing a small pink tongue, one little paw raised in a modest wave, with enough room on all sides.
+6. COMFORT: same seated body, gentle open eyes and closed-mouth smile, both paws extended slightly toward the viewer in a comforting gesture.
+
+Lighting is a consistent large softbox, warm neutral highlights, delicate realistic fur texture, soft subtle self shading, glossy eyes. Clean, finely resolved plush 3D render, no painterly smears. No floor, ground, cast shadow, halo, colored background or background texture. The background and gutters must be genuinely transparent alpha, not a rendered checkerboard and not a green/brown glow. No words, labels, logos, icons, borders or watermark. Retain the exact two-leaf mint dragon identity of the reference; do not turn it into a dinosaur, reptile, cat, another color, or another character.

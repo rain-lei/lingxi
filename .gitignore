@@ -2,7 +2,27 @@ __pycache__/
 *.py[cod]
 .pytest_cache/
 .env
+data/local-voice-settings.json
+data/.voice-settings-*
+data/local-device-link.json
 data/*.db
 .tmp/
 tmp/
 .firecrawl/
+firmware/**/build/
+firmware/**/sdkconfig
+firmware/**/sdkconfig.old
+firmware/local_projects/
+vendor/ESP32_AI_BOX1/
+backups/original_firmware/
+
+# Imported binary assets are versioned by digest in assets.lock.json.
+# Hydrate them with tools/fetch_assets.py; GitHub LFS pointers are not deployable.
+*.png
+*.gif
+*.ttf
+*.bin
+*.zip
+*.lxaf
+.asset-cache/
+*.part

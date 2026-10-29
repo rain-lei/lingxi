@@ -1,0 +1,10 @@
+灵犀 TF 字体包
+
+将 lingxi-fonts-v1.lxff 复制到 TF 卡 /lingxi/fonts-v1.lxff。
+也可在板子配置页点击“安装语气字体”，由电脑服务下载，不必重装动画。
+需配套 20261023 或更新固件；仅复制文件到旧固件不会改变字体。
+warm=柔和圆体，calm=平静宋体，cheerful=灵动手写，direct=清晰黑体。
+每次仅缓存当前语气到 PSRAM，屏幕渲染和录音期间不读取卡。
+无卡保留嵌入的 Noto Sans 20px 清晰后备字体。
+
+完整来源、版权与 OFL 许可证见 SOURCES.md / licenses/。

@@ -1,0 +1,14 @@
+[
+  {
+    "file": "bootloader.bin",
+    "Hash": "3B47D36B0709B5FBBCEAA54795054167AAF9DD08C5344EDEE1FCA21160E433E3"
+  },
+  {
+    "file": "lingxi-kangaroo-voice.bin",
+    "Hash": "5D5EF252C346CD5CB04979DFF218ABE6DBBC6D72DC01A25E5060E62A1630820B"
+  },
+  {
+    "file": "partition-table.bin",
+    "Hash": "477CF6A54A6670D0341EB66BE321CABE59B63947648DB9702B1551A93C6FC370"
+  }
+]

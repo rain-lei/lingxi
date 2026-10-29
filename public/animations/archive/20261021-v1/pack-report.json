@@ -1,0 +1,681 @@
+{
+  "version": 1,
+  "width": 128,
+  "height": 128,
+  "pixel_format": "RGB565LE+alpha8 interleaved",
+  "clip_count": 30,
+  "body_sha256": "1b520cd360e6603207019d489c1ae048061fee390a663f93f107283930294aa8",
+  "clips": [
+    {
+      "avatar_id": 0,
+      "state_id": 0,
+      "avatar": "kangaroo",
+      "state": "idle",
+      "frames": 36,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 1024,
+      "bytes": 1769472,
+      "crc32": "d52f2740"
+    },
+    {
+      "avatar_id": 0,
+      "state_id": 1,
+      "avatar": "kangaroo",
+      "state": "listening",
+      "frames": 24,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 1770496,
+      "bytes": 1179648,
+      "crc32": "6674319d"
+    },
+    {
+      "avatar_id": 0,
+      "state_id": 2,
+      "avatar": "kangaroo",
+      "state": "thinking",
+      "frames": 36,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 2950144,
+      "bytes": 1769472,
+      "crc32": "03731a3a"
+    },
+    {
+      "avatar_id": 0,
+      "state_id": 3,
+      "avatar": "kangaroo",
+      "state": "speaking",
+      "frames": 24,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 4719616,
+      "bytes": 1179648,
+      "crc32": "30202320"
+    },
+    {
+      "avatar_id": 0,
+      "state_id": 4,
+      "avatar": "kangaroo",
+      "state": "comfort",
+      "frames": 36,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 5899264,
+      "bytes": 1769472,
+      "crc32": "0d44f111"
+    },
+    {
+      "avatar_id": 0,
+      "state_id": 5,
+      "avatar": "kangaroo",
+      "state": "celebrate",
+      "frames": 24,
+      "frame_ms": 83,
+      "loop": false,
+      "offset": 7668736,
+      "bytes": 1179648,
+      "crc32": "5bcfa489"
+    },
+    {
+      "avatar_id": 1,
+      "state_id": 0,
+      "avatar": "robot",
+      "state": "idle",
+      "frames": 36,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 8848384,
+      "bytes": 1769472,
+      "crc32": "82430de0"
+    },
+    {
+      "avatar_id": 1,
+      "state_id": 1,
+      "avatar": "robot",
+      "state": "listening",
+      "frames": 24,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 10617856,
+      "bytes": 1179648,
+      "crc32": "450b2966"
+    },
+    {
+      "avatar_id": 1,
+      "state_id": 2,
+      "avatar": "robot",
+      "state": "thinking",
+      "frames": 36,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 11797504,
+      "bytes": 1769472,
+      "crc32": "371319ad"
+    },
+    {
+      "avatar_id": 1,
+      "state_id": 3,
+      "avatar": "robot",
+      "state": "speaking",
+      "frames": 24,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 13566976,
+      "bytes": 1179648,
+      "crc32": "9c22cd8b"
+    },
+    {
+      "avatar_id": 1,
+      "state_id": 4,
+      "avatar": "robot",
+      "state": "comfort",
+      "frames": 36,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 14746624,
+      "bytes": 1769472,
+      "crc32": "e5d0b4a9"
+    },
+    {
+      "avatar_id": 1,
+      "state_id": 5,
+      "avatar": "robot",
+      "state": "celebrate",
+      "frames": 24,
+      "frame_ms": 83,
+      "loop": false,
+      "offset": 16516096,
+      "bytes": 1179648,
+      "crc32": "be0018f3"
+    },
+    {
+      "avatar_id": 2,
+      "state_id": 0,
+      "avatar": "cat",
+      "state": "idle",
+      "frames": 36,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 17695744,
+      "bytes": 1769472,
+      "crc32": "485a9c08"
+    },
+    {
+      "avatar_id": 2,
+      "state_id": 1,
+      "avatar": "cat",
+      "state": "listening",
+      "frames": 24,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 19465216,
+      "bytes": 1179648,
+      "crc32": "86b4934e"
+    },
+    {
+      "avatar_id": 2,
+      "state_id": 2,
+      "avatar": "cat",
+      "state": "thinking",
+      "frames": 36,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 20644864,
+      "bytes": 1769472,
+      "crc32": "fcbfed92"
+    },
+    {
+      "avatar_id": 2,
+      "state_id": 3,
+      "avatar": "cat",
+      "state": "speaking",
+      "frames": 24,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 22414336,
+      "bytes": 1179648,
+      "crc32": "695b3650"
+    },
+    {
+      "avatar_id": 2,
+      "state_id": 4,
+      "avatar": "cat",
+      "state": "comfort",
+      "frames": 36,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 23593984,
+      "bytes": 1769472,
+      "crc32": "3f6fa376"
+    },
+    {
+      "avatar_id": 2,
+      "state_id": 5,
+      "avatar": "cat",
+      "state": "celebrate",
+      "frames": 24,
+      "frame_ms": 83,
+      "loop": false,
+      "offset": 25363456,
+      "bytes": 1179648,
+      "crc32": "697cf6df"
+    },
+    {
+      "avatar_id": 3,
+      "state_id": 0,
+      "avatar": "otter",
+      "state": "idle",
+      "frames": 36,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 26543104,
+      "bytes": 1769472,
+      "crc32": "c76f6ccf"
+    },
+    {
+      "avatar_id": 3,
+      "state_id": 1,
+      "avatar": "otter",
+      "state": "listening",
+      "frames": 24,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 28312576,
+      "bytes": 1179648,
+      "crc32": "234dc616"
+    },
+    {
+      "avatar_id": 3,
+      "state_id": 2,
+      "avatar": "otter",
+      "state": "thinking",
+      "frames": 36,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 29492224,
+      "bytes": 1769472,
+      "crc32": "ca36feb7"
+    },
+    {
+      "avatar_id": 3,
+      "state_id": 3,
+      "avatar": "otter",
+      "state": "speaking",
+      "frames": 24,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 31261696,
+      "bytes": 1179648,
+      "crc32": "5d520603"
+    },
+    {
+      "avatar_id": 3,
+      "state_id": 4,
+      "avatar": "otter",
+      "state": "comfort",
+      "frames": 36,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 32441344,
+      "bytes": 1769472,
+      "crc32": "62b4459b"
+    },
+    {
+      "avatar_id": 3,
+      "state_id": 5,
+      "avatar": "otter",
+      "state": "celebrate",
+      "frames": 24,
+      "frame_ms": 83,
+      "loop": false,
+      "offset": 34210816,
+      "bytes": 1179648,
+      "crc32": "cdd50cbd"
+    },
+    {
+      "avatar_id": 4,
+      "state_id": 0,
+      "avatar": "sprout",
+      "state": "idle",
+      "frames": 36,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 35390464,
+      "bytes": 1769472,
+      "crc32": "8e918e72"
+    },
+    {
+      "avatar_id": 4,
+      "state_id": 1,
+      "avatar": "sprout",
+      "state": "listening",
+      "frames": 24,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 37159936,
+      "bytes": 1179648,
+      "crc32": "c035ceca"
+    },
+    {
+      "avatar_id": 4,
+      "state_id": 2,
+      "avatar": "sprout",
+      "state": "thinking",
+      "frames": 36,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 38339584,
+      "bytes": 1769472,
+      "crc32": "82f64e2b"
+    },
+    {
+      "avatar_id": 4,
+      "state_id": 3,
+      "avatar": "sprout",
+      "state": "speaking",
+      "frames": 24,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 40109056,
+      "bytes": 1179648,
+      "crc32": "b8ac9e21"
+    },
+    {
+      "avatar_id": 4,
+      "state_id": 4,
+      "avatar": "sprout",
+      "state": "comfort",
+      "frames": 36,
+      "frame_ms": 83,
+      "loop": true,
+      "offset": 41288704,
+      "bytes": 1769472,
+      "crc32": "3ae2ce39"
+    },
+    {
+      "avatar_id": 4,
+      "state_id": 5,
+      "avatar": "sprout",
+      "state": "celebrate",
+      "frames": 24,
+      "frame_ms": 83,
+      "loop": false,
+      "offset": 43058176,
+      "bytes": 1179648,
+      "crc32": "b4607b52"
+    }
+  ],
+  "filename": "lingxi-animations-v1.lxaf",
+  "sha256": "c83c1e21dabcb82d91ea1cf3caf5b745d792d84bfa52858973ebc63924c6e66f",
+  "bytes": 44237824,
+  "nominal_fps": 12,
+  "actual_fps": 12.04819,
+  "frame_bytes": 49152,
+  "source_art": [
+    {
+      "source": "firmware/box_audio_ram/main/ui_kangaroo.c",
+      "sha256": "ce1aa645ad964ca080b61792d4c65655457e6ab924cbef935553263725efd134"
+    },
+    {
+      "source": "firmware/box_audio_ram/main/ui_badge.c",
+      "sha256": "9a9d176966da980ba4336e03e614531e2b8837f90d5ae00013eaf89cffe123fb"
+    },
+    {
+      "source": "firmware/box_audio_ram/main/ui_mascot.c",
+      "sha256": "cb87bd409a4280f8ea3a283720287631ab9de69b3a1163e2ca1bdc8240a295b5"
+    },
+    {
+      "source": "firmware/box_audio_ram/assets/tf-v1/cat-poses.png",
+      "sha256": "44ee3ace9d4459d46556a7186a06fccfe1c29caf3abaeb7266d9c704310b53fe",
+      "source_size": [
+        1536,
+        1024
+      ],
+      "common_crop": [
+        24,
+        0,
+        495,
+        504
+      ],
+      "target_size": [
+        110,
+        118
+      ],
+      "origin": [
+        9,
+        6
+      ],
+      "components": [
+        {
+          "connectivity": 8,
+          "threshold": 32,
+          "dilation_pixels": 2,
+          "component_count": 1,
+          "kept_pixels_at_threshold": 142121,
+          "removed_pixels_at_threshold": 0,
+          "largest_component_sizes": [
+            142121
+          ]
+        },
+        {
+          "connectivity": 8,
+          "threshold": 32,
+          "dilation_pixels": 2,
+          "component_count": 2,
+          "kept_pixels_at_threshold": 141104,
+          "removed_pixels_at_threshold": 1,
+          "largest_component_sizes": [
+            141104,
+            1
+          ]
+        },
+        {
+          "connectivity": 8,
+          "threshold": 32,
+          "dilation_pixels": 2,
+          "component_count": 1,
+          "kept_pixels_at_threshold": 146578,
+          "removed_pixels_at_threshold": 0,
+          "largest_component_sizes": [
+            146578
+          ]
+        },
+        {
+          "connectivity": 8,
+          "threshold": 32,
+          "dilation_pixels": 2,
+          "component_count": 1,
+          "kept_pixels_at_threshold": 144321,
+          "removed_pixels_at_threshold": 0,
+          "largest_component_sizes": [
+            144321
+          ]
+        },
+        {
+          "connectivity": 8,
+          "threshold": 32,
+          "dilation_pixels": 2,
+          "component_count": 1,
+          "kept_pixels_at_threshold": 150260,
+          "removed_pixels_at_threshold": 0,
+          "largest_component_sizes": [
+            150260
+          ]
+        },
+        {
+          "connectivity": 8,
+          "threshold": 32,
+          "dilation_pixels": 2,
+          "component_count": 1,
+          "kept_pixels_at_threshold": 147955,
+          "removed_pixels_at_threshold": 0,
+          "largest_component_sizes": [
+            147955
+          ]
+        }
+      ]
+    },
+    {
+      "source": "firmware/box_audio_ram/assets/tf-v1/otter-poses.png",
+      "sha256": "d93dc4b880ed444080a765ac76a30231c217c82fa1e3a9912ed59842463d2085",
+      "source_size": [
+        1536,
+        1024
+      ],
+      "common_crop": [
+        52,
+        7,
+        512,
+        504
+      ],
+      "target_size": [
+        109,
+        118
+      ],
+      "origin": [
+        9,
+        6
+      ],
+      "components": [
+        {
+          "connectivity": 8,
+          "threshold": 32,
+          "dilation_pixels": 2,
+          "component_count": 3,
+          "kept_pixels_at_threshold": 149338,
+          "removed_pixels_at_threshold": 9,
+          "largest_component_sizes": [
+            149338,
+            7,
+            2
+          ]
+        },
+        {
+          "connectivity": 8,
+          "threshold": 32,
+          "dilation_pixels": 2,
+          "component_count": 1,
+          "kept_pixels_at_threshold": 155153,
+          "removed_pixels_at_threshold": 0,
+          "largest_component_sizes": [
+            155153
+          ]
+        },
+        {
+          "connectivity": 8,
+          "threshold": 32,
+          "dilation_pixels": 2,
+          "component_count": 2,
+          "kept_pixels_at_threshold": 156055,
+          "removed_pixels_at_threshold": 4,
+          "largest_component_sizes": [
+            156055,
+            4
+          ]
+        },
+        {
+          "connectivity": 8,
+          "threshold": 32,
+          "dilation_pixels": 2,
+          "component_count": 3,
+          "kept_pixels_at_threshold": 152834,
+          "removed_pixels_at_threshold": 8,
+          "largest_component_sizes": [
+            152834,
+            5,
+            3
+          ]
+        },
+        {
+          "connectivity": 8,
+          "threshold": 32,
+          "dilation_pixels": 2,
+          "component_count": 2,
+          "kept_pixels_at_threshold": 156384,
+          "removed_pixels_at_threshold": 1,
+          "largest_component_sizes": [
+            156384,
+            1
+          ]
+        },
+        {
+          "connectivity": 8,
+          "threshold": 32,
+          "dilation_pixels": 2,
+          "component_count": 4,
+          "kept_pixels_at_threshold": 151555,
+          "removed_pixels_at_threshold": 14,
+          "largest_component_sizes": [
+            151555,
+            10,
+            3,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "source": "firmware/box_audio_ram/assets/tf-v1/sprout-poses.png",
+      "sha256": "0a5d8a7470000aef96b97e910cc1cef79cd7b1deb237484aa2e5926aae163984",
+      "source_size": [
+        1536,
+        1024
+      ],
+      "common_crop": [
+        21,
+        0,
+        512,
+        504
+      ],
+      "target_size": [
+        112,
+        115
+      ],
+      "origin": [
+        8,
+        9
+      ],
+      "components": [
+        {
+          "connectivity": 8,
+          "threshold": 32,
+          "dilation_pixels": 2,
+          "component_count": 1,
+          "kept_pixels_at_threshold": 153457,
+          "removed_pixels_at_threshold": 0,
+          "largest_component_sizes": [
+            153457
+          ]
+        },
+        {
+          "connectivity": 8,
+          "threshold": 32,
+          "dilation_pixels": 2,
+          "component_count": 3,
+          "kept_pixels_at_threshold": 153985,
+          "removed_pixels_at_threshold": 257,
+          "largest_component_sizes": [
+            153985,
+            148,
+            109
+          ]
+        },
+        {
+          "connectivity": 8,
+          "threshold": 32,
+          "dilation_pixels": 2,
+          "component_count": 2,
+          "kept_pixels_at_threshold": 151636,
+          "removed_pixels_at_threshold": 297,
+          "largest_component_sizes": [
+            151636,
+            297
+          ]
+        },
+        {
+          "connectivity": 8,
+          "threshold": 32,
+          "dilation_pixels": 2,
+          "component_count": 1,
+          "kept_pixels_at_threshold": 154668,
+          "removed_pixels_at_threshold": 0,
+          "largest_component_sizes": [
+            154668
+          ]
+        },
+        {
+          "connectivity": 8,
+          "threshold": 32,
+          "dilation_pixels": 2,
+          "component_count": 2,
+          "kept_pixels_at_threshold": 163158,
+          "removed_pixels_at_threshold": 144,
+          "largest_component_sizes": [
+            163158,
+            144
+          ]
+        },
+        {
+          "connectivity": 8,
+          "threshold": 32,
+          "dilation_pixels": 2,
+          "component_count": 2,
+          "kept_pixels_at_threshold": 154200,
+          "removed_pixels_at_threshold": 521,
+          "largest_component_sizes": [
+            154200,
+            521
+          ]
+        }
+      ]
+    }
+  ],
+  "notes": [
+    "预渲染3D风格二维动画；不是真实3D引擎。",
+    "speaking为实际开口/闭口表情与小挥手循环，不承诺音素口型同步。",
+    "庆祝clip为一次动作，其他状态循环。",
+    "预览逐帧来自同一LXAF像素，不使用替代示意动画。"
+  ]
+}
