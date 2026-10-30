@@ -71,26 +71,7 @@ svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width:
 .text-button { padding: 3px 0; border: 0; background: transparent; color: var(--primary); font-size: 11px; }
 .text-button:hover { color: var(--primary-dark); text-decoration: underline; text-underline-offset: 4px; }
 .home-grid { display: block; }
-.companion-panel { display: grid; grid-template-columns: minmax(270px,.8fr) minmax(0,1.2fr); overflow: hidden; background: var(--white); border: 1px solid var(--line); border-radius: 22px; box-shadow: var(--shadow); }
-.stage { position: relative; min-width: 0; min-height: 443px; display: flex; align-items: center; flex-direction: column; overflow: hidden; background: #e9edde; padding: 23px 23px 20px; }
-.stage:before { content: ''; position: absolute; width: 290px; height: 290px; border-radius: 50%; background: #f3f4e9; top: 91px; left: 50%; transform: translateX(-50%); }
-.stage-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; width: 100%; position: relative; z-index: 2; }
-.soft-label { display: inline-flex; align-items: center; gap: 6px; color: #6b775e; background: #f8f9efc9; border-radius: 20px; padding: 5px 9px; font-size: 10px; }
-.mini-label { font-size: 10px; color: #7e896f; }
-.pet-frame { position: relative; z-index: 1; width: min(100%,300px); height: 272px; display: flex; align-items: center; justify-content: center; margin-top: 15px; flex-shrink: 0; }
-.pet-image { max-width: 100%; width: 100%; height: 100%; object-fit: contain; cursor: pointer; filter: drop-shadow(0 12px 10px #58674c13); }
-.pet-badge { position: absolute; width: 23%; height: 23%; object-fit: contain; top: 65%; left: 50%; transform: translate(-50%,-50%); pointer-events: none; }
-.pet-image[data-motion-kind="v2"]~.pet-badge, .pet-frame:has(.pet-image[data-embedded-badge="true"]) .pet-badge { display: none; }
-.pet-caption { position: relative; z-index: 2; text-align: center; margin-top: -3px; }
-.pet-caption-label { font-size: 9px; letter-spacing: 1px; color: #8a937b; }
-.pet-caption h2 { font-size: 23px; letter-spacing: 1px; margin: 3px 0 3px; font-weight: 550; }
-.pet-caption p { font-size: 12px; color: #79846d; margin: 0; }
-.pet-touch-hint { display: block; font-size: 10px; color: #9a9f8b; margin-top: 12px; }
-.pet-placeholder { text-align: center; color: var(--muted); }
-.pet-placeholder small { display: block; }
-.audio-visualizer { position: absolute; bottom: 15px; display: flex; align-items: center; gap: 3px; height: 24px; }
-.audio-visualizer i { width: 3px; height: 4px; background: var(--primary); border-radius: 2px; opacity: .5; }
-.stage[data-state="idle"] .audio-visualizer { display: none; }
+.companion-panel { display: block; overflow: hidden; background: var(--white); border: 1px solid var(--line); border-radius: 22px; box-shadow: var(--shadow); }
 .conversation-area { display: flex; flex-direction: column; min-width: 0; padding: 29px 30px 19px; }
 .conversation-heading { display: flex; gap: 12px; align-items: center; justify-content: space-between; }
 .conversation-heading h2 { font-size: 18px; font-weight: 550; margin: 0; }
@@ -116,24 +97,9 @@ input[type=checkbox], input[type=radio] { accent-color: var(--primary); }
 .composer textarea::placeholder { color: #a0a596; }
 .mic-button, .send-button { display: grid; place-items: center; width: 35px; height: 36px; border: 0; border-radius: 9px; background: transparent; color: #89967b; flex-shrink: 0; }
 .send-button { background: var(--primary); color: white; }
-.mic-button.recording { background: #f3dfd4; color: #ae674e; }
+.mic-button[aria-pressed="true"] { background: #f3dfd4; color: #ae674e; }
 .mic-button svg, .send-button svg { width: 18px; height: 18px; }
 .composer-note { display: flex; justify-content: space-between; gap: 10px; min-height: 20px; margin-top: 8px; font-size: 9px; color: #a1a597; }
-.motion-details { grid-column: 1/-1; border-top: 1px solid var(--line); }
-.motion-details>summary { cursor: pointer; list-style: none; display: flex; align-items: center; gap: 16px; padding: 15px 24px; color: #78866e; font-size: 11px; }
-.motion-details>summary::-webkit-details-marker { display: none; }
-.motion-details>summary>span { font-size: 10px; color: #a1a795; }
-.motion-details>summary>i { margin-left: auto; font-style: normal; font-size: 16px; }
-.motion-details[open]>summary>i { transform: rotate(45deg); }
-.pet-studio-controls { padding: 0 24px 16px; }
-.studio-control-head { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 12px; }
-.studio-control-head strong { display: none; }
-.studio-control-head small { font-size: 11px; color: #8b957d; }
-.studio-button-group { display: flex; gap: 12px; }
-.motion-dock { display: grid; grid-template-columns: repeat(6,1fr); gap: 8px; }
-.motion-dock button { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 9px; background: #f6f7f0; border: 1px solid var(--line); border-radius: 9px; color: var(--primary); font-size: 11px; }
-.motion-dock button[aria-pressed=true] { background: #e4ebdc; }
-.motion-disclaimer { font-size: 10px; color: #999e90; margin: 10px 0 0; }
 .home-support { display: grid; grid-template-columns: 1.25fr 1fr; gap: 22px; margin-top: 23px; }
 .panel, .surface, .preferences-panel { min-width: 0; background: var(--white); border: 1px solid var(--line); border-radius: 17px; padding: 23px; }
 .section-heading, .panel-heading { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-bottom: 14px; }
@@ -331,25 +297,18 @@ dialog::backdrop { background: #3c48354d; backdrop-filter: blur(4px); }
 body.is-showcase .app-rail, body.is-showcase .home-support, body.is-showcase .intro, body.is-showcase .page-footer { display: none; }
 body.is-showcase .app-shell { margin: 0; }
 body.is-showcase .workspace { padding-top: 28px; max-width: 1350px; }
-body.is-showcase .stage { min-height: 580px; justify-content: center; }
-body.is-showcase .stage-top { position: absolute; top: 23px; left: 23px; width: calc(100% - 46px); }
-body.is-showcase .pet-frame { width: 380px; height: 360px; }
 body.is-showcase .conversation-area { padding: 40px; }
 body.is-showcase .messages { max-height: 420px; }
-@media(min-width:1600px) { .workspace { padding-top: 44px; } .stage { min-height: 480px; } .messages { min-height: 250px; } }
+@media(min-width:1600px) { .workspace { padding-top: 44px; } .messages { min-height: 250px; } }
 @media(max-width:1190px) {
   .app-rail { width: 185px; padding: 30px 14px 22px; }
   .app-shell { margin-left: 185px; }
   .rail-brand { margin-left: 8px; }
   .workspace { padding: 28px; }
   .topbar { margin: 0 28px; }
-  .companion-panel { grid-template-columns: minmax(230px,.8fr) minmax(0,1.2fr); }
   .conversation-area { padding: 26px 21px 18px; }
   .conversation-heading { align-items: flex-start; flex-direction: column; gap: 6px; }
   .conversation-heading h2 { font-size: 17px; }
-  .pet-frame { height: 250px; }
-  .stage { padding: 23px 16px; }
-  .stage:before { width: 240px; height: 240px; top: 110px; }
   .character-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
   .settings-grid { grid-template-columns: 1fr; }
   .avatar-thumbnail { width: 55px; height: 55px; }
@@ -369,15 +328,6 @@ body.is-showcase .messages { max-height: 420px; }
   .header-actions { gap: 14px; }
   .header-actions time { display: none; }
   .workspace { padding: 25px 22px 12px; }
-  .companion-panel { grid-template-columns: 1fr; }
-  .stage { min-height: 270px; padding: 20px; }
-  .stage-top { position: relative; }
-  .stage:before { width: 220px; height: 220px; top: 45px; left: 33%; }
-  .pet-frame { width: 235px; height: 215px; align-self: flex-start; margin: 0; }
-  .pet-caption { position: absolute; right: 25px; top: 110px; max-width: 45%; text-align: left; }
-  .pet-caption h2 { font-size: 24px; }
-  .pet-caption p { max-width: 150px; }
-  .pet-touch-hint { font-size: 9px; }
   .conversation-heading { flex-direction: row; align-items: center; }
   .messages { min-height: 180px; max-height: 350px; }
   .conversation-area { padding: 24px; }
@@ -420,16 +370,6 @@ body.is-showcase .messages { max-height: 420px; }
   .intro>.button { min-height: 34px; padding: 8px 10px; font-size: 10px; margin-top: 20px; }
   .intro>.button svg { display: none; }
   .companion-panel { border-radius: 17px; }
-  .stage { min-height: 202px; padding: 14px 16px; }
-  .stage:before { width: 157px; height: 157px; left: 30%; top: 43px; }
-  .pet-frame { height: 153px; width: 170px; margin-top: 2px; margin-left: -5px; }
-  .pet-caption { right: 18px; top: 82px; max-width: 43%; }
-  .pet-caption h2 { font-size: 23px; }
-  .pet-caption-label { display: none; }
-  .pet-caption p { font-size: 10px; max-width: 130px; }
-  .pet-touch-hint { font-size: 8px; margin-top: 12px; }
-  .soft-label, .mini-label { font-size: 9px; }
-  .soft-label { padding: 4px 7px; }
   .conversation-area { padding: 23px 18px 13px; }
   .conversation-heading h2 { font-size: 15px; }
   .voice-reply, .conversation-actions .text-button { font-size: 9px; }
@@ -442,12 +382,6 @@ body.is-showcase .messages { max-height: 420px; }
   .quick-prompts button { font-size: 9px; padding: 5px 7px; }
   .composer textarea { font-size: 16px; }
   .composer-note { font-size: 8px; }
-  .motion-details>summary { padding: 14px 18px; font-size: 10px; gap: 10px; }
-  .motion-details>summary>span { font-size: 9px; }
-  .pet-studio-controls { padding: 0 18px 14px; }
-  .motion-dock { grid-template-columns: repeat(3,1fr); gap: 7px; }
-  .motion-dock button { font-size: 10px; padding: 8px 4px; }
-  .studio-control-head small { font-size: 10px; }
   .home-support { margin-top: 17px; }
   .panel, .surface, .preferences-panel, .focus-card { padding: 21px; border-radius: 15px; }
   .home-support .reset-card { min-height: 192px; }
@@ -484,3 +418,46 @@ body.is-showcase .messages { max-height: 420px; }
   .dialog-heading h2 { font-size: 19px; }
 }
 @media(prefers-reduced-motion:reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+
+/* A calm, conversation-first home, without a mascot stage. */
+.conversation-area { padding: 28px 36px 20px; }
+.conversation-heading { align-items: flex-start; flex-direction: row; gap: 18px; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
+.conversation-title { min-width: 0; }
+.conversation-heading h2 { font-size: 20px; }
+.chat-status { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; margin-top: 7px; color: #7c8774; font-size: 11px; }
+.chat-status[data-state="listening"] { color: #a5694e; }
+.chat-status[data-state="listening"] .status-dot { background: #ba7b5d; }
+.chat-status[data-state="thinking"] .status-dot { background: #b5a06a; }
+.conversation-actions { padding-top: 5px; }
+.voice-reply, .conversation-actions .text-button { font-size: 12px; }
+.messages { min-height: 215px; max-height: 390px; padding: 24px 0; }
+.welcome-message { padding: 28px 0 15px; gap: 14px; }
+.welcome-avatar { width: 36px; height: 38px; flex-basis: 36px; }
+.welcome-message strong { font-size: 17px; margin: 2px 0 10px; }
+.welcome-message p { font-size: 13px; color: #88917f; }
+.message { max-width: 84%; padding: 13px 17px; margin-bottom: 16px; }
+.message>small { display: block; font-size: 10px; color: #7b886f; margin-bottom: 4px; }
+.quick-prompts { gap: 8px; }
+.quick-prompts button { font-size: 12px; padding: 7px 12px; border-radius: 8px; }
+.composer { padding: 9px; border-radius: 14px; }
+.composer textarea { font-size: 14px; padding: 9px 8px; }
+.mic-button, .send-button { width: 40px; height: 40px; }
+.composer-note { font-size: 10px; }
+body.is-showcase .messages { min-height: 38vh; max-height: 58vh; }
+@media(max-width:600px) {
+ .conversation-area { padding: 20px 18px 14px; }
+ .conversation-heading { gap: 10px; padding-bottom: 14px; }
+ .conversation-heading h2 { font-size: 16px; }
+ .conversation-actions { gap: 9px; flex-wrap: wrap; justify-content: flex-end; max-width: 100px; padding-top: 0; }
+ .voice-reply, .conversation-actions .text-button { font-size: 10px; }
+ .chat-status { font-size: 10px; }
+ .messages { min-height: 180px; max-height: 300px; padding: 17px 0; }
+ .welcome-message { padding-top: 18px; gap: 11px; }
+ .welcome-message strong { font-size: 14px; }
+ .welcome-message p { font-size: 12px; }
+ .quick-prompts { gap: 6px; }
+ .quick-prompts button { font-size: 10px; padding: 6px 9px; }
+ .composer textarea { font-size: 16px; }
+ .composer-note { font-size: 9px; }
+ .message { max-width: 92%; }
+}

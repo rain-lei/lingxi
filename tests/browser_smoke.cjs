@@ -91,18 +91,25 @@ async function run() {
     await learning.locator('.identity-reset').click();
     assert.equal(await learning.evaluate(() => LingxiIdentity.get()), id);
 
-    // Reload receives a conditional cache hit for previously loaded artwork.
+    // Chat works without the removed artwork; reload still revalidates assets.
     await learning.goto(base + '/companion#home');
-    await learning.waitForFunction(() => document.querySelector('#petImage')?.naturalWidth > 0);
+    await learning.waitForFunction(() => window.LingXiCompanion?.getReady());
+    assert.equal(await learning.locator('#petImage, #petBadge, .motion-details').count(), 0);
+    await learning.locator('#voiceReply').uncheck();
+    await learning.locator('#messageInput').fill('你好');
+    await learning.locator('#sendButton').click();
+    await learning.locator('#messages .message.assistant').filter({ hasText: '你好，我在这里。' }).waitFor();
     const cdp = await context.newCDPSession(learning);
     await cdp.send('Network.enable');
     const cached = [];
     cdp.on('Network.responseReceivedExtraInfo', event => { if (event.statusCode === 304) cached.push(event.requestId); });
     await learning.reload();
-    await learning.waitForFunction(() => document.querySelector('#petImage')?.naturalWidth > 0);
+    await learning.waitForFunction(() => window.LingXiCompanion?.getReady());
     assert.ok(cached.length > 0, 'reload should revalidate existing resources');
     await learning.setViewportSize({ width: 390, height: 844 });
     assert.ok(await learning.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 2));
+
+    assert.ok(await learning.locator('#messageInput').evaluate(el => el.getBoundingClientRect().bottom < innerHeight - 65), 'mobile composer visible above navigation');
 
     // The compact bottom navigation must retain a way to leave a paired device.
     await learning.goto(base + '/companion?pair=1#settings');

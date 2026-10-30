@@ -8,8 +8,7 @@ const ui = Object.fromEntries([
   "openSetup", "openSetupAdvanced", "setupDialog", "setupForm", "closeSetup", "setupStatus",
   "apiKey", "baseUrl", "setupDeviceToken", "setupError", "saveSetup", "preferencesForm",
   "voiceSelect", "voiceDescription", "saveStatus", "savePreferences", "settingsError",
-  "deviceId", "deviceToken", "switchDevice", "stage", "petMood", "petImage", "petBadge", "petPlaceholder",
-  "petName", "petLine", "avatarTag", "messages", "clearChat", "chatForm", "messageInput",
+  "deviceId", "deviceToken", "switchDevice", "stage", "petMood", "messages", "clearChat", "chatForm", "messageInput",
   "micButton", "sendButton", "inputHint", "chatError", "stopAudio", "voiceReply", "toast",
   "memoryCount", "memoryList", "focusClock", "focusHint", "startFocus", "endFocus",
   "breathOrb", "breathLabel", "breathHint", "startBreath", "replyTiming"
@@ -23,7 +22,7 @@ const AVATARS = {
   sprout: { name: "芽芽", image: "/assets/companion-sprout.png", tag: "元气成长派", alt: "头顶双叶的薄荷绿毛绒小龙芽芽" }
 };
 const MOODS = {
-  idle: ["等你说说话", "不用急，我在这里听你说。"],
+  idle: ["随时可以开始", "不用急，我在这里听你说。"],
   listening: ["正在认真听", "嗯嗯，你说，我在听。"],
   thinking: ["正在想怎么回应你", "让我好好想一想…"],
   speaking: ["正在回应你", "这是我想对你说的话。"]
@@ -34,315 +33,12 @@ const streamAudio = { sources: new Set(), nextAt: 0, muted: false, generation: 0
 let focusEndsAt = 0;
 let breathStartedAt = 0;
 let toastTimer;
-let voiceFrame = 0, lastVoicePaint = 0, voiceEnergy = 0, listeningEnergy = 0;
-const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-// Animation is optional artwork. It must never delay settings, audio or chat.
-const petMotion = { catalog: null, requested: false, revision: 0, requestedKey: "", renderedKey: "", renderedAvatar: "", renderedKind: "", pending: null, failed: new Set(), celebrationUntil: 0, celebrationTimer: 0, preview: "", previewTimer: 0, ambientTimer: 0, ambientIndex: 0, paused: false, preloads: new Set() };
-const PET_GESTURES = {
-  greeting: "打个招呼", comfort: "一个抱抱", focus: "陪你学习",
-  celebrate: "庆祝一下", stretch: "伸个懒腰", sleepy: "晚安时刻"
-};
 const TONE_STYLES = {
   warm: { name: "温柔安慰", hint: "温柔一点，陪你把心事慢慢说开。" },
   calm: { name: "平静舒缓", hint: "留一点从容，用平静的语气陪你。" },
   cheerful: { name: "活泼元气", hint: "轻快一点，一起发现今天的好事。" },
   direct: { name: "清晰简洁", hint: "简单直接，把重要的事情说清楚。" }
 };
-
-function petAssetURL(value, extensions) {
-  if (typeof value !== "string" || !/^\/animations\/v[23]\//.test(value)) return null;
-  try {
-    const url = new URL(value, location.origin);
-    if (url.origin !== location.origin || !/^\/animations\/v[23]\//.test(url.pathname) || url.search || url.hash || !extensions.some((extension) => url.pathname.toLowerCase().endsWith(extension))) return null;
-    return url.pathname;
-  } catch { return null; }
-}
-function clearPetCelebration() {
-  clearTimeout(petMotion.celebrationTimer);
-  petMotion.celebrationTimer = 0;
-  petMotion.celebrationUntil = 0;
-}
-function clearPetPreview() {
-  clearTimeout(petMotion.previewTimer);
-  clearTimeout(petMotion.ambientTimer);
-  petMotion.previewTimer = petMotion.ambientTimer = 0;
-  petMotion.preview = "";
-  delete ui.stage.dataset.preview;
-  document.querySelectorAll("[data-pet-motion]").forEach((button) => button.setAttribute("aria-pressed", "false"));
-  const status = $("motionPreviewStatus");
-  if (status) status.textContent = "轻点动作，看看我的小表情";
-  if ($("returnPetIdle")) $("returnPetIdle").hidden = true;
-}
-function scheduleAmbientGesture() {
-  clearTimeout(petMotion.ambientTimer);
-  if (reducedMotion.matches || petMotion.paused || document.hidden || state.busy || state.recorder || ui.stage.dataset.state !== "idle" || petMotion.preview || ui.stage.closest("[hidden]")) return;
-  const avatar = ui.stage.dataset.avatar;
-  const clips = petMotion.catalog?.get(avatar);
-  const choices = focusEndsAt > Date.now() ? ["focus", "stretch"] : ["stretch", "greeting"];
-  const available = choices.filter((id) => clips?.has(id));
-  if (!available.length) return;
-  petMotion.ambientTimer = setTimeout(() => {
-    petMotion.ambientTimer = 0;
-    if (state.busy || state.recorder || ui.stage.dataset.state !== "idle" || document.hidden || reducedMotion.matches || petMotion.paused || ui.stage.closest("[hidden]")) return;
-    previewPetGesture(available[petMotion.ambientIndex++ % available.length], { ambient: true });
-  }, 18000);
-}
-function previewPetGesture(id, { ambient = false } = {}) {
-  if (state.busy || state.recorder || ui.stage.dataset.state !== "idle") {
-    if (!ambient) toast("先听完这一句，等聊完再看看小动作。 ");
-    return false;
-  }
-  const clip = petMotion.catalog?.get(ui.stage.dataset.avatar)?.get(id);
-  if (!clip || petMotion.failed.has(clip.preview)) {
-    if (!ambient) toast("这段新动作还在准备，先看看其他小表情吧。 ");
-    return false;
-  }
-  clearPetCelebration();
-  clearPetPreview();
-  petMotion.preview = id;
-  ui.stage.dataset.preview = id;
-  const status = $("motionPreviewStatus");
-  if (status) status.textContent = `${ambient ? "陪伴小动作" : "动作预览"} · ${PET_GESTURES[id] || clip.label || id}`;
-  document.querySelectorAll("[data-pet-motion]").forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.petMotion === id)));
-  if ($("returnPetIdle")) $("returnPetIdle").hidden = false;
-  syncPetArtwork();
-  return true;
-}
-function cancelPetImageRequest() {
-  if (!petMotion.pending) return;
-  petMotion.pending.onload = petMotion.pending.onerror = null;
-  petMotion.pending.removeAttribute("src");
-  petMotion.pending = null;
-}
-function currentPetArtwork() {
-  const avatar = AVATARS[ui.stage.dataset.avatar] ? ui.stage.dataset.avatar : "kangaroo";
-  const mood = MOODS[ui.stage.dataset.state] ? ui.stage.dataset.state : "idle";
-  const clipId = mood === "idle" && !state.busy && petMotion.preview ? petMotion.preview : mood === "idle" && !state.busy && performance.now() < petMotion.celebrationUntil ? "celebrate" : mood;
-  const clip = petMotion.catalog?.get(avatar)?.get(clipId);
-  const still = reducedMotion.matches || petMotion.paused || document.hidden || Boolean(ui.stage.closest("[hidden]"));
-  const kind = clip && !petMotion.failed.has(clip.preview) ? (still ? "poster" : "animated") : "fallback";
-  const url = kind === "animated" ? clip.preview : kind === "poster" ? clip.poster : AVATARS[avatar].image;
-  if (!url || petMotion.failed.has(url)) return { avatar, clipId, kind: "fallback", url: AVATARS[avatar].image };
-  return { avatar, clipId, kind, url, badgeBaked: clip?.badgeBaked === true };
-}
-function syncPetArtwork() {
-  const target = currentPetArtwork();
-  const key = `${target.avatar}:${target.clipId}:${target.kind}:${target.url}`;
-  if (petMotion.requestedKey === key) return;
-  const revision = ++petMotion.revision;
-  petMotion.requestedKey = key;
-  cancelPetImageRequest();
-  // Keep the previous complete frame on screen while the next clip loads and
-  // decodes. Replacing one image atomically avoids blanks and double mascots.
-  const image = new Image();
-  image.id = "petImage";
-  image.className = "pet-image";
-  image.alt = AVATARS[target.avatar].alt;
-  image.decoding = "async";
-  image.draggable = false;
-  petMotion.pending = image;
-  const failed = () => {
-    if (revision !== petMotion.revision) return;
-    petMotion.failed.add(target.url);
-    petMotion.pending = null;
-    image.onload = image.onerror = null;
-    image.removeAttribute("src");
-    if (target.kind === "fallback") {
-      // A working previous frame is preferable to an empty loading silhouette.
-      if (!ui.petImage.naturalWidth) {
-        ui.petImage.hidden = true;
-        ui.petBadge.hidden = true;
-        ui.petPlaceholder.hidden = false;
-        ui.stage.dataset.petArt = "fallback";
-      }
-      return;
-    }
-    petMotion.requestedKey = "";
-    syncPetArtwork();
-  };
-  image.onerror = failed;
-  image.onload = async () => {
-    if (revision !== petMotion.revision) { image.onload = image.onerror = null; image.removeAttribute("src"); return; }
-    if (!image.naturalWidth) { failed(); return; }
-    try { if (image.decode) await image.decode(); } catch { if (!image.naturalWidth) { failed(); return; } }
-    if (revision !== petMotion.revision) { image.onload = image.onerror = null; image.removeAttribute("src"); return; }
-    image.onload = null;
-    petMotion.pending = null;
-    const previous = ui.petImage;
-    previous.replaceWith(image);
-    ui.petImage = image;
-    previous.onload = previous.onerror = null;
-    previous.removeAttribute("src");
-    petMotion.renderedKey = key;
-    petMotion.renderedAvatar = target.avatar;
-    petMotion.renderedKind = target.kind;
-    ui.stage.dataset.petArt = target.kind;
-    ui.stage.dataset.petBadgeBaked = String(target.avatar === "kangaroo" && target.kind !== "fallback" && target.badgeBaked === true);
-    ui.petPlaceholder.hidden = true;
-    ui.petBadge.hidden = target.avatar !== "kangaroo" || (target.kind !== "fallback" && target.badgeBaked === true);
-    if (petMotion.preview && target.clipId === petMotion.preview) {
-      clearTimeout(petMotion.previewTimer);
-      const duration = petMotion.catalog?.get(target.avatar)?.get(target.clipId)?.duration || 3500;
-      petMotion.previewTimer = setTimeout(() => { clearPetPreview(); syncPetArtwork(); }, duration);
-    } else scheduleAmbientGesture();
-  };
-  image.src = target.url;
-}
-async function loadPetAnimations() {
-  if (petMotion.requested) return;
-  petMotion.requested = true;
-  try {
-    let manifest;
-    for (const path of ["/animations/v3/manifest.json", "/animations/v2/manifest.json"]) {
-      try {
-        const response = await LingxiIdentity.fetch(path, { credentials: "same-origin", signal: AbortSignal.timeout(8000) });
-        if (!response.ok) continue;
-        const candidate = await response.json();
-        if (candidate.schema_version !== 1 || candidate.ready === false || candidate.web_ready === false || !Array.isArray(candidate.avatars)) continue;
-        manifest = candidate; break;
-      } catch { /* A not-yet-published V3 pack must not hide the V2 companion. */ }
-    }
-    if (!manifest) return;
-    const catalog = new Map();
-    for (const avatar of manifest.avatars) {
-      if (!AVATARS[avatar?.id] || !Array.isArray(avatar.clips)) continue;
-      const clips = new Map();
-      for (const clip of avatar.clips) {
-        if (!clip || ![...Object.keys(MOODS), ...Object.keys(PET_GESTURES)].includes(clip.id)) continue;
-        const preview = petAssetURL(clip.web_preview_url, [".webp", ".png"]);
-        const poster = petAssetURL(clip.web_poster_url, [".webp", ".png"]);
-        if (!preview || !poster) continue;
-        const badgeBaked = clip.web_badge_baked === false ? false : clip.web_badge_baked === true || clip.badge_baked === true;
-        clips.set(clip.id, { preview, poster, badgeBaked, label: clip.label, duration: Math.min(15000, Math.max(500, Number(clip.web_duration_ms || clip.duration_ms) || 2000)) });
-      }
-      if (clips.size) catalog.set(avatar.id, clips);
-    }
-    if (!catalog.size) return;
-    petMotion.catalog = catalog;
-    updateMotionDock();
-    syncPetArtwork();
-  } catch { /* The original static character remains available offline. */ }
-}
-
-function paintVoice(now) {
-  if (!["listening", "speaking"].includes(ui.stage.dataset.state) || document.hidden) {
-    voiceFrame = 0;
-    return;
-  }
-  if (now - lastVoicePaint >= 65) {
-    lastVoicePaint = now;
-    let energy = listeningEnergy;
-    if (ui.stage.dataset.state === "speaking" && state.playbackAnalyser) {
-      state.playbackAnalyser.getByteTimeDomainData(state.waveSamples);
-      let squares = 0;
-      for (const value of state.waveSamples) squares += ((value - 128) / 128) ** 2;
-      energy = Math.sqrt(squares / state.waveSamples.length);
-    }
-    voiceEnergy = voiceEnergy * .6 + Math.min(1, energy * 5) * .4;
-    ui.stage.style.setProperty("--voice-level", voiceEnergy.toFixed(3));
-    const bars = ui.stage.querySelectorAll(".audio-visualizer i");
-    bars.forEach((bar, index) => {
-      // A single measured envelope drives a fixed symmetric spatial profile.
-      // No generated bars or synthetic 'microphone level' are presented.
-      const center = 1 - Math.abs(index - (bars.length - 1) / 2) / Math.max(1, bars.length / 2);
-      bar.style.height = `${4 + voiceEnergy * (10 + 26 * center)}px`;
-    });
-  }
-  voiceFrame = requestAnimationFrame(paintVoice);
-}
-
-function resetVoiceVisual() {
-  cancelAnimationFrame(voiceFrame);
-  voiceFrame = 0;
-  voiceEnergy = listeningEnergy = 0;
-  ui.stage.style.setProperty("--voice-level", "0");
-  ui.stage.querySelectorAll(".audio-visualizer i").forEach((bar) => { bar.style.height = "4px"; });
-}
-
-const petFrame = document.querySelector(".pet-frame");
-if (petFrame) {
-  petFrame.setAttribute("role", "button");
-  petFrame.setAttribute("tabindex", "0");
-  petFrame.setAttribute("aria-label", "摸摸小伙伴");
-  function greetPet() {
-    if (state.busy || state.recorder || ui.stage.dataset.state !== "idle" || document.hidden || reducedMotion.matches) return;
-    const clips = petMotion.catalog?.get(ui.stage.dataset.avatar);
-    const greeting = clips?.has("greeting") ? "greeting" : "celebrate";
-    const clip = clips?.get(greeting);
-    if (clip && !petMotion.failed.has(clip.preview)) {
-      previewPetGesture(greeting);
-      return;
-    }
-    // A still fallback is not an articulated gesture. Do not rotate the whole
-    // cutout to imitate a greeting while the motion catalog is unavailable.
-    toast("收到你的摸摸啦。动作素材加载完成后，我再向你挥挥手。");
-  }
-  petFrame.addEventListener("click", greetPet);
-  petFrame.addEventListener("keydown", (event) => {
-    if (event.key === "Enter" || event.key === " ") { event.preventDefault(); greetPet(); }
-  });
-  // The APNG owns the joint motion. Keep its canvas anchored to the floor;
-  // pointer parallax would move the badge and torso as one flat rectangle.
-}
-document.addEventListener("visibilitychange", () => {
-  if (document.hidden) { resetVoiceVisual(); clearPetCelebration(); clearPetPreview(); }
-  else if (["listening", "speaking"].includes(ui.stage.dataset.state) && !voiceFrame && !reducedMotion.matches) voiceFrame = requestAnimationFrame(paintVoice);
-  syncPetArtwork();
-});
-function petMotionPreferenceChanged() {
-  clearPetCelebration();
-  clearPetPreview();
-  if (reducedMotion.matches) {
-    resetVoiceVisual();
-  } else if (["listening", "speaking"].includes(ui.stage.dataset.state) && !document.hidden && !voiceFrame) voiceFrame = requestAnimationFrame(paintVoice);
-  syncPetArtwork();
-}
-if (reducedMotion.addEventListener) reducedMotion.addEventListener("change", petMotionPreferenceChanged);
-else if (reducedMotion.addListener) reducedMotion.addListener(petMotionPreferenceChanged);
-
-function updateMotionDock() {
-  const clips = petMotion.catalog?.get(ui.stage.dataset.avatar);
-  document.querySelectorAll("[data-pet-motion]").forEach((button) => {
-    const supported = Boolean(clips?.has(button.dataset.petMotion));
-    button.disabled = state.busy || !supported;
-    button.title = supported ? "只预览动作，不会发送对话" : "这段新动作正在准备";
-    if (!button.hasAttribute("aria-pressed")) button.setAttribute("aria-pressed", "false");
-  });
-}
-function prewarmPetClip(id) {
-  if (reducedMotion.matches || petMotion.paused || document.hidden) return;
-  const clip = petMotion.catalog?.get(ui.stage.dataset.avatar)?.get(id);
-  if (!clip || petMotion.preloads.has(clip.preview)) return;
-  // A browser-managed compressed prefetch avoids holding several decoded APNGs
-  // in memory. The active complete image is still retained during a real swap.
-  const preload = document.createElement("link");
-  preload.rel = "prefetch";
-  preload.as = "image";
-  preload.href = clip.preview;
-  document.head.append(preload);
-  petMotion.preloads.add(clip.preview);
-  while (petMotion.preloads.size > 12) {
-    const first = petMotion.preloads.values().next().value;
-    petMotion.preloads.delete(first);
-    for (const node of document.head.querySelectorAll('link[rel="prefetch"]')) if (node.getAttribute("href") === first) node.remove();
-  }
-}
-document.querySelectorAll("[data-pet-motion]").forEach((button) => {
-  button.addEventListener("click", () => previewPetGesture(button.dataset.petMotion));
-  button.addEventListener("pointerenter", () => prewarmPetClip(button.dataset.petMotion));
-  button.addEventListener("focus", () => prewarmPetClip(button.dataset.petMotion));
-});
-$("returnPetIdle")?.addEventListener("click", () => { clearPetPreview(); syncPetArtwork(); });
-$("pausePetMotion")?.addEventListener("click", () => {
-  petMotion.paused = !petMotion.paused;
-  clearPetPreview();
-  $("pausePetMotion").setAttribute("aria-pressed", String(petMotion.paused));
-  $("pausePetMotion").textContent = petMotion.paused ? "让伙伴动起来" : "静态欣赏";
-  syncPetArtwork();
-  if (!petMotion.paused && reducedMotion.matches) toast("已尊重系统的减少动态设置，继续使用静态画面。 ");
-});
-ui.messageInput.addEventListener("focus", () => { prewarmPetClip("thinking"); prewarmPetClip("speaking"); });
-ui.micButton.addEventListener("pointerenter", () => prewarmPetClip("listening"));
 
 function applyToneStyle(value) {
   const tone = TONE_STYLES[value] ? value : "warm";
@@ -422,23 +118,10 @@ async function getJSON(path) { return (await request(path, { timeout: 15000 })).
 async function postJSON(path, payload) { return request(path, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) }); }
 
 function setMood(mood, line) {
-  if (mood !== "idle") { clearPetCelebration(); clearPetPreview(); }
   ui.stage.dataset.state = mood;
-  ui.petMood.textContent = MOODS[mood][0];
-  ui.petLine.textContent = line || MOODS[mood][1];
-  if (["listening", "speaking"].includes(mood) && !reducedMotion.matches) {
-    if (!voiceFrame) voiceFrame = requestAnimationFrame(paintVoice);
-  } else resetVoiceVisual();
-  syncPetArtwork();
+  ui.petMood.textContent = line?.trim() || MOODS[mood][0];
 }
 function showAvatar(value) {
-  const avatar = AVATARS[value] || AVATARS.kangaroo;
-  if (ui.stage.dataset.avatar !== value) { clearPetCelebration(); clearPetPreview(); }
-  ui.stage.dataset.avatar = AVATARS[value] ? value : "kangaroo";
-  syncPetArtwork();
-  ui.petName.textContent = avatar.name;
-  ui.avatarTag.textContent = avatar.tag;
-  updateMotionDock();
   document.querySelectorAll("[data-character]").forEach((card) => {
     const selected = card.dataset.character === value;
     card.classList.toggle("is-selected", selected);
@@ -632,7 +315,6 @@ function addMessage(role, text) {
 }
 function setBusy(busy) {
   state.busy = busy;
-  if (busy) { clearPetPreview(); syncPetArtwork(); }
   ui.sendButton.disabled = busy;
   ui.micButton.disabled = busy;
   ui.messageInput.disabled = busy;
@@ -641,7 +323,6 @@ function setBusy(busy) {
   ui.startFocus.disabled = busy;
   ui.endFocus.disabled = busy;
   for (const button of document.querySelectorAll("[data-prompt]")) button.disabled = busy;
-  updateMotionDock();
   document.querySelectorAll("[data-tone-choice]").forEach((button) => { button.disabled = busy; });
 }
 function requireService() {
@@ -994,9 +675,6 @@ async function startRecording() {
     processor.onaudioprocess = (event) => {
       if (state.recorder !== recorder) return;
       const input = event.inputBuffer.getChannelData(0);
-      let squares = 0;
-      for (const value of input) squares += value * value;
-      listeningEnergy = Math.sqrt(squares / input.length);
       const remaining = Math.max(0, Math.round(recorder.rate * state.inputSeconds) - recorder.frames);
       if (remaining) { const chunk = input.slice(0, remaining); recorder.chunks.push(chunk); recorder.frames += chunk.length; }
     };
@@ -1048,7 +726,7 @@ window.LingXiCompanion = {
 const pageNames = { home: "陪伴空间", study: "学习搭子", characters: "伙伴图鉴", settings: "我的偏好" };
 function navigateCompanion(page, { updateHash = true, focus = true } = {}) {
   if (!pageNames[page]) page = "home";
-  if (page !== "home") { clearPetPreview(); if (document.body.classList.contains("is-showcase")) setShowcaseMode(false); }
+  if (page !== "home") { if (document.body.classList.contains("is-showcase")) setShowcaseMode(false); }
   document.querySelectorAll("[data-view]").forEach((view) => { view.hidden = view.dataset.view !== page; });
   document.querySelectorAll(".rail-nav [data-page]").forEach((link) => {
     const active = link.dataset.page === page;
@@ -1061,7 +739,6 @@ function navigateCompanion(page, { updateHash = true, focus = true } = {}) {
   if (updateHash && location.hash !== `#${page}`) history.replaceState(null, "", `#${page}`);
   window.scrollTo({ top: 0, behavior: "instant" });
   if (focus) { const title = document.querySelector(`[data-view="${page}"] h1`); if (title) { title.tabIndex = -1; title.focus({ preventScroll: true }); } }
-  syncPetArtwork();
 }
 window.LingXiNavigate = navigateCompanion;
 document.querySelectorAll("[data-page]").forEach((link) => link.addEventListener("click", (event) => { event.preventDefault(); navigateCompanion(link.dataset.page); }));
@@ -1107,5 +784,4 @@ if (new URLSearchParams(location.search).get('pair') === '1' || validDevice(quer
   document.getElementById('devicePairing').open = true;
   document.getElementById('devicePairing').scrollIntoView({ block: 'center' });
 }
-loadPetAnimations();
 initialize();
