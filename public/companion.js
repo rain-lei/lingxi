@@ -43,10 +43,10 @@ const PET_GESTURES = {
   celebrate: "庆祝一下", stretch: "伸个懒腰", sleepy: "晚安时刻"
 };
 const TONE_STYLES = {
-  warm: { name: "温柔安慰", hint: "柔软的圆体，把每句话说得温柔一点。" },
-  calm: { name: "平静舒缓", hint: "沉静的书卷字形，留一点从容，慢慢说。" },
-  cheerful: { name: "活泼元气", hint: "轻快的手写字形，装下今天的小雀跃。" },
-  direct: { name: "清晰简洁", hint: "清楚利落的黑体，把重要的事情说清楚。" }
+  warm: { name: "温柔安慰", hint: "温柔一点，陪你把心事慢慢说开。" },
+  calm: { name: "平静舒缓", hint: "留一点从容，用平静的语气陪你。" },
+  cheerful: { name: "活泼元气", hint: "轻快一点，一起发现今天的好事。" },
+  direct: { name: "清晰简洁", hint: "简单直接，把重要的事情说清楚。" }
 };
 
 function petAssetURL(value, extensions) {
@@ -357,7 +357,7 @@ document.querySelectorAll("[data-tone-choice]").forEach((button) => button.addEv
   if (!field) return;
   field.value = tone;
   field.dispatchEvent(new Event("change", { bubbles: true }));
-  toast(`已选择「${TONE_STYLES[tone].name}」。字体已预览，下次对话前会保存语气。`);
+  toast(`已选择「${TONE_STYLES[tone].name}」，下次对话前会保存语气。`);
 }));
 
 function setShowcaseMode(enabled) {
