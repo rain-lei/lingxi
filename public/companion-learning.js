@@ -54,7 +54,12 @@
   }
   function emptyState(title, description, action, label) {
     const wrap = node("div", "task-empty");
-    wrap.append(node("span", "empty-state-icon", "✦"), node("strong", "", title), node("p", "", description));
+    const icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    icon.setAttribute('viewBox', '0 0 24 24'); icon.setAttribute('aria-hidden', 'true');
+    icon.classList.add('empty-state-icon');
+    const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+    use.setAttribute('href', '#i-list'); icon.append(use);
+    wrap.append(icon, node("strong", "", title), node("p", "", description));
     if (action) {
       const button = node("button", "text-button", label); button.type = "button";
       button.addEventListener("click", action); wrap.append(button);

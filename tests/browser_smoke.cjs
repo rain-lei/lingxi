@@ -95,6 +95,15 @@ async function run() {
     await learning.goto(base + '/companion#home');
     await learning.waitForFunction(() => window.LingXiCompanion?.getReady());
     assert.equal(await learning.locator('#petImage, #petBadge, .motion-details').count(), 0);
+    // All visible action icons resolve to actual SVG shapes, including after
+    // toggling focus mode; decorative icons must not replace accessible names.
+    const icons = await learning.locator('#view-home svg use, .rail-nav svg use').evaluateAll(nodes => nodes.filter(n => n.closest('svg').getBoundingClientRect().width > 0).map(n => ({ href: n.getAttribute('href'), width: n.getBBox().width })));
+    assert.ok(icons.length >= 15);
+    assert.ok(icons.every(icon => icon.href?.startsWith('#i-') && icon.width > 0));
+    await learning.locator('#showcaseToggle').click();
+    assert.equal(await learning.locator('#showcaseToggle use').getAttribute('href'), '#i-collapse');
+    await learning.keyboard.press('Escape');
+    assert.equal(await learning.locator('#showcaseToggle use').getAttribute('href'), '#i-expand');
     await learning.locator('#voiceReply').uncheck();
     await learning.locator('#messageInput').fill('你好');
     await learning.locator('#sendButton').click();

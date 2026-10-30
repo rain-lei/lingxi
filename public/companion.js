@@ -61,9 +61,8 @@ function setShowcaseMode(enabled) {
   const toggle = $("showcaseToggle");
   if (toggle) {
     toggle.setAttribute("aria-pressed", String(enabled));
-    toggle.replaceChildren();
-    const icon = document.createElement("span"); icon.textContent = enabled ? "↙" : "↗"; icon.setAttribute("aria-hidden", "true");
-    toggle.append(icon, document.createTextNode(enabled ? "退出展示" : "现场展示"));
+    toggle.querySelector('use').setAttribute('href', enabled ? '#i-collapse' : '#i-expand');
+    toggle.querySelector('span').textContent = enabled ? '退出专注' : '专注聊天';
   }
   if ($("showcaseModeTag")) $("showcaseModeTag").hidden = !enabled;
   if (enabled && document.querySelector('[data-view="home"]')?.hidden) navigateCompanion("home");
