@@ -104,6 +104,15 @@ async function run() {
     await learning.setViewportSize({ width: 390, height: 844 });
     assert.ok(await learning.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 2));
 
+    // The compact bottom navigation must retain a way to leave a paired device.
+    await learning.goto(base + '/companion?pair=1#settings');
+    await learning.waitForFunction(() => window.LingXiCompanion?.getReady());
+    await pair('physical-ui-a', 'ui-test-only-token');
+    await learning.locator('.mobile-menu > summary').click();
+    await learning.locator('.mobile-menu [data-reset-identity]').click();
+    await learning.waitForFunction(() => window.LingXiCompanion?.getReady());
+    assert.equal(await learning.evaluate(() => LingxiIdentity.get()), id, 'mobile users can leave their paired device');
+
     // Event delivery falls back to storage events without BroadcastChannel.
     const fallback = await browser.newContext();
     await fallback.addInitScript(() => { window.BroadcastChannel = undefined; });

@@ -80,10 +80,16 @@ window.LingxiIdentity = (() => {
     reset.type = 'button';
     reset.className = (nav.classList.contains('rail-nav') ? 'rail-link' : 'ghost-button') + ' identity-reset';
     reset.textContent = '返回浏览器体验';
-    reset.hidden = !paired;
-    reset.onclick = () => { select(browserId); location.href = location.pathname; };
     nav.append(reset);
-    window.addEventListener('lingxi:identity', () => { paint(); reset.hidden = !paired; });
+    const resetButtons = [reset, ...document.querySelectorAll('[data-reset-identity]')];
+    for (const button of resetButtons) {
+      button.hidden = !paired;
+      button.onclick = () => { select(browserId); location.href = location.pathname; };
+    }
+    window.addEventListener('lingxi:identity', () => {
+      paint();
+      for (const button of resetButtons) button.hidden = !paired;
+    });
   });
   return { get: () => paired?.id || browserId, token: () => paired?.token || '',
     browserId, select: (id, token) => { select(id, token); window.dispatchEvent(new Event('lingxi:identity')); }, fetch: request, notify };
